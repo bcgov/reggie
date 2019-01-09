@@ -56,7 +56,7 @@ export const getSAToken = async credentials => {
   try {
     const options = {
       headers: {
-        'Content-Type': SSO_REQUEST.CONTENT_TYPE,
+        'Content-Type': SSO_REQUEST.CONTENT_TYPE_FORM,
       },
       auth: {
         user: credentials.username,
@@ -84,7 +84,7 @@ export const getUserID = async (credentials, email) => {
   try {
     const options = {
       headers: {
-        'Content-Type': SSO_REQUEST.CONTENT_TYPE,
+        'Content-Type': SSO_REQUEST.CONTENT_TYPE_FORM,
         Authorization: `Bearer ${credentials.token}`,
       },
       uri: url.resolve(credentials.uri, SSO_SUB_URI.USER),
@@ -107,7 +107,7 @@ export const getUserGroups = async (credentials, userId) => {
   try {
     const options = {
       headers: {
-        'Content-Type': SSO_REQUEST.CONTENT_TYPE,
+        'Content-Type': SSO_REQUEST.CONTENT_TYPE_FORM,
         Authorization: `Bearer ${credentials.token}`,
       },
       uri: url.resolve(credentials.uri, `${SSO_SUB_URI.USER}/${userId}/${SSO_SUB_URI.GROUP}`),
@@ -127,7 +127,7 @@ export const getUserIdps = async (credentials, userId) => {
   try {
     const options = {
       headers: {
-        'Content-Type': SSO_REQUEST.CONTENT_TYPE,
+        'Content-Type': SSO_REQUEST.CONTENT_TYPE_FORM,
         Authorization: `Bearer ${credentials.token}`,
       },
       uri: url.resolve(credentials.uri, `${SSO_SUB_URI.USER}/${userId}/${SSO_SUB_URI.IDP}`),
@@ -148,7 +148,7 @@ export const getUserInfoByEmail = async (credentials, email) => {
   try {
     const options = {
       headers: {
-        'Content-Type': SSO_REQUEST.CONTENT_TYPE,
+        'Content-Type': SSO_REQUEST.CONTENT_TYPE_FORM,
         Authorization: `Bearer ${credentials.token}`,
       },
       uri: url.resolve(credentials.uri, SSO_SUB_URI.USER),
@@ -179,7 +179,7 @@ export const getUserInfoById = async (credentials, id) => {
   try {
     const options = {
       headers: {
-        'Content-Type': SSO_REQUEST.CONTENT_TYPE,
+        'Content-Type': SSO_REQUEST.CONTENT_TYPE_FORM,
         Authorization: `Bearer ${credentials.token}`,
       },
       uri: url.resolve(credentials.uri, `${SSO_SUB_URI.USER}/${id}`),
@@ -198,13 +198,38 @@ export const getUserInfoById = async (credentials, id) => {
   }
 };
 
+export const updateUser = async (credentials, userInfo) => {
+  checkCredentialValid(credentials);
+  try {
+    const options = {
+      headers: {
+        'Content-Type': SSO_REQUEST.CONTENT_TYPE_JSON,
+        Authorization: `Bearer ${credentials.token}`,
+      },
+      uri: url.resolve(credentials.uri, `${SSO_SUB_URI.USER}/${userInfo.id}`),
+      method: 'PUT',
+      body: {
+        id: userInfo.id,
+        email: userInfo.email,
+        firstName: userInfo.firstName,
+        lastName: userInfo.lastName,
+      },
+      json: true,
+    };
+    const res = await request(options);
+    return res;
+  } catch (err) {
+    throw new Error(`Cannot update SSO user profile: ${err}`);
+  }
+};
+
 export const getGroupID = async (credentials, groupName) => {
   checkCredentialValid(credentials);
 
   try {
     const options = {
       headers: {
-        'Content-Type': SSO_REQUEST.CONTENT_TYPE,
+        'Content-Type': SSO_REQUEST.CONTENT_TYPE_FORM,
         Authorization: `Bearer ${credentials.token}`,
       },
       uri: credentials.uri,
@@ -232,7 +257,7 @@ export const addUser2Group = async (credentials, userId, groupId) => {
   try {
     const options = {
       headers: {
-        'Content-Type': SSO_REQUEST.CONTENT_TYPE,
+        'Content-Type': SSO_REQUEST.CONTENT_TYPE_FORM,
         Authorization: `Bearer ${credentials.token}`,
       },
       uri: url.resolve(credentials.uri, subUrl),

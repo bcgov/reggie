@@ -34,7 +34,8 @@ const SSO_SUB_URI = {
 };
 
 const SSO_REQUEST = {
-  CONTENT_TYPE: 'application/x-www-form-urlencoded',
+  CONTENT_TYPE_FORM: 'application/x-www-form-urlencoded',
+  CONTENT_TYPE_JSON: 'application/json',
   GRANT_TYPE: 'client_credentials',
   CLIENT_ID: 'admin-cli',
 };
