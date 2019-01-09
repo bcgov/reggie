@@ -142,7 +142,7 @@ export const getUserIdps = async (credentials, userId) => {
   }
 };
 
-export const getUserInfo = async (credentials, email) => {
+export const getUserInfoByEmail = async (credentials, email) => {
   checkCredentialValid(credentials);
 
   try {
@@ -167,6 +167,31 @@ export const getUserInfo = async (credentials, email) => {
     const groups = await getUserGroups(credentials, ssoUserId);
     const idps = await getUserIdps(credentials, ssoUserId);
     const userProfile = checkUserProfile(userInfoJson[0], groups, idps);
+    return userProfile;
+  } catch (err) {
+    throw new Error(`Fail to retrive SSO user infomation: ${err}`);
+  }
+};
+
+export const getUserInfoById = async (credentials, id) => {
+  checkCredentialValid(credentials);
+
+  try {
+    const options = {
+      headers: {
+        'Content-Type': SSO_REQUEST.CONTENT_TYPE,
+        Authorization: `Bearer ${credentials.token}`,
+      },
+      uri: url.resolve(credentials.uri, `${SSO_SUB_URI.USER}/${id}`),
+      method: 'GET',
+    };
+
+    const res = await request(options);
+    const userInfoJson = JSON.parse(res);
+    const ssoUserId = userInfoJson.id;
+    const groups = await getUserGroups(credentials, ssoUserId);
+    const idps = userInfoJson.federatedIdentities;
+    const userProfile = checkUserProfile(userInfoJson, groups, idps);
     return userProfile;
   } catch (err) {
     throw new Error(`Fail to retrive SSO user infomation: ${err}`);

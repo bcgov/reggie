@@ -26,10 +26,11 @@ import { asyncMiddleware, errorWithCode, logger } from '@bcgov/nodejs-common-uti
 import { Router } from 'express';
 import config from '../../config';
 import { SSO_SUB_URI } from '../../constants';
-import { getSAToken, getUserInfo } from '../../libs/sso-utils';
+import { getSAToken, getUserInfoByEmail, getUserInfoById } from '../../libs/sso-utils';
 
 const router = new Router();
 
+// Either get SSO user by email or by ID:
 router.get(
   '/user',
   asyncMiddleware(async (req, res) => {
@@ -47,11 +48,39 @@ router.get(
         uri: `${process.env.SSO_HOST_URL}/${SSO_SUB_URI.REALM_ADMIN}/${process.env.SSO_REALM}/`,
         token: SAToken,
       };
-      const userProfile = await getUserInfo(SSOCredentials, email);
+      const userProfile = await getUserInfoByEmail(SSOCredentials, email);
 
       return res.status(200).json(userProfile);
     } catch (error) {
       const message = `Unable to get SSO user with email ${email}`;
+      logger.error(`${message}, err = ${error.message}`);
+      throw errorWithCode(`${message}, err = ${error.message}`, 500);
+    }
+  })
+);
+
+router.get(
+  '/user/:userId',
+  asyncMiddleware(async (req, res) => {
+    const { userId } = req.params;
+
+    if (!userId) {
+      throw errorWithCode('Please provide the ID of the SSO user you are looking for.', 400);
+    }
+
+    logger.info(`Looking of user of ${userId}`);
+    const SACredentials = config.get('ssoSA');
+    try {
+      const SAToken = await getSAToken(SACredentials);
+      const SSOCredentials = {
+        uri: `${process.env.SSO_HOST_URL}/${SSO_SUB_URI.REALM_ADMIN}/${process.env.SSO_REALM}/`,
+        token: SAToken,
+      };
+      const userProfile = await getUserInfoById(SSOCredentials, userId);
+
+      return res.status(200).json(userProfile);
+    } catch (error) {
+      const message = `Unable to get SSO user with email ${userId}`;
       logger.error(`${message}, err = ${error.message}`);
       throw errorWithCode(`${message}, err = ${error.message}`, 500);
     }
