@@ -25,4 +25,18 @@ const ENVIRONMENTS = {
   PRODUCTION: 'production',
 };
 
-module.exports = { ENVIRONMENTS };
+const SSO_SUB_URI = {
+  SA_AUTH_TOKEN: 'auth/realms/master/protocol/openid-connect/token',
+  REALM_ADMIN: 'auth/admin/realms',
+  USER: 'users',
+  GROUP: 'groups',
+  IDP: 'federated-identity',
+};
+
+const SSO_REQUEST = {
+  CONTENT_TYPE: 'application/x-www-form-urlencoded',
+  GRANT_TYPE: 'client_credentials',
+  CLIENT_ID: 'admin-cli',
+};
+
+module.exports = { ENVIRONMENTS, SSO_SUB_URI, SSO_REQUEST };

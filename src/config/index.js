@@ -44,11 +44,10 @@ nconf.overrides({
   environment: env,
   host: process.env.HOST || '127.0.0.1',
   port: process.env.PORT || defaultPort,
-  sso: {
-    clientSecret: process.env.SSO_CLIENT_SECRET,
-  },
-  session: {
-    key: process.env.SESSION_SECRET,
+  ssoSA: {
+    uri: `${process.env.SSO_HOST_URL}/auth/realms/master/protocol/openid-connect/token`,
+    username: process.env.SSO_USERNAME,
+    password: process.env.SSO_PASSWORD,
   },
 });
 
