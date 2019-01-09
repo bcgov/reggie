@@ -1,9 +1,4 @@
 {
-	"session": {
-		"maxAge": 604800000,
-    "expires": 604800000,
-    "key": "thisisfaux"
-	},
   "sso": {
 		"clientSecret": "thisisfaux",
 		"clientId": "thisisfaux",

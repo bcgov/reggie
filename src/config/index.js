@@ -47,9 +47,6 @@ nconf.overrides({
   sso: {
     clientSecret: process.env.SSO_CLIENT_SECRET,
   },
-  session: {
-    key: process.env.SESSION_SECRET,
-  },
 });
 
 // load other properties from file.

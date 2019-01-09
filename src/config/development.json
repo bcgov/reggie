@@ -1,8 +1,4 @@
 {
-  "session": {
-    "maxAge": 604800000,
-    "expires": 604800000
-  },
   "sso": {
     "grantType": "client_credentials",
     "clientId": "signing-api",
