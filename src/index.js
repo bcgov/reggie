@@ -35,7 +35,7 @@ import { router } from './router';
 const app = express();
 const options = {
   inflate: true,
-  limit: '204800kb', // 200Mb
+  limit: '20kb', // 200Mb
   type: 'image/*',
 };
 const docpath = path.join(__dirname, '../', 'public/doc/api');
