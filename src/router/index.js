@@ -21,8 +21,10 @@
 'use strict';
 
 import ehlo from './routes/ehlo';
+import sso from './routes/ssoUsers';
 
 // eslint-disable-next-line import/prefer-default-export
 export const router = app => {
   app.use('/api/v1/ehlo', ehlo); // probes
+  app.use('/api/v1/sso', sso); // SSO requests
 };
