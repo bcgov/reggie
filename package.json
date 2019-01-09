@@ -1,0 +1,90 @@
+{
+  "name": "reggie",
+  "version": "0.0.1",
+  "description": "This is a tool to register for and invite user to bcgov self-serve applications through keyCloak SSO",
+  "engine": "node 8.4.0",
+  "engines": {
+    "node": "8.4.0"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "@babel/runtime": "^7.1.5",
+    "@bcgov/nodejs-common-utils": "0.0.16",
+    "body-parser": "^1.18.3",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.3",
+    "dotenv": "^6.1.0",
+    "express": "^4.16.4",
+    "jsonwebtoken": "^8.4.0",
+    "nconf": "^0.10.0",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "path": "^0.12.7",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.5"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.1.5",
+    "@babel/core": "^7.1.6",
+    "@babel/helper-plugin-utils": "^7.0.0",
+    "@babel/node": "^7.2.2",
+    "@babel/plugin-transform-async-to-generator": "^7.1.0",
+    "@babel/plugin-transform-runtime": "^7.1.0",
+    "@babel/polyfill": "^7.0.0",
+    "@babel/preset-env": "^7.1.6",
+    "@babel/preset-stage-2": "^7.0.0",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "^23.6.0",
+    "babel-preset-airbnb": "^3.0.1",
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-defaults": "^9.0.0",
+    "eslint-config-prettier": "^3.3.0",
+    "eslint-plugin-filenames": "^1.3.2",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jest": "^22.1.0",
+    "eslint-plugin-prettier": "^3.0.0",
+    "jest": "^23.6.0",
+    "nodemon": "^1.18.7",
+    "prettier": "^1.15.2",
+    "stream-buffers": "^3.0.2",
+    "supertest": "^3.3.0",
+    "swagger-cli": "^2.2.0"
+  },
+  "scripts": {
+    "start": "node build/src/server.js",
+    "dev": "NODE_ENV=development nodemon src/server.js --exec babel-node --inspect=0.0.0.0:9229 --nolazy",
+    "build": "NODE_ENV=production gulp",
+    "build:doc": "bootprint openapi doc/api.yaml public/doc/api",
+    "test": "NODE_ENV=test jest __tests__",
+    "test:ci": "CI=true NODE_ENV=test jest __tests__",
+    "test:schema": "swagger-cli validate doc/api.yaml",
+    "test:watch": "NODE_ENV=development jest __tests__ --watch",
+    "test:lint": "eslint --env node --ext .js src"
+  },
+  "jest": {
+    "verbose": false,
+    "testURL": "http://localhost/",
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    },
+    "globals": {
+      "NODE_ENV": "test"
+    },
+    "moduleFileExtensions": [
+      "js",
+      "jsx"
+    ],
+    "moduleDirectories": [
+      "node_modules"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bcgov/reggie.git"
+  },
+  "author": "Shelly Xue Han <shelly.han@gov.bc.ca>",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/bcgov/reggie#readme"
+}
