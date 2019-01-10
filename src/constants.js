@@ -20,12 +20,12 @@
 
 'use strict';
 
-const ENVIRONMENTS = {
+export const ENVIRONMENTS = {
   DEVELOPMENT: 'development',
   PRODUCTION: 'production',
 };
 
-const SSO_SUB_URI = {
+export const SSO_SUB_URI = {
   SA_AUTH_TOKEN: 'auth/realms/master/protocol/openid-connect/token',
   REALM_ADMIN: 'auth/admin/realms',
   USER: 'users',
@@ -33,11 +33,10 @@ const SSO_SUB_URI = {
   IDP: 'federated-identity',
 };
 
-const SSO_REQUEST = {
+export const SSO_REQUEST = {
   CONTENT_TYPE_FORM: 'application/x-www-form-urlencoded',
   CONTENT_TYPE_JSON: 'application/json',
   GRANT_TYPE: 'client_credentials',
   CLIENT_ID: 'admin-cli',
+  SA_CREDENTIAL_NAME: 'ssoSA',
 };
-
-module.exports = { ENVIRONMENTS, SSO_SUB_URI, SSO_REQUEST };
