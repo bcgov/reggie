@@ -41,6 +41,7 @@ export const SSO_REQUEST = {
   SA_CREDENTIAL_NAME: 'ssoSA',
 };
 
+// TODO: use meaningful text
 export const EMAIL_REQUEST = {
   EMAIL_CONFIG_NAME: 'emailServer',
   CONFIRM_TITLE: 'Test email confimation',
