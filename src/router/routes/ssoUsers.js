@@ -25,7 +25,7 @@
 import { asyncMiddleware, errorWithCode, logger } from '@bcgov/nodejs-common-utils';
 import { Router } from 'express';
 import config from '../../config';
-import { SSO_SUB_URI } from '../../constants';
+import { SSO_SUB_URI, SSO_REQUEST } from '../../constants';
 import { getSAToken, getUserInfoByEmail, getUserInfoById, updateUser } from '../../libs/sso-utils';
 
 const router = new Router();
@@ -41,7 +41,7 @@ router.get(
     }
 
     logger.info(`Looking of user of ${email}`);
-    const SACredentials = config.get('ssoSA');
+    const SACredentials = config.get(SSO_REQUEST.SA_CREDENTIAL_NAME);
     try {
       const SAToken = await getSAToken(SACredentials);
       const SSOCredentials = {
@@ -69,7 +69,7 @@ router.get(
     }
 
     logger.info(`Looking of user of ${userId}`);
-    const SACredentials = config.get('ssoSA');
+    const SACredentials = config.get(SSO_REQUEST.SA_CREDENTIAL_NAME);
     try {
       const SAToken = await getSAToken(SACredentials);
       const SSOCredentials = {
@@ -108,7 +108,7 @@ router.put(
     };
 
     logger.info(`Updating user of ${userId}`);
-    const SACredentials = config.get('ssoSA');
+    const SACredentials = config.get(SSO_REQUEST.SA_CREDENTIAL_NAME);
     try {
       const SAToken = await getSAToken(SACredentials);
       const SSOCredentials = {

@@ -34,9 +34,8 @@ export const checkCredentialValid = credentials => {
 };
 
 export const checkUserProfile = (userInfo, userGroups = [], userIdps = []) => {
-  let valid = false;
-  try {
-    valid = !(!userInfo.email || !userInfo.firstName || !userInfo.lastName);
+  const valid = !(!userInfo.email || !userInfo.firstName || !userInfo.lastName);
+  if (valid) {
     const details = {
       id: userInfo.id,
       email: userInfo.email,
@@ -46,9 +45,8 @@ export const checkUserProfile = (userInfo, userGroups = [], userIdps = []) => {
       idp: userIdps,
     };
     return { ...details, validUser: valid };
-  } catch (err) {
-    return { id: userInfo.id, group: userGroups, idp: userIdps, validUser: valid };
   }
+  return { id: userInfo.id, group: userGroups, idp: userIdps, validUser: false };
 };
 
 export const getSAToken = async credentials => {
