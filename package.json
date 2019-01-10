@@ -21,7 +21,8 @@
     "passport-jwt": "^4.0.0",
     "path": "^0.12.7",
     "request": "^2.88.0",
-    "request-promise-native": "^1.0.5"
+    "request-promise-native": "^1.0.5",
+    "url": "^0.11.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.5",

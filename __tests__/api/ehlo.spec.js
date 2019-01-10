@@ -15,16 +15,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// Created by Jason Leach on 2018-01-10.
+// Created by Jason Leach on 2018-07-20.
 //
 
-'use strict';
+import { default as request } from 'supertest'; // eslint-disable-line
+import app from '../../src';
 
-import ehlo from './routes/ehlo';
-import sso from './routes/ssoUsers';
-
-// eslint-disable-next-line import/prefer-default-export
-export const router = app => {
-  app.use('/api/v1/ehlo', ehlo); // probes
-  app.use('/api/v1/sso', sso); // SSO requests
-};
+describe('Test monitoring routes', () => {
+  test('The readiness probe should respond with 200 ', async () => {
+    await request(app)
+      .get('/api/v1/ehlo')
+      .expect(200);
+  });
+});
