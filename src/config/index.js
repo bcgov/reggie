@@ -49,6 +49,11 @@ nconf.overrides({
     username: process.env.SSO_USERNAME,
     password: process.env.SSO_PASSWORD,
   },
+  emailServer: {
+    host: process.env.EMAIL_HOST,
+    port: process.env.EMAIL_PORT,
+    sender: process.env.EMAIL_SENDER,
+  },
 });
 
 // load other properties from file.
