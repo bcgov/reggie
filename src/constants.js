@@ -40,3 +40,16 @@ export const SSO_REQUEST = {
   CLIENT_ID: 'admin-cli',
   SA_CREDENTIAL_NAME: 'ssoSA',
 };
+
+export const TARGET_GITHUB_ORGS = ['bcgov', 'bcgov-c', 'BCDevOps'];
+
+export const SSO_IDPS = {
+  IDP: 'identityProvider',
+  IDIR: 'idir',
+  GITHUB: 'github',
+};
+
+export const SSO_GROUPS = {
+  PENDING: 'pending',
+  REGISTERED: 'registered',
+};
