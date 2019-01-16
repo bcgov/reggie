@@ -21,6 +21,8 @@
 'use strict';
 
 import nodemailer from 'nodemailer';
+import ejs from 'ejs';
+import path from 'path';
 import { EMAIL_REQUEST } from '../constants';
 
 export const setMailer = async (host, port) => {
@@ -41,21 +43,39 @@ export const setMailer = async (host, port) => {
   }
 };
 
-export const sendEmail = async (emailServerConfig, email) => {
+export const sendEmail = async (emailServerConfig, email, link) => {
   try {
+    // TODO: modify email contents and public host image/logo
+    const confirmLink = link ? 'https://www.google.ca' : 'https://www.google.com';
+    const htmlPayload = await ejs.renderFile(path.resolve(__dirname, 'emailConfirmation.ejs'), {
+      name: 'Reggie user',
+      confirmLink,
+    });
+
+    const textPayload = ejs.render(
+      'Hello, Please click the link below to confirm your email associated with SSO. \b <%= confirmLink %>',
+      { confirmLink }
+    );
+
     const transporter = await setMailer(emailServerConfig.host, emailServerConfig.port);
 
     const mailOptions = {
       from: emailServerConfig.sender,
       to: email, // list of receivers
       subject: EMAIL_REQUEST.CONFIRM_TITLE,
-      text: EMAIL_REQUEST.CONFIRM_CONTENT,
+      text: textPayload,
+      html: htmlPayload,
     };
 
     const emailRes = await transporter.sendMail(mailOptions);
 
     return emailRes.messageId;
   } catch (err) {
-    throw new Error(`Cannot connect to KeyCloak: ${err}`);
+    throw new Error(`Cannot connect to mail server: ${err}`);
   }
+};
+
+export const generateLinkWithToken = async (email, authHeader) => {
+  // TODO: depends on connection between web and api:
+  return 'https://www.google.ca';
 };

@@ -26,21 +26,22 @@ import { asyncMiddleware, errorWithCode, logger } from '@bcgov/nodejs-common-uti
 import { Router } from 'express';
 import config from '../../config';
 import { EMAIL_REQUEST } from '../../constants';
-import { sendEmail } from '../../libs/email-utils';
+import { sendEmail, generateLinkWithToken } from '../../libs/email-utils';
 
 const router = new Router();
 
 router.post(
   '/send',
   asyncMiddleware(async (req, res) => {
-    const { email } = req.query;
+    const { email, authHeader } = req.query;
 
     if (!email) throw errorWithCode('Please provide the ID of the SSO user.', 400);
 
     logger.info(`Sending email to ${email}`);
     const emailServerConfig = config.get(EMAIL_REQUEST.EMAIL_CONFIG_NAME);
     try {
-      const msgId = await sendEmail(emailServerConfig, email);
+      const link = await generateLinkWithToken(email, authHeader);
+      const msgId = await sendEmail(emailServerConfig, email, link);
 
       logger.info(`Message sent: ${msgId}`);
 
