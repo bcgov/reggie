@@ -49,6 +49,9 @@ nconf.overrides({
     username: process.env.SSO_USERNAME,
     password: process.env.SSO_PASSWORD,
   },
+  sso: {
+    clientSecret: process.env.SSO_CLIENT_SECRET,
+  },
 });
 
 // load other properties from file.
