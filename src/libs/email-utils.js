@@ -23,6 +23,7 @@
 import nodemailer from 'nodemailer';
 import ejs from 'ejs';
 import path from 'path';
+import config from '../config';
 import { EMAIL_REQUEST } from '../constants';
 
 export const setMailer = async (host, port) => {
@@ -47,9 +48,11 @@ export const sendEmail = async (emailServerConfig, email, link) => {
   try {
     // TODO: modify email contents and public host image/logo
     const confirmLink = link ? 'https://www.google.ca' : 'https://www.google.com';
-    const htmlPayload = await ejs.renderFile(path.resolve(__dirname, 'emailConfirmation.ejs'), {
+    const logoLink = 'http://localhost:8000/gov-logo.png';
+    const htmlPayload = await ejs.renderFile('public/emailConfirmation.ejs', {
       name: 'Reggie user',
       confirmLink,
+      logoLink,
     });
 
     const textPayload = ejs.render(
