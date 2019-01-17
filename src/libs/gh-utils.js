@@ -32,20 +32,21 @@ export const getGithubOrgs = async ghUserId => {
     },
     method: 'GET',
     uri: process.env.RM_HOST,
-    body: { userId: ghUserId },
+    qs: { userId: ghUserId },
     json: true,
+    resolveWithFullResponse: true,
   };
 
   try {
-    // const orgArray = await request(options);
-    // if (orgArray.length < 1) {
-    //   return [];
-    // }
-    // const orgNames = orgArray.filter(i => i.membership).map(j => j.org);
-    // return orgNames;
-    console.log('------------------------options');
-    // console.log(options);
-    return ['kkk', 'abc'];
+    const rmRes = await request(options);
+
+    if (rmRes.statusCode !== 200) {
+      logger.error(`Fail to connect to Repo Mountie: ${rmRes.body}`);
+      return [];
+    }
+    console.log(rmRes.body);
+    const orgNames = rmRes.body.filter(i => i.membership).map(j => j.org);
+    return orgNames;
   } catch (err) {
     const message = `Unable to request from Repo Mountie for ${ghUserId}`;
     logger.error(`${message}, err = ${err.message}`);
@@ -58,6 +59,7 @@ export const isUserInOrgs = async (username, targetGhOrgs = []) => {
     const userOrgs = await getGithubOrgs(username);
     return userOrgs.some(org => targetGhOrgs.indexOf(org) >= 0);
   } catch (err) {
+    logger.error(`Github user not in target orgs ${err}`);
     return false;
   }
 };
