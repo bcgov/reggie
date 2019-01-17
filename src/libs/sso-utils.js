@@ -154,9 +154,9 @@ export const getUserInfoByEmail = async (credentials, email) => {
     const idps = await getUserIdps(credentials, ssoUserInfo.id);
     return {
       id: ssoUserInfo.id,
-      email: ssoUserInfo.email,
-      firstName: ssoUserInfo.firstName,
-      lastName: ssoUserInfo.lastName,
+      email: ssoUserInfo.email ? ssoUserInfo.email : null,
+      firstName: ssoUserInfo.firstName ? ssoUserInfo.firstName : null,
+      lastName: ssoUserInfo.lastName ? ssoUserInfo.lastName : null,
       group: groups,
       idp: idps,
     };
@@ -183,12 +183,11 @@ export const getUserInfoById = async (credentials, id) => {
     const ssoUserId = userInfoJson.id;
     const groups = await getUserGroups(credentials, ssoUserId);
     const idps = userInfoJson.federatedIdentities;
-    // TODO: why undefined not showing up?????   curl -i http://localhost:8000/api/v1/sso/user/31a6aa38-c1fa-4bae-8adf-298b27c73090
     return {
       id: userInfoJson.id,
-      email: userInfoJson.email,
-      firstName: userInfoJson.firstName,
-      lastName: userInfoJson.lastName,
+      email: userInfoJson.email ? userInfoJson.email : null,
+      firstName: userInfoJson.firstName ? userInfoJson.firstName : null,
+      lastName: userInfoJson.lastName ? userInfoJson.lastName : null,
       group: groups,
       idp: idps,
     };
@@ -205,7 +204,6 @@ export const checkUserAuthorization = async userInfo => {
     // check if user has valid profile:
     if (!isUserValid) return false;
     const ssoGroupNames = userInfo.group.map(i => i.name);
-    console.log(ssoGroupNames);
     // then if user belongs to Pending group -> not authorized:
     if (ssoGroupNames.includes('pending')) return false;
     // then if user belongs to Registered group -> authorized:
