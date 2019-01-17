@@ -52,6 +52,11 @@ nconf.overrides({
   sso: {
     clientSecret: process.env.SSO_CLIENT_SECRET,
   },
+  emailServer: {
+    host: process.env.EMAIL_HOST,
+    port: process.env.EMAIL_PORT,
+    sender: process.env.EMAIL_SENDER,
+  },
 });
 
 // load other properties from file.
