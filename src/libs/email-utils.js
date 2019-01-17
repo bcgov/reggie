@@ -22,8 +22,6 @@
 
 import nodemailer from 'nodemailer';
 import ejs from 'ejs';
-import path from 'path';
-import config from '../config';
 import { EMAIL_REQUEST } from '../constants';
 
 export const setMailer = async (host, port) => {
@@ -44,9 +42,17 @@ export const setMailer = async (host, port) => {
   }
 };
 
+/**
+ * Sending email with nodemailer
+ *
+ * @param {Object} emailServerConfig The configuration of email server, including host+port, and a sender email
+ * @param {string} email The email/s to send to
+ * @param {string} link The onfirmation link in Reggie
+ * @returns The email message id if sent successfully
+ */
 export const sendEmail = async (emailServerConfig, email, link) => {
   try {
-    // TODO: modify email contents and public host image/logo
+    // TODO: modify email contents and public host image/logo, and styling
     const confirmLink = link ? 'https://www.google.ca' : 'https://www.google.com';
     const logoLink = 'http://localhost:8000/gov-logo.png';
     const htmlPayload = await ejs.renderFile('public/emailConfirmation.ejs', {
@@ -55,10 +61,10 @@ export const sendEmail = async (emailServerConfig, email, link) => {
       logoLink,
     });
 
-    const textPayload = ejs.render(
-      'Hello, Please click the link below to confirm your email associated with SSO. \b <%= confirmLink %>',
-      { confirmLink }
-    );
+    const textPayload = await ejs.renderFile('public/emailConfirmation.txt', {
+      name: 'Reggie user',
+      confirmLink,
+    });
 
     const transporter = await setMailer(emailServerConfig.host, emailServerConfig.port);
 
