@@ -41,6 +41,19 @@ export const SSO_REQUEST = {
   SA_CREDENTIAL_NAME: 'ssoSA',
 };
 
+export const TARGET_GITHUB_ORGS = ['bcgov', 'bcgov-c', 'BCDevOps'];
+
+export const SSO_IDPS = {
+  IDP: 'identityProvider',
+  IDIR: 'idir',
+  GITHUB: 'github',
+};
+
+export const SSO_GROUPS = {
+  PENDING: 'pending',
+  REGISTERED: 'registered',
+};
+
 // TODO: use meaningful text
 export const EMAIL_REQUEST = {
   EMAIL_CONFIG_NAME: 'emailServer',

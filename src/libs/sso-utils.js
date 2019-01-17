@@ -22,7 +22,8 @@
 
 import request from 'request-promise-native';
 import url from 'url';
-import { SSO_SUB_URI, SSO_REQUEST } from '../constants';
+import { SSO_SUB_URI, SSO_REQUEST, TARGET_GITHUB_ORGS, SSO_IDPS } from '../constants';
+import { isUserInOrgs } from './gh-utils';
 
 export const checkCredentialValid = credentials => {
   if (!credentials.uri) {
@@ -33,21 +34,8 @@ export const checkCredentialValid = credentials => {
   }
 };
 
-export const checkUserProfile = (userInfo, userGroups = [], userIdps = []) => {
-  const valid = !(!userInfo.email || !userInfo.firstName || !userInfo.lastName);
-  if (valid) {
-    const details = {
-      id: userInfo.id,
-      email: userInfo.email,
-      firstName: userInfo.firstName,
-      lastName: userInfo.lastName,
-      group: userGroups,
-      idp: userIdps,
-    };
-    return { ...details, validUser: valid };
-  }
-  return { id: userInfo.id, group: userGroups, idp: userIdps, validUser: false };
-};
+export const checkUserProfile = userInfo =>
+  !(!userInfo.email || !userInfo.firstName || !userInfo.lastName);
 
 export const getSAToken = async credentials => {
   checkCredentialValid(credentials);
@@ -161,11 +149,17 @@ export const getUserInfoByEmail = async (credentials, email) => {
     if (userInfoJson.length < 1) {
       throw new Error('No such SSO user');
     }
-    const ssoUserId = userInfoJson[0].id;
-    const groups = await getUserGroups(credentials, ssoUserId);
-    const idps = await getUserIdps(credentials, ssoUserId);
-    const userProfile = checkUserProfile(userInfoJson[0], groups, idps);
-    return userProfile;
+    const ssoUserInfo = userInfoJson[0];
+    const groups = await getUserGroups(credentials, ssoUserInfo.id);
+    const idps = await getUserIdps(credentials, ssoUserInfo.id);
+    return {
+      id: ssoUserInfo.id,
+      email: ssoUserInfo.email ? ssoUserInfo.email : null,
+      firstName: ssoUserInfo.firstName ? ssoUserInfo.firstName : null,
+      lastName: ssoUserInfo.lastName ? ssoUserInfo.lastName : null,
+      group: groups,
+      idp: idps,
+    };
   } catch (err) {
     throw new Error(`Fail to retrive SSO user infomation: ${err}`);
   }
@@ -189,11 +183,44 @@ export const getUserInfoById = async (credentials, id) => {
     const ssoUserId = userInfoJson.id;
     const groups = await getUserGroups(credentials, ssoUserId);
     const idps = userInfoJson.federatedIdentities;
-    const userProfile = checkUserProfile(userInfoJson, groups, idps);
-    return userProfile;
+    return {
+      id: userInfoJson.id,
+      email: userInfoJson.email ? userInfoJson.email : null,
+      firstName: userInfoJson.firstName ? userInfoJson.firstName : null,
+      lastName: userInfoJson.lastName ? userInfoJson.lastName : null,
+      group: groups,
+      idp: idps,
+    };
   } catch (err) {
     throw new Error(`Fail to retrive SSO user infomation: ${err}`);
   }
+};
+
+export const checkUserAuthorization = async userInfo => {
+  // User need to have a valid profile before they become authorized
+  const isUserValid = checkUserProfile(userInfo);
+
+  try {
+    // check if user has valid profile:
+    if (!isUserValid) return false;
+    const ssoGroupNames = userInfo.group.map(i => i.name);
+    // then if user belongs to Pending group -> not authorized:
+    if (ssoGroupNames.includes('pending')) return false;
+    // then if user belongs to Registered group -> authorized:
+    if (ssoGroupNames.includes('registered')) return true;
+    // then if user has IDIR account -> authorized:
+    if (userInfo.idp.some(idp => idp.identityProvider === SSO_IDPS.IDIR)) return true;
+    // then if user Github account belonging to target gh orgs -> authorized:
+    const githubIdp = userInfo.idp.filter(idp => idp.identityProvider === SSO_IDPS.GITHUB);
+    if (githubIdp.length > 0) {
+      const ghUsername = githubIdp[0].userName;
+      return isUserInOrgs(ghUsername, TARGET_GITHUB_ORGS);
+    }
+    // TODO: add check on authorization by token
+  } catch (err) {
+    throw new Error(`Fail to check SSO user authorization info: ${err}`);
+  }
+  return false;
 };
 
 export const updateUser = async (credentials, userInfo) => {
@@ -230,7 +257,7 @@ export const getGroupID = async (credentials, groupName) => {
         'Content-Type': SSO_REQUEST.CONTENT_TYPE_FORM,
         Authorization: `Bearer ${credentials.token}`,
       },
-      uri: credentials.uri,
+      uri: url.resolve(credentials.uri, SSO_SUB_URI.GROUP),
       method: 'GET',
       qs: {
         search: groupName,
@@ -240,7 +267,7 @@ export const getGroupID = async (credentials, groupName) => {
     const res = await request(options);
     const groupInfoJson = JSON.parse(res);
     if (groupInfoJson.length < 1) {
-      throw new Error('No such SSO user');
+      throw new Error('No such SSO group');
     }
     return groupInfoJson[0].id;
   } catch (err) {
@@ -248,11 +275,13 @@ export const getGroupID = async (credentials, groupName) => {
   }
 };
 
-export const addUser2Group = async (credentials, userId, groupId) => {
+export const addUserToGroup = async (credentials, userId, groupName) => {
   checkCredentialValid(credentials);
 
-  const subUrl = `${SSO_SUB_URI.USER}/${userId}/${SSO_SUB_URI.GROUP}/${groupId}`;
   try {
+    // TBD: use group name or ID?
+    const groupId = await getGroupID(credentials, groupName);
+    const subUrl = `${SSO_SUB_URI.USER}/${userId}/${SSO_SUB_URI.GROUP}/${groupId}`;
     const options = {
       headers: {
         'Content-Type': SSO_REQUEST.CONTENT_TYPE_FORM,
@@ -266,5 +295,28 @@ export const addUser2Group = async (credentials, userId, groupId) => {
     return res;
   } catch (err) {
     throw new Error(`Cannot add SSO user to group: ${err}`);
+  }
+};
+
+export const removeUserFromGroup = async (credentials, userId, groupName) => {
+  checkCredentialValid(credentials);
+
+  try {
+    // TBD: use group name or ID?
+    const groupId = await getGroupID(credentials, groupName);
+    const subUrl = `${SSO_SUB_URI.USER}/${userId}/${SSO_SUB_URI.GROUP}/${groupId}`;
+    const options = {
+      headers: {
+        'Content-Type': SSO_REQUEST.CONTENT_TYPE_FORM,
+        Authorization: `Bearer ${credentials.token}`,
+      },
+      uri: url.resolve(credentials.uri, subUrl),
+      method: 'DELETE',
+    };
+
+    const res = await request(options);
+    return res;
+  } catch (err) {
+    throw new Error(`Cannot remove SSO user from group: ${err}`);
   }
 };

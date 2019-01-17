@@ -49,6 +49,9 @@ nconf.overrides({
     username: process.env.SSO_USERNAME,
     password: process.env.SSO_PASSWORD,
   },
+  sso: {
+    clientSecret: process.env.SSO_CLIENT_SECRET,
+  },
   emailServer: {
     host: process.env.EMAIL_HOST,
     port: process.env.EMAIL_PORT,

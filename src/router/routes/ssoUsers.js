@@ -25,8 +25,16 @@
 import { asyncMiddleware, errorWithCode, logger } from '@bcgov/nodejs-common-utils';
 import { Router } from 'express';
 import config from '../../config';
-import { SSO_SUB_URI, SSO_REQUEST } from '../../constants';
-import { getSAToken, getUserInfoByEmail, getUserInfoById, updateUser } from '../../libs/sso-utils';
+import { SSO_SUB_URI, SSO_REQUEST, SSO_GROUPS } from '../../constants';
+import {
+  getSAToken,
+  getUserInfoByEmail,
+  getUserInfoById,
+  updateUser,
+  checkUserAuthorization,
+  addUserToGroup,
+  removeUserFromGroup,
+} from '../../libs/sso-utils';
 
 const router = new Router();
 
@@ -49,8 +57,9 @@ router.get(
         token: SAToken,
       };
       const userProfile = await getUserInfoByEmail(SSOCredentials, email);
+      const isAuthorized = await checkUserAuthorization(userProfile);
 
-      return res.status(200).json(userProfile);
+      return res.status(200).json({ ...userProfile, ...{ authorized: isAuthorized } });
     } catch (error) {
       const message = `Unable to get SSO user with email ${email}`;
       logger.error(`${message}, err = ${error.message}`);
@@ -77,8 +86,9 @@ router.get(
         token: SAToken,
       };
       const userProfile = await getUserInfoById(SSOCredentials, userId);
+      const isAuthorized = await checkUserAuthorization(userProfile);
 
-      return res.status(200).json(userProfile);
+      return res.status(200).json({ ...userProfile, ...{ authorized: isAuthorized } });
     } catch (error) {
       const message = `Unable to get SSO user with ID ${userId}`;
       logger.error(`${message}, err = ${error.message}`);
@@ -115,7 +125,41 @@ router.put(
         uri: `${process.env.SSO_HOST_URL}/${SSO_SUB_URI.REALM_ADMIN}/${process.env.SSO_REALM}/`,
         token: SAToken,
       };
+      // Update SSO user profile:
       await updateUser(SSOCredentials, userInfo);
+      // Assingn SSO user to group:
+      await addUserToGroup(SSOCredentials, userId, SSO_GROUPS.PENDING);
+
+      return res.status(200).end();
+    } catch (error) {
+      const message = `Unable to update SSO user with ID ${userId}`;
+      logger.error(`${message}, err = ${error.message}`);
+      throw errorWithCode(`${message}, err = ${error.message}`, 500);
+    }
+  })
+);
+
+router.put(
+  '/user/:userId/confrimed',
+  asyncMiddleware(async (req, res) => {
+    const { userId } = req.params;
+
+    if (!userId) {
+      throw errorWithCode('Please provide the ID of the SSO user you are updating.', 400);
+    }
+
+    logger.info(`Email confirmed user of ${userId}`);
+    const SACredentials = config.get(SSO_REQUEST.SA_CREDENTIAL_NAME);
+    try {
+      const SAToken = await getSAToken(SACredentials);
+      const SSOCredentials = {
+        uri: `${process.env.SSO_HOST_URL}/${SSO_SUB_URI.REALM_ADMIN}/${process.env.SSO_REALM}/`,
+        token: SAToken,
+      };
+      // Remove SSO user from pending group:
+      await removeUserFromGroup(SSOCredentials, userId, SSO_GROUPS.PENDING);
+      // Assingn SSO user to group:
+      await addUserToGroup(SSOCredentials, userId, SSO_GROUPS.REGISTERED);
 
       return res.status(200).end();
     } catch (error) {
