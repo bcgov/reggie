@@ -1,54 +1,13 @@
 <style type="text/css">
-  .header {
-    background: #8a8a8a;
-  }
-  .header .columns {
-    padding-bottom: 0;
-  }
-  .header p {
-    color: #fff;
-    padding-top: 15px;
-  }
-  .header .wrapper-inner {
-    padding: 20px;
-  }
-  .header .container {
-    background: transparent;
-  }
-  table.button.facebook table td {
-    background: #3B5998 !important;
-    border-color: #3B5998;
-  }
-  table.button.twitter table td {
-    background: #1daced !important;
-    border-color: #1daced;
-  }
-  table.button.google table td {
-    background: #DB4A39 !important;
-    border-color: #DB4A39;
-  }
-  .wrapper.secondary {
-    background: #f3f3f3;
+  a:visited {
+    text-decoration: none;
   }
 </style>
 
-<container>
-  <row>
-    <columns small="12">
-      <img src="<%= logoLink %>" alt="BC Gov Logo"/>
-      <h1>Hi, <%= name %></h1>
-      <p class="lead">Please click the link below to confirm your email associated with SSO.</p>
-      <callout class="primary">
-        <p><%= confirmLink %></p>
-      </callout>
-    </columns>
-  </row>
-  <wrapper class="secondary">
-    <spacer size="16"></spacer>
-    <row>
-      <columns large="6">
-        <h5>BC Gov Reggie</h5>
-      </columns>
-    </row>
-  </wrapper>
-</container>
+<div>
+  <img src="<%= logoLink %>" alt="BC Gov Logo"/>
+  <h1>Hi, <%= name %></h1>
+  <p>Please click the link below to confirm your email associated with SSO.</p>
+  <a href="<%= confirmLink %>">Click here</a>
+  <h5>BC Gov Reggie</h5>
+</div>
