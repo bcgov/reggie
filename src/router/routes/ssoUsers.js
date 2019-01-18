@@ -101,20 +101,20 @@ router.put(
   '/user/:userId',
   asyncMiddleware(async (req, res) => {
     const { userId } = req.params;
-    const { email, firstName, lastName } = req.body;
+    const { userProfile } = req.body;
 
     if (!userId) {
       throw errorWithCode('Please provide the ID of the SSO user you are updating.', 400);
     }
 
-    if (!email || !firstName || !lastName) {
+    if (!userProfile.email || !userProfile.firstName || !userProfile.lastName) {
       throw errorWithCode('Missing Email, firstName or lastName to update the SSO user', 400);
     }
     const userInfo = {
       id: userId,
-      email,
-      firstName,
-      lastName,
+      email: userProfile.email,
+      firstName: userProfile.firstName,
+      lastName: userProfile.lastName,
     };
 
     logger.info(`Updating user of ${userId}`);
