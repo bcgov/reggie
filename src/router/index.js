@@ -20,12 +20,21 @@
 
 'use strict';
 
+import cors from 'cors';
+import config from '../config';
 import ehlo from './routes/ehlo';
 import sso from './routes/ssoUsers';
 import email from './routes/emailServer';
 
+const corsOptions = {
+  origin: config.get('environment') === 'development' ? '*' : config.get('apiUrl'),
+  credentials: true,
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+
 // eslint-disable-next-line import/prefer-default-export
 export const router = app => {
+  app.use(cors(corsOptions));
   app.use('/api/v1/ehlo', ehlo); // probes
   app.use('/api/v1/sso', sso); // SSO requests
   app.use('/api/v1/email', email); // email server requests
