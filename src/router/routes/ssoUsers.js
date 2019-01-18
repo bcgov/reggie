@@ -101,7 +101,7 @@ router.put(
   '/user/:userId',
   asyncMiddleware(async (req, res) => {
     const { userId } = req.params;
-    const { email, firstName, lastName } = req.query;
+    const { email, firstName, lastName } = req.body;
 
     if (!userId) {
       throw errorWithCode('Please provide the ID of the SSO user you are updating.', 400);
@@ -140,7 +140,7 @@ router.put(
 );
 
 router.put(
-  '/user/:userId/confrimed',
+  '/user/confirmed/:userId',
   asyncMiddleware(async (req, res) => {
     const { userId } = req.params;
 
