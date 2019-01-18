@@ -42,27 +42,31 @@ export const setMailer = async (host, port) => {
   }
 };
 
+export const generateLinkWithToken = async emailContent => {
+  // TODO: depends on connection between web and api:
+  return 'https://www.google.ca';
+};
+
 /**
  * Sending email with nodemailer
  *
  * @param {Object} emailServerConfig The configuration of email server, including host+port, and a sender email
- * @param {string} email The email/s to send to
- * @param {string} link The onfirmation link in Reggie
+ * @param {Object} userInfo The user information, including email, first and last name
  * @returns The email message id if sent successfully
  */
-export const sendEmail = async (emailServerConfig, email, link) => {
+export const sendEmail = async (emailServerConfig, userInfo) => {
   try {
     // TODO: modify email contents and public host image/logo, and styling
-    const confirmLink = link ? 'https://www.google.ca' : 'https://www.google.com';
+    const confirmLink = generateLinkWithToken(userInfo);
     const logoLink = 'http://localhost:8000/gov-logo.png';
     const htmlPayload = await ejs.renderFile('public/emailConfirmation.ejs', {
-      name: 'Reggie user',
+      name: userInfo.firstName,
       confirmLink,
       logoLink,
     });
 
     const textPayload = await ejs.renderFile('public/emailConfirmation.txt', {
-      name: 'Reggie user',
+      name: userInfo.firstName,
       confirmLink,
     });
 
@@ -70,7 +74,7 @@ export const sendEmail = async (emailServerConfig, email, link) => {
 
     const mailOptions = {
       from: emailServerConfig.sender,
-      to: email, // list of receivers
+      to: userInfo.email, // list of receivers
       subject: EMAIL_REQUEST.CONFIRM_TITLE,
       text: textPayload,
       html: htmlPayload,
@@ -80,11 +84,6 @@ export const sendEmail = async (emailServerConfig, email, link) => {
 
     return emailRes.messageId;
   } catch (err) {
-    throw new Error(`Cannot connect to mail server: ${err}`);
+    throw new Error(`Unable to send email: ${err}`);
   }
-};
-
-export const generateLinkWithToken = async emailContent => {
-  // TODO: depends on connection between web and api:
-  return 'https://www.google.ca';
 };
