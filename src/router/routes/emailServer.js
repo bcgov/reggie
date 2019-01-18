@@ -33,21 +33,22 @@ const router = new Router();
 router.post(
   '/send',
   asyncMiddleware(async (req, res) => {
-    const { email, emailContent } = req.body;
+    const { emailContent } = req.body;
 
-    if (!email) throw errorWithCode('Please provide the email to send to.', 400);
+    if (!emailContent.email) throw errorWithCode('Please provide the email to send to.', 400);
+    const toEmail = emailContent.email;
 
-    logger.info(`Sending email to ${email}`);
+    logger.info(`Sending email to ${toEmail}`);
     const emailServerConfig = config.get(EMAIL_REQUEST.EMAIL_CONFIG_NAME);
     try {
-      const link = await generateLinkWithToken(email, emailContent);
-      const msgId = await sendEmail(emailServerConfig, email, link);
+      const link = await generateLinkWithToken(emailContent);
+      const msgId = await sendEmail(emailServerConfig, toEmail, link);
 
       logger.info(`Message sent: ${msgId}`);
 
       return res.status(200).end();
     } catch (error) {
-      const message = `Unable to send email to ${email}`;
+      const message = `Unable to send email to ${toEmail}`;
       logger.error(`${message}, err = ${error.message}`);
       throw errorWithCode(`${message}, err = ${error.message}`, 500);
     }

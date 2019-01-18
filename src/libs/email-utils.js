@@ -84,7 +84,7 @@ export const sendEmail = async (emailServerConfig, email, link) => {
   }
 };
 
-export const generateLinkWithToken = async (email, authHeader) => {
+export const generateLinkWithToken = async emailContent => {
   // TODO: depends on connection between web and api:
   return 'https://www.google.ca';
 };
