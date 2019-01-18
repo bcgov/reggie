@@ -21,6 +21,7 @@
 'use strict';
 
 import nodemailer from 'nodemailer';
+import ejs from 'ejs';
 import { EMAIL_REQUEST } from '../constants';
 
 export const setMailer = async (host, port) => {
@@ -41,21 +42,49 @@ export const setMailer = async (host, port) => {
   }
 };
 
-export const sendEmail = async (emailServerConfig, email) => {
+/**
+ * Sending email with nodemailer
+ *
+ * @param {Object} emailServerConfig The configuration of email server, including host+port, and a sender email
+ * @param {string} email The email/s to send to
+ * @param {string} link The onfirmation link in Reggie
+ * @returns The email message id if sent successfully
+ */
+export const sendEmail = async (emailServerConfig, email, link) => {
   try {
+    // TODO: modify email contents and public host image/logo, and styling
+    const confirmLink = link ? 'https://www.google.ca' : 'https://www.google.com';
+    const logoLink = 'http://localhost:8000/gov-logo.png';
+    const htmlPayload = await ejs.renderFile('public/emailConfirmation.ejs', {
+      name: 'Reggie user',
+      confirmLink,
+      logoLink,
+    });
+
+    const textPayload = await ejs.renderFile('public/emailConfirmation.txt', {
+      name: 'Reggie user',
+      confirmLink,
+    });
+
     const transporter = await setMailer(emailServerConfig.host, emailServerConfig.port);
 
     const mailOptions = {
       from: emailServerConfig.sender,
       to: email, // list of receivers
       subject: EMAIL_REQUEST.CONFIRM_TITLE,
-      text: EMAIL_REQUEST.CONFIRM_CONTENT,
+      text: textPayload,
+      html: htmlPayload,
     };
 
     const emailRes = await transporter.sendMail(mailOptions);
 
     return emailRes.messageId;
   } catch (err) {
-    throw new Error(`Cannot connect to KeyCloak: ${err}`);
+    throw new Error(`Cannot connect to mail server: ${err}`);
   }
+};
+
+export const generateLinkWithToken = async (email, authHeader) => {
+  // TODO: depends on connection between web and api:
+  return 'https://www.google.ca';
 };

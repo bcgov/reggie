@@ -1,0 +1,5 @@
+Hi <%= name %>
+Please click the link below to confirm your email associated with SSO:
+<%= confirmLink %>
+
+BC Gov Reggie

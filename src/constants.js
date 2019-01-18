@@ -57,6 +57,5 @@ export const SSO_GROUPS = {
 // TODO: use meaningful text
 export const EMAIL_REQUEST = {
   EMAIL_CONFIG_NAME: 'emailServer',
-  CONFIRM_TITLE: 'Test email confimation',
-  CONFIRM_CONTENT: 'Hello',
+  CONFIRM_TITLE: 'Reggie Confimation Email - test',
 };
