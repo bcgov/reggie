@@ -33,14 +33,14 @@ const router = new Router();
 router.post(
   '/send',
   asyncMiddleware(async (req, res) => {
-    const { email, authHeader } = req.query;
+    const { email, emailContent } = req.body;
 
-    if (!email) throw errorWithCode('Please provide the ID of the SSO user.', 400);
+    if (!email) throw errorWithCode('Please provide the email to send to.', 400);
 
     logger.info(`Sending email to ${email}`);
     const emailServerConfig = config.get(EMAIL_REQUEST.EMAIL_CONFIG_NAME);
     try {
-      const link = await generateLinkWithToken(email, authHeader);
+      const link = await generateLinkWithToken(email, emailContent);
       const msgId = await sendEmail(emailServerConfig, email, link);
 
       logger.info(`Message sent: ${msgId}`);
