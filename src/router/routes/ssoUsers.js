@@ -31,7 +31,7 @@ import {
   getUserInfoByEmail,
   getUserInfoById,
   updateUser,
-  checkUserAuthorization,
+  checkUserAuthStatus,
   addUserToGroup,
   removeUserFromGroup,
 } from '../../libs/sso-utils';
@@ -57,9 +57,9 @@ router.get(
         token: SAToken,
       };
       const userProfile = await getUserInfoByEmail(SSOCredentials, email);
-      const isAuthorized = await checkUserAuthorization(userProfile);
+      const userStatus = await checkUserAuthStatus(userProfile);
 
-      return res.status(200).json({ ...userProfile, ...{ authorized: isAuthorized } });
+      return res.status(200).json({ ...userProfile, ...userStatus });
     } catch (error) {
       const message = `Unable to get SSO user with email ${email}`;
       logger.error(`${message}, err = ${error.message}`);
@@ -86,9 +86,9 @@ router.get(
         token: SAToken,
       };
       const userProfile = await getUserInfoById(SSOCredentials, userId);
-      const isAuthorized = await checkUserAuthorization(userProfile);
+      const userStatus = await checkUserAuthStatus(userProfile);
 
-      return res.status(200).json({ ...userProfile, ...{ authorized: isAuthorized } });
+      return res.status(200).json({ ...userProfile, ...userStatus });
     } catch (error) {
       const message = `Unable to get SSO user with ID ${userId}`;
       logger.error(`${message}, err = ${error.message}`);
