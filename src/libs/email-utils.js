@@ -32,10 +32,10 @@ export const setMailer = async (host, port) => {
       port,
       secure: false, // true for 465, false for other ports
       ignoreTLS: true,
+      connectionTimeout: EMAIL_REQUEST.TIMEOUT,
     });
 
     transporter.verify();
-
     return transporter;
   } catch (err) {
     throw new Error(`Cannot setup mailer: ${err}`);
