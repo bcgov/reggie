@@ -44,7 +44,6 @@ export const getGithubOrgs = async ghUserId => {
       logger.error(`Fail to connect to Repo Mountie: ${rmRes.body}`);
       return [];
     }
-    console.log(rmRes.body);
     const orgNames = rmRes.body.filter(i => i.membership).map(j => j.org);
     return orgNames;
   } catch (err) {

@@ -37,12 +37,12 @@ export const checkCredentialValid = credentials => {
 export const checkUserProfile = userInfo =>
   !(!userInfo.email || !userInfo.firstName || !userInfo.lastName);
 
-export const checkArray = array => !Array.isArray(array) || !array.length;
+export const checkArray = array => Array.isArray(array) && array.length;
 
 export const checkRocketChatSchema = async userInfo => {
   try {
     // if user has idp:
-    if (checkArray(userInfo.idp)) return false;
+    if (!checkArray(userInfo.idp)) return false;
     // if user has IDIR account:
     if (userInfo.idp.some(idp => idp.identityProvider === SSO_IDPS.IDIR)) return true;
     // if user Github account belonging to target gh orgs:
@@ -213,6 +213,19 @@ export const getUserInfoById = async (credentials, id) => {
     };
   } catch (err) {
     throw new Error(`Fail to retrive SSO user infomation: ${err}`);
+  }
+};
+
+export const checkSSOGroup = async (credentials, userId, targetGroups = []) => {
+  try {
+    const groups = await getUserGroups(credentials, userId);
+    if (checkArray(groups)) {
+      const ssoGroupNames = groups.map(i => i.name);
+      return ssoGroupNames.some(groupName => targetGroups.indexOf(groupName) >= 0);
+    }
+    return false;
+  } catch (err) {
+    throw new Error(`Fail to check SSO user groups: ${err}`);
   }
 };
 
