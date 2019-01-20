@@ -25,7 +25,7 @@
 import { asyncMiddleware, errorWithCode, logger } from '@bcgov/nodejs-common-utils';
 import { Router } from 'express';
 import config from '../../config';
-import { SSO_SUB_URI, SSO_REQUEST, SSO_GROUPS } from '../../constants';
+import { SSO_SUB_URI, SSO_REQUEST, SSO_GROUPS, EMAIL_REQUEST } from '../../constants';
 import {
   getSAToken,
   getUserInfoByEmail,
@@ -35,6 +35,7 @@ import {
   addUserToGroup,
   removeUserFromGroup,
 } from '../../libs/sso-utils';
+import { sendEmail } from '../../libs/email-utils';
 
 const router = new Router();
 
@@ -101,7 +102,7 @@ router.put(
   '/user/:userId',
   asyncMiddleware(async (req, res) => {
     const { userId } = req.params;
-    const { userProfile } = req.body;
+    const userProfile = req.body;
 
     if (!userId) {
       throw errorWithCode('Please provide the ID of the SSO user you are updating.', 400);
@@ -119,6 +120,7 @@ router.put(
 
     logger.info(`Updating user of ${userId}`);
     const SACredentials = config.get(SSO_REQUEST.SA_CREDENTIAL_NAME);
+    const emailServerConfig = config.get(EMAIL_REQUEST.EMAIL_CONFIG_NAME);
     try {
       const SAToken = await getSAToken(SACredentials);
       const SSOCredentials = {
@@ -129,6 +131,8 @@ router.put(
       await updateUser(SSOCredentials, userInfo);
       // Assingn SSO user to group:
       await addUserToGroup(SSOCredentials, userId, SSO_GROUPS.PENDING);
+      // Send out confirmation email to the updated email adderss:
+      await sendEmail(emailServerConfig, userInfo);
 
       return res.status(200).end();
     } catch (error) {
