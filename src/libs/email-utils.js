@@ -22,7 +22,9 @@
 
 import nodemailer from 'nodemailer';
 import ejs from 'ejs';
+import jwt from 'jsonwebtoken';
 import { EMAIL_REQUEST } from '../constants';
+import config from '../config';
 
 export const setMailer = async (host, port) => {
   try {
@@ -42,9 +44,21 @@ export const setMailer = async (host, port) => {
   }
 };
 
-export const generateLinkWithToken = async emailContent => {
-  // TODO: depends on connection between web and api:
-  return 'https://www.google.ca';
+export const generateLinkWithToken = async emailAddress => {
+  const token = jwt.sign({ data: emailAddress }, process.env.EMAIL_JWT_SECRETE, {
+    expiresIn: EMAIL_REQUEST.JWT_EXPIRY,
+  });
+  return `${config.get('webUrl')}?jwt=${token}`;
+};
+
+export const verifyToken = async token => {
+  try {
+    const decoded = jwt.verify(token, process.env.EMAIL_JWT_SECRETE);
+    if (!decoded.data) throw Error('JsonWebTokenError - no data found');
+    return decoded.data;
+  } catch (err) {
+    throw Error(err);
+  }
 };
 
 /**
@@ -57,8 +71,8 @@ export const generateLinkWithToken = async emailContent => {
 export const sendEmail = async (emailServerConfig, userInfo) => {
   try {
     // TODO: modify email contents and public host image/logo, and styling
-    const confirmLink = generateLinkWithToken(userInfo);
-    const logoLink = 'http://localhost:8000/gov-logo.png';
+    const confirmLink = await generateLinkWithToken(userInfo.email);
+    const logoLink = `${config.get('apiUrl')}/gov-logo.png`;
     const htmlPayload = await ejs.renderFile('public/emailConfirmation.ejs', {
       name: userInfo.firstName,
       confirmLink,
@@ -81,7 +95,6 @@ export const sendEmail = async (emailServerConfig, userInfo) => {
     };
 
     const emailRes = await transporter.sendMail(mailOptions);
-
     return emailRes.messageId;
   } catch (err) {
     throw new Error(`Unable to send email: ${err}`);
