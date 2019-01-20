@@ -58,5 +58,6 @@ export const SSO_GROUPS = {
 export const EMAIL_REQUEST = {
   EMAIL_CONFIG_NAME: 'emailServer',
   CONFIRM_TITLE: 'Reggie Confimation Email - test',
+  JWT_EXPIRY: '1d',
   TIMEOUT: 40000,
 };
