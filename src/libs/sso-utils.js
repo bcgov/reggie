@@ -22,8 +22,8 @@
 
 import request from 'request-promise-native';
 import url from 'url';
-import { SSO_SUB_URI, SSO_REQUEST, TARGET_GITHUB_ORGS, SSO_IDPS } from '../constants';
-import { isUserInOrgs } from './gh-utils';
+import { SSO_SUB_URI, SSO_REQUEST } from '../constants';
+import checkRocketChatSchema from './rocketchat';
 
 export const checkCredentialValid = credentials => {
   if (!credentials.uri) {
@@ -196,31 +196,32 @@ export const getUserInfoById = async (credentials, id) => {
   }
 };
 
-export const checkUserAuthorization = async userInfo => {
-  // User need to have a valid profile before they become authorized
-  const isUserValid = checkUserProfile(userInfo);
+/**
+ * Check user account status based on the SSO profile
+ *
+ * @param {Object} userInfo The sso user profile
+ * @return {Object} As { isPending, isAuthorized, isRejected }
+ */
+export const checkUserAuthStatus = async userInfo => {
+  const accountStatus = { isPending: false, isAuthorized: false, isRejected: false };
+  // User need to have a valid profile before they become authorized:
+  if (!checkUserProfile(userInfo)) return accountStatus;
 
   try {
-    // check if user has valid profile:
-    if (!isUserValid) return false;
+    const matchSchema = await checkRocketChatSchema(userInfo);
+    // if user account is not matching the requirments, reject:
+    if (!matchSchema) return { ...accountStatus, ...{ isRejected: true } };
     const ssoGroupNames = userInfo.group.map(i => i.name);
-    // then if user belongs to Pending group -> not authorized:
-    if (ssoGroupNames.includes('pending')) return false;
-    // then if user belongs to Registered group -> authorized:
-    if (ssoGroupNames.includes('registered')) return true;
-    // then if user has IDIR account -> authorized:
-    if (userInfo.idp.some(idp => idp.identityProvider === SSO_IDPS.IDIR)) return true;
-    // then if user Github account belonging to target gh orgs -> authorized:
-    const githubIdp = userInfo.idp.filter(idp => idp.identityProvider === SSO_IDPS.GITHUB);
-    if (githubIdp.length > 0) {
-      const ghUsername = githubIdp[0].userName;
-      return isUserInOrgs(ghUsername, TARGET_GITHUB_ORGS);
-    }
-    // TODO: add check on authorization by token
+    // if user has complete profile and matches requirement, return the current sso group status:
+    return {
+      accountStatus,
+      isPending: ssoGroupNames.includes('pending'),
+      isAuthorized: ssoGroupNames.includes('registered'),
+    };
+    // TODO: add check on authorization by email invitation token
   } catch (err) {
     throw new Error(`Fail to check SSO user authorization info: ${err}`);
   }
-  return false;
 };
 
 export const updateUser = async (credentials, userInfo) => {
