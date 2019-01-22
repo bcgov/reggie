@@ -176,11 +176,9 @@ router.put(
           return res.status(200).end();
         }
         if (!isPending && isRegistered) {
-          console.log('------------here');
           return res.status(200).end();
         }
       }
-      console.log('------------equale??' + (tokenEmail === userEmail));
       return res.status(404).json('Unsuccessful confirmation of the current user');
     } catch (error) {
       const message = `Unable to update SSO user with ID ${userId}`;
