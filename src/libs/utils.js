@@ -20,6 +20,6 @@
 
 'use strict';
 
-const checkArray = array => !Array.isArray(array) || !array.length;
+const checkArray = array => Array.isArray(array) && array.length;
 
 module.exports = checkArray;

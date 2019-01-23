@@ -57,6 +57,7 @@ nconf.overrides({
     port: process.env.EMAIL_PORT,
     sender: process.env.EMAIL_SENDER,
   },
+  webUrl: process.env.WEB_URL,
 });
 
 // load other properties from file.

@@ -30,12 +30,13 @@ import {
   getSAToken,
   getUserInfoByEmail,
   getUserInfoById,
+  checkSSOGroup,
   updateUser,
   checkUserAuthStatus,
   addUserToGroup,
   removeUserFromGroup,
 } from '../../libs/sso-utils';
-import { sendEmail } from '../../libs/email-utils';
+import { sendEmail, verifyToken } from '../../libs/email-utils';
 
 const router = new Router();
 
@@ -147,12 +148,13 @@ router.put(
   '/user/confirmed/:userId',
   asyncMiddleware(async (req, res) => {
     const { userId } = req.params;
+    const { userEmail, token } = req.body;
 
     if (!userId) {
       throw errorWithCode('Please provide the ID of the SSO user you are updating.', 400);
     }
 
-    logger.info(`Email confirmed user of ${userId}`);
+    logger.info(`Check email confirm user of ${userId}`);
     const SACredentials = config.get(SSO_REQUEST.SA_CREDENTIAL_NAME);
     try {
       const SAToken = await getSAToken(SACredentials);
@@ -160,12 +162,24 @@ router.put(
         uri: `${process.env.SSO_HOST_URL}/${SSO_SUB_URI.REALM_ADMIN}/${process.env.SSO_REALM}/`,
         token: SAToken,
       };
-      // Remove SSO user from pending group:
-      await removeUserFromGroup(SSOCredentials, userId, SSO_GROUPS.PENDING);
-      // Assingn SSO user to group:
-      await addUserToGroup(SSOCredentials, userId, SSO_GROUPS.REGISTERED);
-
-      return res.status(200).end();
+      // Verify if email of user matches:
+      const tokenEmail = await verifyToken(token);
+      if (tokenEmail === userEmail) {
+        // check if user has been in the groups:
+        const isPending = await checkSSOGroup(SSOCredentials, userId, [SSO_GROUPS.PENDING]);
+        const isRegistered = await checkSSOGroup(SSOCredentials, userId, [SSO_GROUPS.REGISTERED]);
+        if (isPending) {
+          // Remove SSO user from pending group:
+          await removeUserFromGroup(SSOCredentials, userId, SSO_GROUPS.PENDING);
+          // Assingn SSO user to group:
+          await addUserToGroup(SSOCredentials, userId, SSO_GROUPS.REGISTERED);
+          return res.status(200).end();
+        }
+        if (!isPending && isRegistered) {
+          return res.status(200).end();
+        }
+      }
+      return res.status(404).json('Unsuccessful confirmation of the current user');
     } catch (error) {
       const message = `Unable to update SSO user with ID ${userId}`;
       logger.error(`${message}, err = ${error.message}`);

@@ -196,6 +196,19 @@ export const getUserInfoById = async (credentials, id) => {
   }
 };
 
+export const checkSSOGroup = async (credentials, userId, targetGroups = []) => {
+  try {
+    const groups = await getUserGroups(credentials, userId);
+    if (checkArray(groups)) {
+      const ssoGroupNames = groups.map(i => i.name);
+      return ssoGroupNames.some(groupName => targetGroups.indexOf(groupName) >= 0);
+    }
+    return false;
+  } catch (err) {
+    throw new Error(`Fail to check SSO user groups: ${err}`);
+  }
+};
+
 /**
  * Check user account status based on the SSO profile
  *
@@ -214,9 +227,11 @@ export const checkUserAuthStatus = async userInfo => {
     const ssoGroupNames = userInfo.group.map(i => i.name);
     // if user has complete profile and matches requirement, return the current sso group status:
     return {
-      accountStatus,
-      isPending: ssoGroupNames.includes('pending'),
-      isAuthorized: ssoGroupNames.includes('registered'),
+      ...accountStatus,
+      ...{
+        isPending: ssoGroupNames.includes('pending'),
+        isAuthorized: ssoGroupNames.includes('registered'),
+      },
     };
     // TODO: add check on authorization by email invitation token
   } catch (err) {

@@ -22,7 +22,7 @@
 
 import { TARGET_GITHUB_ORGS, SSO_IDPS } from '../constants';
 import { isUserInOrgs } from './gh-utils';
-import { checkArray } from './utils';
+import checkArray from './utils';
 
 const checkRocketChatSchema = async userInfo => {
   try {
