@@ -45,7 +45,7 @@ export const setMailer = async (host, port) => {
 };
 
 export const generateLinkWithToken = async emailAddress => {
-  const token = jwt.sign({ data: emailAddress }, process.env.EMAIL_JWT_SECRETE, {
+  const token = jwt.sign({ data: emailAddress }, process.env.EMAIL_JWT_SECRET, {
     expiresIn: EMAIL_REQUEST.JWT_EXPIRY,
   });
   return `${config.get('webUrl')}?jwt=${token}`;
@@ -53,7 +53,7 @@ export const generateLinkWithToken = async emailAddress => {
 
 export const verifyToken = async token => {
   try {
-    const decoded = jwt.verify(token, process.env.EMAIL_JWT_SECRETE);
+    const decoded = jwt.verify(token, process.env.EMAIL_JWT_SECRET);
     if (!decoded.data) throw Error('JsonWebTokenError - no data found');
     return decoded.data;
   } catch (err) {
