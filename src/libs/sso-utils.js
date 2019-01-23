@@ -22,8 +22,8 @@
 
 import request from 'request-promise-native';
 import url from 'url';
-import { SSO_SUB_URI, SSO_REQUEST, TARGET_GITHUB_ORGS, SSO_IDPS } from '../constants';
-import { isUserInOrgs } from './gh-utils';
+import { SSO_SUB_URI, SSO_REQUEST } from '../constants';
+import checkRocketChatSchema from './rocketchat';
 
 export const checkCredentialValid = credentials => {
   if (!credentials.uri) {
@@ -36,26 +36,6 @@ export const checkCredentialValid = credentials => {
 
 export const checkUserProfile = userInfo =>
   !(!userInfo.email || !userInfo.firstName || !userInfo.lastName);
-
-export const checkArray = array => Array.isArray(array) && array.length;
-
-export const checkRocketChatSchema = async userInfo => {
-  try {
-    // if user has idp:
-    if (!checkArray(userInfo.idp)) return false;
-    // if user has IDIR account:
-    if (userInfo.idp.some(idp => idp.identityProvider === SSO_IDPS.IDIR)) return true;
-    // if user Github account belonging to target gh orgs:
-    const githubIdp = userInfo.idp.filter(idp => idp.identityProvider === SSO_IDPS.GITHUB);
-    if (githubIdp.length > 0) {
-      const ghUsername = githubIdp[0].userName;
-      return isUserInOrgs(ghUsername, TARGET_GITHUB_ORGS);
-    }
-    return false;
-  } catch (err) {
-    return false;
-  }
-};
 
 export const getSAToken = async credentials => {
   checkCredentialValid(credentials);
