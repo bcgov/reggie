@@ -129,10 +129,13 @@ router.put(
         token: SAToken,
       };
       // Update SSO user profile:
+      logger.info('- Updating user profile');
       await updateUser(SSOCredentials, userInfo);
       // Assingn SSO user to group:
+      logger.info('- Updating user group');
       await addUserToGroup(SSOCredentials, userId, SSO_GROUPS.PENDING);
       // Send out confirmation email to the updated email adderss:
+      logger.info('- Email user');
       await sendEmail(emailServerConfig, userInfo);
 
       return res.status(200).end();
@@ -163,12 +166,14 @@ router.put(
         token: SAToken,
       };
       // Verify if email of user matches:
+      logger.info('- Verfiy token');
       const tokenEmail = await verifyToken(token);
       if (tokenEmail === userEmail) {
         // check if user has been in the groups:
         const isPending = await checkSSOGroup(SSOCredentials, userId, [SSO_GROUPS.PENDING]);
         const isRegistered = await checkSSOGroup(SSOCredentials, userId, [SSO_GROUPS.REGISTERED]);
         if (isPending) {
+          logger.info('- Authorizing user');
           // Remove SSO user from pending group:
           await removeUserFromGroup(SSOCredentials, userId, SSO_GROUPS.PENDING);
           // Assingn SSO user to group:
@@ -176,9 +181,11 @@ router.put(
           return res.status(200).end();
         }
         if (!isPending && isRegistered) {
+          logger.info('- Authorized user already');
           return res.status(200).end();
         }
       }
+      logger.info('- User not following the required authorization flow');
       return res.status(404).json('Unsuccessful confirmation of the current user');
     } catch (error) {
       const message = `Unable to update SSO user with ID ${userId}`;
