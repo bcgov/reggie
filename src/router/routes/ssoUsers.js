@@ -40,7 +40,7 @@ import { sendConfirmationEmail, verifyToken } from '../../libs/email-utils';
 
 const router = new Router();
 
-// Either get SSO user by email or by ID:
+// Get SSO user by email:
 router.get(
   '/user',
   asyncMiddleware(async (req, res) => {
@@ -70,6 +70,7 @@ router.get(
   })
 );
 
+// Get SSO user by ID:
 router.get(
   '/user/:userId',
   asyncMiddleware(async (req, res) => {
@@ -99,6 +100,7 @@ router.get(
   })
 );
 
+// Update SSO user profile and send confirmation email:
 router.put(
   '/user/:userId',
   asyncMiddleware(async (req, res) => {
@@ -147,6 +149,7 @@ router.put(
   })
 );
 
+// Confirm SSO user email and update authorization status:
 router.put(
   '/user/confirmed/:userId',
   asyncMiddleware(async (req, res) => {
@@ -166,7 +169,7 @@ router.put(
         token: SAToken,
       };
       // Verify if email of user matches:
-      logger.info('- Verfiy token');
+      logger.info('- Verify token');
       const tokenEmail = await verifyToken(token, process.env.EMAIL_CONFIRMATION_JWT_SECRET);
       logger.info(tokenEmail);
       if (tokenEmail === userEmail) {
@@ -196,6 +199,7 @@ router.put(
   })
 );
 
+// Invite new user with email:
 router.post(
   '/user/invite/:userId',
   asyncMiddleware(async (req, res) => {
