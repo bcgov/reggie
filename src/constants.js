@@ -58,6 +58,7 @@ export const SSO_GROUPS = {
 export const EMAIL_REQUEST = {
   EMAIL_CONFIG_NAME: 'emailServer',
   CONFIRM_TITLE: 'BC Gov Reggie Confimation Email',
+  INVITE_TITLE: 'BC Gov Reggie Confimation Email',
   JWT_EXPIRY: '1d',
   TIMEOUT: 40000,
 };
