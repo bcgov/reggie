@@ -49,11 +49,11 @@ export const setMailer = async (host, port) => {
   }
 };
 
-export const generateLinkWithToken = async (data, secret) => {
+export const generateLinkWithToken = async (data, secret, intention) => {
   const token = jwt.sign({ data }, secret, {
     expiresIn: EMAIL_REQUEST.JWT_EXPIRY,
   });
-  return `${config.get('webUrl')}?jwt=${token}`;
+  return `${config.get('webUrl')}?intention=${intention}&jwt=${token}`;
 };
 
 export const verifyToken = async (token, secret) => {
@@ -78,7 +78,8 @@ export const sendConfirmationEmail = async (emailServerConfig, userInfo) => {
     // TODO: modify email contents and public host image/logo, and styling
     const confirmLink = await generateLinkWithToken(
       userInfo.email,
-      process.env.EMAIL_CONFIRMATION_JWT_SECRET
+      process.env.EMAIL_CONFIRMATION_JWT_SECRET,
+      'confirm'
     );
     const logoLink = `${config.get('apiUrl')}/gov-logo.png`;
     const htmlPayload = await ejs.renderFile('public/emailConfirmation.ejs', {
@@ -122,7 +123,8 @@ export const sendInvitationEmail = async (emailServerConfig, email, code) => {
     const encodeData = { email, code };
     const invitationLink = await generateLinkWithToken(
       encodeData,
-      process.env.EMAIL_INVITATION_JWT_SECRET
+      process.env.EMAIL_INVITATION_JWT_SECRET,
+      'invite'
     );
     const logoLink = `${config.get('apiUrl')}/gov-logo.png`;
     const htmlPayload = await ejs.renderFile('public/emailInvitation.ejs', {
