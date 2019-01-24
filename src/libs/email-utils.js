@@ -29,15 +29,18 @@ import config from '../config';
 export const setMailer = async (host, port) => {
   try {
     // create reusable transporter object using the default SMTP transport
-    const transporter = nodemailer.createTransport({
+    const transporter = await nodemailer.createTransport({
       host,
       port,
       secure: false, // true for 465, false for other ports
-      ignoreTLS: true,
+      ignoreTLS: false,
+      tls: {
+        rejectUnauthorized: false,
+      },
       connectionTimeout: EMAIL_REQUEST.TIMEOUT,
     });
 
-    transporter.verify();
+    await transporter.verify();
     return transporter;
   } catch (err) {
     throw new Error(`Cannot setup mailer: ${err}`);
