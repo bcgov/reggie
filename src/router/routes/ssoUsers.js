@@ -36,7 +36,7 @@ import {
   addUserToGroup,
   removeUserFromGroup,
 } from '../../libs/sso-utils';
-import { sendEmail, verifyToken } from '../../libs/email-utils';
+import { sendConfirmationEmail, verifyToken } from '../../libs/email-utils';
 
 const router = new Router();
 
@@ -136,7 +136,7 @@ router.put(
       await addUserToGroup(SSOCredentials, userId, SSO_GROUPS.PENDING);
       // Send out confirmation email to the updated email adderss:
       logger.info('- Email user');
-      await sendEmail(emailServerConfig, userInfo);
+      await sendConfirmationEmail(emailServerConfig, userInfo);
 
       return res.status(200).end();
     } catch (error) {
@@ -167,7 +167,8 @@ router.put(
       };
       // Verify if email of user matches:
       logger.info('- Verfiy token');
-      const tokenEmail = await verifyToken(token);
+      const tokenEmail = await verifyToken(token, process.env.EMAIL_CONFIRMATION_JWT_SECRET);
+      logger.info(tokenEmail);
       if (tokenEmail === userEmail) {
         // check if user has been in the groups:
         const isPending = await checkSSOGroup(SSOCredentials, userId, [SSO_GROUPS.PENDING]);
@@ -189,6 +190,47 @@ router.put(
       return res.status(404).json('Unsuccessful confirmation of the current user');
     } catch (error) {
       const message = `Unable to update SSO user with ID ${userId}`;
+      logger.error(`${message}, err = ${error.message}`);
+      throw errorWithCode(`${message}, err = ${error.message}`, 500);
+    }
+  })
+);
+
+router.post(
+  '/user/invite/:userId',
+  asyncMiddleware(async (req, res) => {
+    const { userId } = req.params;
+    const newUser = req.body;
+
+    if (!userId) {
+      throw errorWithCode('Please provide a authorized user ID to invite new user.', 400);
+    }
+
+    if (!newUser.email || !newUser.code) {
+      throw errorWithCode('Missing Email and invitation code', 400);
+    }
+
+    logger.info(`Inviting new user of ${newUser.email}`);
+    // TODO: check user's authorization status
+    // const SACredentials = config.get(SSO_REQUEST.SA_CREDENTIAL_NAME);
+    const emailServerConfig = config.get(EMAIL_REQUEST.EMAIL_CONFIG_NAME);
+    try {
+      // const SAToken = await getSAToken(SACredentials);
+      // const SSOCredentials = {
+      //   uri: `${process.env.SSO_HOST_URL}/${SSO_SUB_URI.REALM_ADMIN}/${process.env.SSO_REALM}/`,
+      //   token: SAToken,
+      // };
+      // logger.info('- Check user access');
+      // const userProfile = await getUserInfoById(SSOCredentials, userId);
+      // const userStatus = await checkUserAuthStatus(userProfile);
+
+      // Send out invitation email to the target email adderss:
+      logger.info('- Email user');
+      await sendConfirmationEmail(emailServerConfig, newUser);
+
+      return res.status(200).end();
+    } catch (error) {
+      const message = 'Unable to send out invitation';
       logger.error(`${message}, err = ${error.message}`);
       throw errorWithCode(`${message}, err = ${error.message}`, 500);
     }
