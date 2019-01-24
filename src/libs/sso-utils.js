@@ -24,6 +24,7 @@ import request from 'request-promise-native';
 import url from 'url';
 import { SSO_SUB_URI, SSO_REQUEST } from '../constants';
 import checkRocketChatSchema from './rocketchat';
+import checkArray from './utils';
 
 export const checkCredentialValid = credentials => {
   if (!credentials.uri) {
