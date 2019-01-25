@@ -128,8 +128,7 @@ export const sendInvitationEmail = async (emailServerConfig, email, code) => {
       process.env.EMAIL_INVITATION_JWT_SECRET,
       EMAIL_CONTENT.INVITATION
     );
-    console.log(invitationLink);
-    return invitationLink;
+
     const logoLink = `${config.get('apiUrl')}/gov-logo.png`;
     const htmlPayload = await ejs.renderFile('public/emailInvitation.ejs', {
       invitationLink,
