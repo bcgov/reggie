@@ -218,13 +218,13 @@ export const checkSSOGroup = async (credentials, userId, targetGroups = []) => {
  */
 export const checkUserAuthStatus = async userInfo => {
   const accountStatus = { isPending: false, isAuthorized: false, isRejected: false };
-  // User need to have a valid profile before they become authorized:
-  if (!checkUserProfile(userInfo)) return accountStatus;
 
   try {
     const matchSchema = await checkRocketChatSchema(userInfo);
     // if user account is not matching the requirments, reject:
     if (!matchSchema) return { ...accountStatus, ...{ isRejected: true } };
+    // User need to have a valid profile before they become authorized:
+    if (!checkUserProfile(userInfo)) return accountStatus;
     const ssoGroupNames = userInfo.group.map(i => i.name);
     // if user has complete profile and matches requirement, return the current sso group status:
     return {
