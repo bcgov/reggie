@@ -24,7 +24,7 @@ import nodemailer from 'nodemailer';
 import { htmlToText } from 'nodemailer-html-to-text';
 import ejs from 'ejs';
 import jwt from 'jsonwebtoken';
-import { EMAIL_REQUEST } from '../constants';
+import { EMAIL_REQUEST, EMAIL_CONTENT } from '../constants';
 import config from '../config';
 
 export const setMailer = async (host, port) => {
@@ -53,7 +53,9 @@ export const generateLinkWithToken = async (data, secret, intention) => {
   const token = jwt.sign({ data }, secret, {
     expiresIn: EMAIL_REQUEST.JWT_EXPIRY,
   });
-  return `${config.get('webUrl')}?intention=${intention}&jwt=${token}`;
+  return `${config.get('webUrl')}/${
+    process.env.WEB_ROUTE
+  }?emailIntention=${intention}&jwt=${token}`;
 };
 
 export const verifyToken = async (token, secret) => {
@@ -79,7 +81,7 @@ export const sendConfirmationEmail = async (emailServerConfig, userInfo) => {
     const confirmLink = await generateLinkWithToken(
       userInfo.email,
       process.env.EMAIL_CONFIRMATION_JWT_SECRET,
-      'confirm'
+      EMAIL_CONTENT.CONFIRMATION
     );
     const logoLink = `${config.get('apiUrl')}/gov-logo.png`;
     const htmlPayload = await ejs.renderFile('public/emailConfirmation.ejs', {
@@ -124,7 +126,7 @@ export const sendInvitationEmail = async (emailServerConfig, email, code) => {
     const invitationLink = await generateLinkWithToken(
       encodeData,
       process.env.EMAIL_INVITATION_JWT_SECRET,
-      'invite'
+      EMAIL_CONTENT.INVITATION
     );
     const logoLink = `${config.get('apiUrl')}/gov-logo.png`;
     const htmlPayload = await ejs.renderFile('public/emailInvitation.ejs', {

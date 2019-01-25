@@ -62,3 +62,9 @@ export const EMAIL_REQUEST = {
   JWT_EXPIRY: '1d',
   TIMEOUT: 40000,
 };
+
+export const EMAIL_CONTENT = {
+  CONFIRMATION: 'confirm',
+  INVITATION: 'invite',
+  WEB_ROUTE: 'email',
+};

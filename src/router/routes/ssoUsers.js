@@ -36,7 +36,7 @@ import {
   addUserToGroup,
   removeUserFromGroup,
 } from '../../libs/sso-utils';
-import { sendConfirmationEmail, verifyToken } from '../../libs/email-utils';
+import { sendConfirmationEmail, sendInvitationEmail, verifyToken } from '../../libs/email-utils';
 
 const router = new Router();
 
@@ -230,7 +230,7 @@ router.post(
 
       // Send out invitation email to the target email adderss:
       logger.info('- Email user');
-      await sendConfirmationEmail(emailServerConfig, newUser);
+      await sendInvitationEmail(emailServerConfig, newUser.email, newUser.code);
 
       return res.status(200).end();
     } catch (error) {
