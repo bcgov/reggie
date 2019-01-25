@@ -220,20 +220,27 @@ export const checkUserAuthStatus = async userInfo => {
   const accountStatus = { isPending: false, isAuthorized: false, isRejected: false };
 
   try {
-    const matchSchema = await checkRocketChatSchema(userInfo);
-    // if user account is not matching the requirments, reject:
-    if (!matchSchema) return { ...accountStatus, ...{ isRejected: true } };
-    // User need to have a valid profile before they become authorized:
-    if (!checkUserProfile(userInfo)) return accountStatus;
     const ssoGroupNames = userInfo.group.map(i => i.name);
+    const isPending = ssoGroupNames.includes('pending');
+    const isAuthorized = ssoGroupNames.includes('registered');
+
     // if user has complete profile and matches requirement, return the current sso group status:
-    return {
-      ...accountStatus,
-      ...{
-        isPending: ssoGroupNames.includes('pending'),
-        isAuthorized: ssoGroupNames.includes('registered'),
-      },
-    };
+    if (isPending || isAuthorized) {
+      // User need to have a valid profile before they become authorized:
+      if (!checkUserProfile(userInfo)) return accountStatus;
+      return {
+        ...accountStatus,
+        ...{
+          isPending,
+          isAuthorized,
+        },
+      };
+    }
+
+    // else, it's a new user, check if account is not matching the requirments, then reject:
+    const matchSchema = await checkRocketChatSchema(userInfo);
+    if (!matchSchema) return { ...accountStatus, ...{ isRejected: true } };
+    return accountStatus;
   } catch (err) {
     throw new Error(`Fail to check SSO user authorization info: ${err}`);
   }
