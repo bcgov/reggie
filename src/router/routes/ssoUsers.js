@@ -160,6 +160,10 @@ router.put(
       throw errorWithCode('Please provide the ID of the SSO user you are updating.', 400);
     }
 
+    if (!userEmail || !token) {
+      throw errorWithCode('Missing Email or Token', 400);
+    }
+
     logger.info(`Check email confirm user of ${userId}`);
     const SACredentials = config.get(SSO_REQUEST.SA_CREDENTIAL_NAME);
     try {
@@ -235,6 +239,43 @@ router.post(
       return res.status(200).end();
     } catch (error) {
       const message = 'Unable to send out invitation';
+      logger.error(`${message}, err = ${error.message}`);
+      throw errorWithCode(`${message}, err = ${error.message}`, 500);
+    }
+  })
+);
+
+// Verify invitation email and code pair:
+router.get(
+  '/user/verify/:userId',
+  asyncMiddleware(async (req, res) => {
+    const { userId } = req.params;
+    const verifyBody = req.query;
+
+    if (!userId) {
+      throw errorWithCode('Please provide SSO user ID.', 400);
+    }
+
+    if (!verifyBody.email || !verifyBody.code || !verifyBody.token) {
+      throw errorWithCode('Missing Email, Code, or Token', 400);
+    }
+
+    logger.info(`Verifying email and invitation code for ${userId}`);
+    try {
+      // Verify if email of user matches:
+      logger.info('- Verify token');
+      const tokenData = await verifyToken(
+        verifyBody.token,
+        process.env.EMAIL_INVITATION_JWT_SECRET
+      );
+
+      if (tokenData.email === verifyBody.email && tokenData.code === verifyBody.code) {
+        return res.status(200).end();
+      }
+      logger.info('- User not providing the valid pair');
+      return res.status(400).json('Unsuccessful verification of invitation user');
+    } catch (error) {
+      const message = `Unable to verify the invitation for ${userId}`;
       logger.error(`${message}, err = ${error.message}`);
       throw errorWithCode(`${message}, err = ${error.message}`, 500);
     }
