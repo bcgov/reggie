@@ -234,7 +234,6 @@ export const checkUserAuthStatus = async userInfo => {
         isAuthorized: ssoGroupNames.includes('registered'),
       },
     };
-    // TODO: add check on authorization by email invitation token
   } catch (err) {
     throw new Error(`Fail to check SSO user authorization info: ${err}`);
   }
