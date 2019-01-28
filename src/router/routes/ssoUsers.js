@@ -31,6 +31,7 @@ import {
   getUserInfoByEmail,
   getUserInfoById,
   checkSSOGroup,
+  checkEmailExists,
   updateUser,
   checkUserAuthStatus,
   addUserToGroup,
@@ -93,8 +94,10 @@ router.get(
 
       return res.status(200).json({ ...userProfile, ...userStatus });
     } catch (error) {
+      // Log error first for record then send out error response:
       const message = `Unable to get SSO user with ID ${userId}`;
       logger.error(`${message}, err = ${error.message}`);
+      if (error.code === 404) throw errorWithCode(error.message, 404);
       throw errorWithCode(`${message}, err = ${error.message}`, 500);
     }
   })
@@ -130,6 +133,14 @@ router.put(
         uri: `${process.env.SSO_HOST_URL}/${SSO_SUB_URI.REALM_ADMIN}/${process.env.SSO_REALM}/`,
         token: SAToken,
       };
+      // Check if email exists already:
+      logger.info('- Checking user email');
+      const emailExists = await checkEmailExists(SSOCredentials, userInfo);
+      if (emailExists)
+        throw errorWithCode(
+          `Your account with email ${userProfile.email} is registered already.`,
+          400
+        );
       // Update SSO user profile:
       logger.info('- Updating user profile');
       await updateUser(SSOCredentials, userInfo);

@@ -20,6 +20,7 @@
 
 'use strict';
 
+import { errorWithCode } from '@bcgov/nodejs-common-utils';
 import request from 'request-promise-native';
 import url from 'url';
 import { SSO_SUB_URI, SSO_REQUEST } from '../constants';
@@ -193,7 +194,9 @@ export const getUserInfoById = async (credentials, id) => {
       idp: idps,
     };
   } catch (err) {
-    throw new Error(`Fail to retrive SSO user infomation: ${err}`);
+    // throw new Error(`Fail to retrive SSO user infomation: ${err}`);
+    const message = 'SSO user not found';
+    throw errorWithCode(`${message}, err = ${err}`, 404);
   }
 };
 
@@ -245,6 +248,41 @@ export const checkUserAuthStatus = async userInfo => {
     return accountStatus;
   } catch (err) {
     throw new Error(`Fail to check SSO user authorization info: ${err}`);
+  }
+};
+
+/**
+ * Check for email duplication in SSO user accouts
+ *
+ * @param {Object} credentials The sso admin account credentials
+ * @param {Object} userInfo The sso user profile
+ * @return {Boolean} If email exists with another accout, true. Else, return false
+ */
+export const checkEmailExists = async (credentials, userInfo) => {
+  checkCredentialValid(credentials);
+
+  try {
+    const options = {
+      headers: {
+        'Content-Type': SSO_REQUEST.CONTENT_TYPE_FORM,
+        Authorization: `Bearer ${credentials.token}`,
+      },
+      uri: url.resolve(credentials.uri, SSO_SUB_URI.USER),
+      method: 'GET',
+      qs: {
+        email: userInfo.email,
+      },
+    };
+
+    const res = await request(options);
+    const jsonRes = JSON.parse(res);
+    if (jsonRes.length > 0) {
+      const ids = jsonRes.map(user => user.id);
+      return ids.some(id => id !== userInfo.id);
+    }
+    return false;
+  } catch (err) {
+    throw new Error(`Cannot filter SSO user with email, err - ${err}`);
   }
 };
 
