@@ -133,22 +133,21 @@ router.put(
       };
       // Check if email exists already:
       logger.info('- Checking user email');
-      // TODO: match funtion name:
-      const uniqueEmail = await checkEmailUnique(SSOCredentials, userInfo);
-      if (!uniqueEmail)
+      const emailExists = await checkEmailExists(SSOCredentials, userInfo);
+      if (emailExists)
         throw errorWithCode(
           `Your account with email ${userProfile.email} is registered already.`,
           400
         );
-      // // Update SSO user profile:
-      // logger.info('- Updating user profile');
-      // await updateUser(SSOCredentials, userInfo);
-      // // Assingn SSO user to group:
-      // logger.info('- Updating user group');
-      // await addUserToGroup(SSOCredentials, userId, SSO_GROUPS.PENDING);
-      // // Send out confirmation email to the updated email adderss:
-      // logger.info('- Email user');
-      // await sendConfirmationEmail(emailServerConfig, userInfo);
+      // Update SSO user profile:
+      logger.info('- Updating user profile');
+      await updateUser(SSOCredentials, userInfo);
+      // Assingn SSO user to group:
+      logger.info('- Updating user group');
+      await addUserToGroup(SSOCredentials, userId, SSO_GROUPS.PENDING);
+      // Send out confirmation email to the updated email adderss:
+      logger.info('- Email user');
+      await sendConfirmationEmail(emailServerConfig, userInfo);
 
       return res.status(200).end();
     } catch (error) {

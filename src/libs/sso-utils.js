@@ -248,6 +248,13 @@ export const checkUserAuthStatus = async userInfo => {
   }
 };
 
+/**
+ * Check for email duplication in SSO user accouts
+ *
+ * @param {Object} credentials The sso admin account credentials
+ * @param {Object} userInfo The sso user profile
+ * @return {Boolean} If email exists with another accout, true. Else, return false
+ */
 export const checkEmailExists = async (credentials, userInfo) => {
   checkCredentialValid(credentials);
 
@@ -266,13 +273,11 @@ export const checkEmailExists = async (credentials, userInfo) => {
 
     const res = await request(options);
     const jsonRes = JSON.parse(res);
-    console.log('---------------------jsonRes');
-    console.log(jsonRes);
     if (jsonRes.length > 0) {
       const ids = jsonRes.map(user => user.id);
       return ids.some(id => id !== userInfo.id);
     }
-    return true;
+    return false;
   } catch (err) {
     throw new Error(`Cannot filter SSO user with email, err - ${err}`);
   }
