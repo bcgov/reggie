@@ -20,6 +20,7 @@
 
 'use strict';
 
+import { errorWithCode } from '@bcgov/nodejs-common-utils';
 import request from 'request-promise-native';
 import url from 'url';
 import { SSO_SUB_URI, SSO_REQUEST } from '../constants';
@@ -193,7 +194,9 @@ export const getUserInfoById = async (credentials, id) => {
       idp: idps,
     };
   } catch (err) {
-    throw new Error(`Fail to retrive SSO user infomation: ${err}`);
+    // throw new Error(`Fail to retrive SSO user infomation: ${err}`);
+    const message = 'SSO user not found';
+    throw errorWithCode(`${message}, err = ${err}`, 404);
   }
 };
 

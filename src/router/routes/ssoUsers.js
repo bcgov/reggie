@@ -94,8 +94,10 @@ router.get(
 
       return res.status(200).json({ ...userProfile, ...userStatus });
     } catch (error) {
+      // Log error first for record then send out error response:
       const message = `Unable to get SSO user with ID ${userId}`;
       logger.error(`${message}, err = ${error.message}`);
+      if (error.code === 404) throw errorWithCode(error.message, 404);
       throw errorWithCode(`${message}, err = ${error.message}`, 500);
     }
   })
