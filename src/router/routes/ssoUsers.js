@@ -220,18 +220,8 @@ router.post(
 
     logger.info(`Inviting new user of ${newUser.email}`);
     // TODO: check user's authorization status
-    // const SACredentials = config.get(SSO_REQUEST.SA_CREDENTIAL_NAME);
     const emailServerConfig = config.get(EMAIL_REQUEST.EMAIL_CONFIG_NAME);
     try {
-      // const SAToken = await getSAToken(SACredentials);
-      // const SSOCredentials = {
-      //   uri: `${process.env.SSO_HOST_URL}/${SSO_SUB_URI.REALM_ADMIN}/${process.env.SSO_REALM}/`,
-      //   token: SAToken,
-      // };
-      // logger.info('- Check user access');
-      // const userProfile = await getUserInfoById(SSOCredentials, userId);
-      // const userStatus = await checkUserAuthStatus(userProfile);
-
       // Send out invitation email to the target email adderss:
       logger.info('- Email user');
       await sendInvitationEmail(emailServerConfig, newUser.email, newUser.code);

@@ -54,7 +54,7 @@ export const generateLinkWithToken = async (data, secret, intention) => {
     expiresIn: EMAIL_REQUEST.JWT_EXPIRY,
   });
   return `${config.get('webUrl')}/${
-    process.env.WEB_ROUTE
+    EMAIL_CONTENT.WEB_ROUTE
   }?emailIntention=${intention}&jwt=${token}`;
 };
 
