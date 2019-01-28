@@ -248,6 +248,36 @@ export const checkUserAuthStatus = async userInfo => {
   }
 };
 
+export const checkEmailExists = async (credentials, userInfo) => {
+  checkCredentialValid(credentials);
+
+  try {
+    const options = {
+      headers: {
+        'Content-Type': SSO_REQUEST.CONTENT_TYPE_FORM,
+        Authorization: `Bearer ${credentials.token}`,
+      },
+      uri: url.resolve(credentials.uri, SSO_SUB_URI.USER),
+      method: 'GET',
+      qs: {
+        email: userInfo.email,
+      },
+    };
+
+    const res = await request(options);
+    const jsonRes = JSON.parse(res);
+    console.log('---------------------jsonRes');
+    console.log(jsonRes);
+    if (jsonRes.length > 0) {
+      const ids = jsonRes.map(user => user.id);
+      return ids.some(id => id !== userInfo.id);
+    }
+    return true;
+  } catch (err) {
+    throw new Error(`Cannot filter SSO user with email, err - ${err}`);
+  }
+};
+
 export const updateUser = async (credentials, userInfo) => {
   checkCredentialValid(credentials);
   try {

@@ -31,6 +31,7 @@ import {
   getUserInfoByEmail,
   getUserInfoById,
   checkSSOGroup,
+  checkEmailExists,
   updateUser,
   checkUserAuthStatus,
   addUserToGroup,
@@ -130,15 +131,24 @@ router.put(
         uri: `${process.env.SSO_HOST_URL}/${SSO_SUB_URI.REALM_ADMIN}/${process.env.SSO_REALM}/`,
         token: SAToken,
       };
-      // Update SSO user profile:
-      logger.info('- Updating user profile');
-      await updateUser(SSOCredentials, userInfo);
-      // Assingn SSO user to group:
-      logger.info('- Updating user group');
-      await addUserToGroup(SSOCredentials, userId, SSO_GROUPS.PENDING);
-      // Send out confirmation email to the updated email adderss:
-      logger.info('- Email user');
-      await sendConfirmationEmail(emailServerConfig, userInfo);
+      // Check if email exists already:
+      logger.info('- Checking user email');
+      // TODO: match funtion name:
+      const uniqueEmail = await checkEmailUnique(SSOCredentials, userInfo);
+      if (!uniqueEmail)
+        throw errorWithCode(
+          `Your account with email ${userProfile.email} is registered already.`,
+          400
+        );
+      // // Update SSO user profile:
+      // logger.info('- Updating user profile');
+      // await updateUser(SSOCredentials, userInfo);
+      // // Assingn SSO user to group:
+      // logger.info('- Updating user group');
+      // await addUserToGroup(SSOCredentials, userId, SSO_GROUPS.PENDING);
+      // // Send out confirmation email to the updated email adderss:
+      // logger.info('- Email user');
+      // await sendConfirmationEmail(emailServerConfig, userInfo);
 
       return res.status(200).end();
     } catch (error) {
