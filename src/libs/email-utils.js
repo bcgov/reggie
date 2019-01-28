@@ -21,9 +21,10 @@
 'use strict';
 
 import nodemailer from 'nodemailer';
+import { htmlToText } from 'nodemailer-html-to-text';
 import ejs from 'ejs';
 import jwt from 'jsonwebtoken';
-import { EMAIL_REQUEST } from '../constants';
+import { EMAIL_REQUEST, EMAIL_CONTENT } from '../constants';
 import config from '../config';
 
 export const setMailer = async (host, port) => {
@@ -39,6 +40,7 @@ export const setMailer = async (host, port) => {
       },
       connectionTimeout: EMAIL_REQUEST.TIMEOUT,
     });
+    transporter.use('compile', htmlToText());
 
     await transporter.verify();
     return transporter;
@@ -47,16 +49,18 @@ export const setMailer = async (host, port) => {
   }
 };
 
-export const generateLinkWithToken = async emailAddress => {
-  const token = jwt.sign({ data: emailAddress }, process.env.EMAIL_JWT_SECRET, {
+export const generateLinkWithToken = async (data, secret, intention) => {
+  const token = jwt.sign({ data }, secret, {
     expiresIn: EMAIL_REQUEST.JWT_EXPIRY,
   });
-  return `${config.get('webUrl')}?jwt=${token}`;
+  return `${config.get('webUrl')}/${
+    EMAIL_CONTENT.WEB_ROUTE
+  }?emailIntention=${intention}&jwt=${token}`;
 };
 
-export const verifyToken = async token => {
+export const verifyToken = async (token, secret) => {
   try {
-    const decoded = jwt.verify(token, process.env.EMAIL_JWT_SECRET);
+    const decoded = jwt.verify(token, secret);
     if (!decoded.data) throw Error('JsonWebTokenError - no data found');
     return decoded.data;
   } catch (err) {
@@ -71,10 +75,14 @@ export const verifyToken = async token => {
  * @param {Object} userInfo The user information, including email, first and last name
  * @returns The email message id if sent successfully
  */
-export const sendEmail = async (emailServerConfig, userInfo) => {
+export const sendConfirmationEmail = async (emailServerConfig, userInfo) => {
   try {
     // TODO: modify email contents and public host image/logo, and styling
-    const confirmLink = await generateLinkWithToken(userInfo.email);
+    const confirmLink = await generateLinkWithToken(
+      userInfo.email,
+      process.env.EMAIL_CONFIRMATION_JWT_SECRET,
+      EMAIL_CONTENT.CONFIRMATION
+    );
     const logoLink = `${config.get('apiUrl')}/gov-logo.png`;
     const htmlPayload = await ejs.renderFile('public/emailConfirmation.ejs', {
       name: userInfo.firstName,
@@ -94,6 +102,45 @@ export const sendEmail = async (emailServerConfig, userInfo) => {
       to: userInfo.email, // list of receivers
       subject: EMAIL_REQUEST.CONFIRM_TITLE,
       text: textPayload,
+      html: htmlPayload,
+    };
+
+    const emailRes = await transporter.sendMail(mailOptions);
+    return emailRes.messageId;
+  } catch (err) {
+    throw new Error(`Unable to send email: ${err}`);
+  }
+};
+
+/**
+ * Sending email with nodemailer
+ *
+ * @param {Object} emailServerConfig The configuration of email server, including host+port, and a sender email
+ * @param {String} email The email to send to
+ * @param {String} code The security code
+ * @returns The email message id if sent successfully
+ */
+export const sendInvitationEmail = async (emailServerConfig, email, code) => {
+  try {
+    const encodeData = { email, code };
+    const invitationLink = await generateLinkWithToken(
+      encodeData,
+      process.env.EMAIL_INVITATION_JWT_SECRET,
+      EMAIL_CONTENT.INVITATION
+    );
+
+    const logoLink = `${config.get('apiUrl')}/gov-logo.png`;
+    const htmlPayload = await ejs.renderFile('public/emailInvitation.ejs', {
+      invitationLink,
+      logoLink,
+    });
+
+    const transporter = await setMailer(emailServerConfig.host, emailServerConfig.port);
+
+    const mailOptions = {
+      from: emailServerConfig.sender,
+      to: email,
+      subject: EMAIL_REQUEST.INVITE_TITLE,
       html: htmlPayload,
     };
 

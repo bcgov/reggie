@@ -38,7 +38,7 @@ const checkRocketChatSchema = async userInfo => {
     }
     return false;
   } catch (err) {
-    return false;
+    throw new Error(`Fail to check aganst Rocket Chat Schema - ${err}`);
   }
 };
 

@@ -49,7 +49,7 @@ export const getGithubOrgs = async ghUserId => {
   } catch (err) {
     const message = `Unable to request from Repo Mountie for ${ghUserId}`;
     logger.error(`${message}, err = ${err.message}`);
-    return [];
+    throw new Error(`${message}, err = ${err.message}`);
   }
 };
 
@@ -59,6 +59,6 @@ export const isUserInOrgs = async (username, targetGhOrgs = []) => {
     return userOrgs.some(org => targetGhOrgs.indexOf(org) >= 0);
   } catch (err) {
     logger.error(`Github user not in target orgs ${err}`);
-    return false;
+    throw new Error(err);
   }
 };

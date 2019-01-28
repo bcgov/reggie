@@ -218,23 +218,31 @@ export const checkSSOGroup = async (credentials, userId, targetGroups = []) => {
  */
 export const checkUserAuthStatus = async userInfo => {
   const accountStatus = { isPending: false, isAuthorized: false, isRejected: false };
-  // User need to have a valid profile before they become authorized:
-  if (!checkUserProfile(userInfo)) return accountStatus;
 
   try {
-    const matchSchema = await checkRocketChatSchema(userInfo);
-    // if user account is not matching the requirments, reject:
-    if (!matchSchema) return { ...accountStatus, ...{ isRejected: true } };
     const ssoGroupNames = userInfo.group.map(i => i.name);
+    const isPending = ssoGroupNames.includes('pending');
+    const isAuthorized = ssoGroupNames.includes('registered');
+
     // if user has complete profile and matches requirement, return the current sso group status:
-    return {
-      ...accountStatus,
-      ...{
-        isPending: ssoGroupNames.includes('pending'),
-        isAuthorized: ssoGroupNames.includes('registered'),
-      },
-    };
-    // TODO: add check on authorization by email invitation token
+    if (isPending || isAuthorized) {
+      // User need to have a valid profile before they become authorized.
+      // If not, return status as not initiated:
+      if (!checkUserProfile(userInfo)) return accountStatus;
+      // If user has a valid profile, return the current status:
+      return {
+        ...accountStatus,
+        ...{
+          isPending,
+          isAuthorized,
+        },
+      };
+    }
+
+    // else, it's a new user, check if account is not matching the requirments, then reject:
+    const matchSchema = await checkRocketChatSchema(userInfo);
+    if (!matchSchema) return { ...accountStatus, ...{ isRejected: true } };
+    return accountStatus;
   } catch (err) {
     throw new Error(`Fail to check SSO user authorization info: ${err}`);
   }
