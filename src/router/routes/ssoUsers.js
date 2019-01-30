@@ -226,8 +226,8 @@ router.post(
       throw errorWithCode('Please provide a authorized user ID to invite new user.', 400);
     }
 
-    if (!newUser.email || !newUser.code) {
-      throw errorWithCode('Missing Email and invitation code', 400);
+    if (!newUser.email) {
+      throw errorWithCode('Missing Email', 400);
     }
 
     logger.info(`Inviting new user of ${newUser.email}`);
@@ -257,12 +257,12 @@ router.get(
     if (!userId) {
       throw errorWithCode('Please provide SSO user ID.', 400);
     }
-
-    if (!verifyBody.email || !verifyBody.code || !verifyBody.token) {
-      throw errorWithCode('Missing Email, Code, or Token', 400);
+    // verifyBody.code is optional:
+    if (!verifyBody.email || !verifyBody.token) {
+      throw errorWithCode('Missing Email or Token', 400);
     }
 
-    logger.info(`Verifying email and invitation code for ${userId}`);
+    logger.info(`Verifying invitation for ${userId}`);
     try {
       // Verify if email of user matches:
       logger.info('- Verify token');

@@ -117,10 +117,10 @@ export const sendConfirmationEmail = async (emailServerConfig, userInfo) => {
  *
  * @param {Object} emailServerConfig The configuration of email server, including host+port, and a sender email
  * @param {String} email The email to send to
- * @param {String} code The security code
+ * @param {String} code Optional, the security code
  * @returns The email message id if sent successfully
  */
-export const sendInvitationEmail = async (emailServerConfig, email, code) => {
+export const sendInvitationEmail = async (emailServerConfig, email, code = null) => {
   try {
     const encodeData = { email, code };
     const invitationLink = await generateLinkWithToken(
