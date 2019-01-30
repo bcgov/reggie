@@ -194,8 +194,7 @@ export const getUserInfoById = async (credentials, id) => {
       idp: idps,
     };
   } catch (err) {
-    // throw new Error(`Fail to retrive SSO user infomation: ${err}`);
-    const message = 'SSO user not found';
+    const message = 'Fail to retrive SSO user infomation';
     throw errorWithCode(`${message}, err = ${err}`, 404);
   }
 };

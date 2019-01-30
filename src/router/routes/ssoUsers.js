@@ -203,9 +203,10 @@ router.put(
           logger.info('- Authorized user already');
           return res.status(200).end();
         }
+        logger.info('- User not following the required authorization flow');
+        return res.status(400).json('You have not registered yet.');
       }
-      logger.info('- User not following the required authorization flow');
-      return res.status(404).json('Unsuccessful confirmation of the current user');
+      return res.status(404).json('The Confirmation email is invalid for current SSO user accout.');
     } catch (error) {
       const message = `Unable to update SSO user with ID ${userId}`;
       logger.error(`${message}, err = ${error.message}`);
