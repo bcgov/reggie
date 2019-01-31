@@ -39,7 +39,7 @@ objects:
         - image: ${NAME}:${VERSION}
           name: reggie-api
           ports:
-          - containerPort: 2015
+          - containerPort: 8000
             protocol: TCP
           resources:
             requests:
@@ -92,9 +92,9 @@ objects:
   spec:
     ports:
     - name: api
-      port: 2015
+      port: 8000
       protocol: TCP
-      targetPort: 2015
+      targetPort: 8000
     selector:
       deploymentconfig: ${NAME}${SUFFIX}
 - apiVersion: route.openshift.io/v1
