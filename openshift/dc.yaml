@@ -1,0 +1,202 @@
+apiVersion: v1
+kind: Template
+metadata:
+  creationTimestamp: null
+  name: reggie-api
+labels:
+  template: reggie-api
+objects:
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    creationTimestamp: null
+    name: ${NAME}
+  spec:
+    lookupPolicy:
+      local: false
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    creationTimestamp: null
+    name: ${NAME}${SUFFIX}
+  spec:
+    replicas: 2
+    selector:
+      deploymentconfig: ${NAME}${SUFFIX}
+    strategy:
+      resources:
+        requests:
+          cpu: '100m'
+        limits:
+          cpu: '150m'
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          deploymentconfig: ${NAME}${SUFFIX}
+      spec:
+        containers:
+        - image: ${NAME}:${VERSION}
+          name: reggie-api
+          ports:
+          - containerPort: 2015
+            protocol: TCP
+          resources:
+            requests:
+              cpu: '100m'
+            limits:
+              cpu: '150m'
+          env:
+          - name: SSO_HOST_URL
+            value: ${SSO_HOST_URL_VALUE}
+          - name: SSO_REALM
+            value: ${SSO_REALM_VALUE}
+          - name: SSO_USERNAME
+            value: ${SSO_USERNAME_VALUE}
+          - name: SSO_PASSWORD
+            value: ${SSO_PASSWORD_VALUE}
+          - name: EMAIL_HOST
+            value: ${EMAIL_HOST_VALUE}
+          - name: EMAIL_PORT
+            value: ${EMAIL_PORT_VALUE}
+          - name: EMAIL_SENDER
+            value: ${EMAIL_SENDER_VALUE}
+          - name: EMAIL_CONFIRMATION_JWT_SECRET
+            value: ${EMAIL_CONFIRMATION_JWT_SECRET_VALUE}
+          - name: EMAIL_INVITATION_JWT_SECRET
+            value: ${EMAIL_INVITATION_JWT_SECRET_VALUE}
+          - name: SSO_CLIENT_SECRET
+            value: ${SSO_CLIENT_SECRET_VALUE}
+          - name: RM_HOST
+            value: ${RM_HOST_VALUE}
+          - name: WEB_URL
+            value: ${WEB_URL_VALUE}
+          - name: API_URL
+            value: ${API_URL_VALUE}
+    test: false
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - reggie-api
+        from:
+          kind: ImageStreamTag
+          name: ${NAME}:${VERSION}
+      type: ImageChange
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: null
+    name: ${NAME}${SUFFIX}
+  spec:
+    ports:
+    - name: api
+      port: 2015
+      protocol: TCP
+      targetPort: 2015
+    selector:
+      deploymentconfig: ${NAME}${SUFFIX}
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    creationTimestamp: null
+    name: ${NAME}${SUFFIX}
+  spec:
+    host:
+    port:
+      targetPort: api
+    tls:
+      insecureEdgeTerminationPolicy: Redirect
+      termination: edge
+    to:
+      kind: Service
+      name: ${NAME}${SUFFIX}
+      weight: 100
+    wildcardPolicy: None
+parameters:
+- description: A name used for all objects
+  displayName: Name
+  name: NAME
+  required: true
+  value: reggie-api
+- description: A name suffix used for all objects
+  displayName: Suffix
+  name: SUFFIX
+  required: false
+  value: -dev
+- description: A version used for the image tags
+  displayName: version
+  name: VERSION
+  required: true
+  value: v1.0.0
+- description: A name used for routes/services and deployment configs
+  displayName: Host
+  name: HOST
+  required: false
+  value: ''
+- description: A base url of sso in the env
+  displayName: sso base URL
+  name: SSO_HOST_URL_VALUE
+  required: false
+  value: ''
+- description: A sso realm name in the env
+  displayName: sso realm name
+  name: SSO_REALM_VALUE
+  required: false
+  value: ''
+- description: A sso admin username
+  displayName: sso admin
+  name: SSO_USERNAME_VALUE
+  required: false
+  value: ''
+- description: A sso admin password
+  displayName: sso admin
+  name: SSO_PASSWORD_VALUE
+  required: false
+  value: ''
+- description: A email server host url
+  displayName: email server
+  name: EMAIL_HOST_VALUE
+  required: false
+  value: ''
+- description: A email server host port
+  displayName: email server
+  name: EMAIL_PORT_VALUE
+  required: false
+  value: ''
+- description: A email server sender
+  displayName: email server
+  name: EMAIL_SENDER_VALUE
+  required: false
+  value: ''
+- description: A email server secret for confirmation
+  displayName: email server
+  name: EMAIL_CONFIRMATION_JWT_SECRET_VALUE
+  required: false
+  value: ''
+- description: A email server secret for invitation
+  displayName: email server
+  name: EMAIL_INVITATION_JWT_SECRET_VALUE
+  required: false
+  value: ''
+- description: A sso client secret for reggie
+  displayName: sso client secret
+  name: SSO_CLIENT_SECRET_VALUE
+  required: false
+  value: ''
+- description: Repo mountie host url
+  displayName: Repo mountie
+  name: RM_HOST_VALUE
+  required: false
+  value: ''
+- description: The url of reggie web
+  displayName: Reggie web
+  name: WEB_URL_VALUE
+  required: false
+  value: 'https://devloper.gov.bc.ca'
+- description: The url of itself
+  displayName: Reggie api
+  name: API_URL_VALUE
+  required: false
+  value: ''
