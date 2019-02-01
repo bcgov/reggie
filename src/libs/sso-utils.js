@@ -31,6 +31,10 @@ export const checkCredentialValid = credentials => {
   if (!credentials.uri) {
     throw new Error('A URL must be provided');
   }
+  console.log(credentials.uri);
+  console.log(credentials.token);
+  console.log(credentials.username);
+  console.log(credentials.password);
   if (!(credentials.token || (credentials.username && credentials.password))) {
     throw new Error('An auth info must be provided, such as username-password pair or token.');
   }
