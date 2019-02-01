@@ -12,13 +12,23 @@ module.exports = (settings)=>{
   const buildVersion = '1.0.0'
   const deploymentVersion = `${oc.options.env}-1.0.0`
   // remove pr in prefix for test and prod environemnt:
-  const projectPrefix = (oc.options.env === "test") || (oc.options.env === "prod") ? `-${oc.options.env}` : `-${oc.options.env}-${oc.options.pr}`,
+  const projectPrefix = oc.options.env === "dev" ? `-${oc.options.env}-${oc.options.pr}` : `-${oc.options.env}`
+
+  // set the rest of the env vars:
+  let extraParams = {
+    RM_HOST_VALUE: 'https://repo-mountie-devhub-prod.pathfinder.gov.bc.ca/bot/github/membership',
+    WEB_URL_VALUE: oc.options.env === "prod" ? 'https://reggie-web-devhub-prod.pathfinder.gov.bc.ca' : 'https://reggie-web-test-devhub-test.pathfinder.gov.bc.ca',
+    API_URL_VALUE: oc.options.env === `https://${appName}-${projectPrefix}-devhub-${oc.options.env}.pathfinder.gov.bc.ca`,
+  }
 
   var objects = oc.process(oc.toFileUrl(templateFile), {
     'param':{
-      'NAME':appName,
-      'SUFFIX':projectPrefix,
-      'VERSION':`${deploymentVersion}`
+      ...{
+        'NAME':appName,
+        'SUFFIX':projectPrefix,
+        'VERSION':`${deploymentVersion}`
+      },
+      ...extraParams,
     }
   })
 
