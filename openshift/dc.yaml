@@ -48,25 +48,55 @@ objects:
               cpu: '150m'
           env:
           - name: SSO_HOST_URL
-            value: ${SSO_HOST_URL_VALUE}
+            valueFrom:
+              secretKeyRef:
+                name: reggie-sso-account
+                key: SSO_ADMIN_ACCOUNT_HOST_URL
           - name: SSO_REALM
-            value: ${SSO_REALM_VALUE}
+            valueFrom:
+              secretKeyRef:
+                name: reggie-sso-account
+                key: SSO_ADMIN_ACCOUNT_REALM
           - name: SSO_USERNAME
-            value: ${SSO_USERNAME_VALUE}
+            valueFrom:
+              secretKeyRef:
+                name: reggie-sso-account
+                key: SSO_ADMIN_ACCOUNT_USERNAME
           - name: SSO_PASSWORD
-            value: ${SSO_PASSWORD_VALUE}
+            valueFrom:
+              secretKeyRef:
+                name: reggie-sso-account
+                key: SSO_ADMIN_ACCOUNT_PASSWORD
           - name: EMAIL_HOST
-            value: ${EMAIL_HOST_VALUE}
+            valueFrom:
+              secretKeyRef:
+                name: reggie-email-server
+                key: EMAIL_HOST
           - name: EMAIL_PORT
-            value: ${EMAIL_PORT_VALUE}
+            valueFrom:
+              secretKeyRef:
+                name: reggie-email-server
+                key: EMAIL_PORT
           - name: EMAIL_SENDER
-            value: ${EMAIL_SENDER_VALUE}
+            valueFrom:
+              secretKeyRef:
+                name: reggie-email-server
+                key: EMAIL_SENDER
           - name: EMAIL_CONFIRMATION_JWT_SECRET
-            value: ${EMAIL_CONFIRMATION_JWT_SECRET_VALUE}
+            valueFrom:
+              secretKeyRef:
+                name: reggie-email-jwt
+                key: CONFIRMATION
           - name: EMAIL_INVITATION_JWT_SECRET
-            value: ${EMAIL_INVITATION_JWT_SECRET_VALUE}
+            valueFrom:
+              secretKeyRef:
+                name: reggie-email-jwt
+                key: INVITATION
           - name: SSO_CLIENT_SECRET
-            value: ${SSO_CLIENT_SECRET_VALUE}
+            valueFrom:
+              secretKeyRef:
+                name: reggie-sso-account
+                key: SSO_API_CLIENT_SECRET
           - name: RM_HOST
             value: ${RM_HOST_VALUE}
           - name: WEB_URL
@@ -135,56 +165,6 @@ parameters:
   name: HOST
   required: false
   value: ''
-- description: A base url of sso in the env
-  displayName: sso base URL
-  name: SSO_HOST_URL_VALUE
-  required: false
-  value: ''
-- description: A sso realm name in the env
-  displayName: sso realm name
-  name: SSO_REALM_VALUE
-  required: false
-  value: ''
-- description: A sso admin username
-  displayName: sso admin
-  name: SSO_USERNAME_VALUE
-  required: false
-  value: ''
-- description: A sso admin password
-  displayName: sso admin
-  name: SSO_PASSWORD_VALUE
-  required: false
-  value: ''
-- description: A email server host url
-  displayName: email server
-  name: EMAIL_HOST_VALUE
-  required: false
-  value: ''
-- description: A email server host port
-  displayName: email server
-  name: EMAIL_PORT_VALUE
-  required: false
-  value: ''
-- description: A email server sender
-  displayName: email server
-  name: EMAIL_SENDER_VALUE
-  required: false
-  value: ''
-- description: A email server secret for confirmation
-  displayName: email server
-  name: EMAIL_CONFIRMATION_JWT_SECRET_VALUE
-  required: false
-  value: ''
-- description: A email server secret for invitation
-  displayName: email server
-  name: EMAIL_INVITATION_JWT_SECRET_VALUE
-  required: false
-  value: ''
-- description: A sso client secret for reggie
-  displayName: sso client secret
-  name: SSO_CLIENT_SECRET_VALUE
-  required: false
-  value: ''
 - description: Repo mountie host url
   displayName: Repo mountie
   name: RM_HOST_VALUE
@@ -194,7 +174,7 @@ parameters:
   displayName: Reggie web
   name: WEB_URL_VALUE
   required: false
-  value: 'https://devloper.gov.bc.ca'
+  value: ''
 - description: The url of itself
   displayName: Reggie api
   name: API_URL_VALUE
