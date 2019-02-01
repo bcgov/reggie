@@ -95,7 +95,7 @@ objects:
           - name: SSO_CLIENT_SECRET
             valueFrom:
               secretKeyRef:
-                name: reggie-sso-account
+                name: reggie-repo-mountie
                 key: SSO_API_CLIENT_SECRET
           - name: RM_HOST
             value: ${RM_HOST_VALUE}
