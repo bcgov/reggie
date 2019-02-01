@@ -17,7 +17,7 @@ module.exports = (settings)=>{
   // set the rest of the env vars:
   let extraParams = {
     RM_HOST_VALUE: 'https://repo-mountie-devhub-prod.pathfinder.gov.bc.ca/bot/github/membership',
-    API_URL_VALUE: `https://${appName}-${projectPrefix}-devhub-${oc.options.env}.pathfinder.gov.bc.ca`,
+    API_URL_VALUE: `https://${appName}${projectPrefix}-devhub-${oc.options.env}.pathfinder.gov.bc.ca`,
   }
 
   var objects = oc.process(oc.toFileUrl(templateFile), {
