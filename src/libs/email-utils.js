@@ -53,9 +53,9 @@ export const generateLinkWithToken = async (data, secret, intention) => {
   const token = jwt.sign({ data }, secret, {
     expiresIn: EMAIL_REQUEST.JWT_EXPIRY,
   });
-  return `${config.get('webUrl')}/${
-    EMAIL_CONTENT.WEB_ROUTE
-  }?emailIntention=${intention}&jwt=${token}`;
+  // TODO: this should be passed in with the web request:
+  const reggieWebUrl = 'https://www.developer.gov.bc.ca';
+  return `${reggieWebUrl}/${EMAIL_CONTENT.WEB_ROUTE}?emailIntention=${intention}&jwt=${token}`;
 };
 
 export const verifyToken = async (token, secret) => {

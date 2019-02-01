@@ -99,8 +99,6 @@ objects:
                 key: SSO_API_CLIENT_SECRET
           - name: RM_HOST
             value: ${RM_HOST_VALUE}
-          - name: WEB_URL
-            value: ${WEB_URL_VALUE}
           - name: API_URL
             value: ${API_URL_VALUE}
     test: false
@@ -168,11 +166,6 @@ parameters:
 - description: Repo mountie host url
   displayName: Repo mountie
   name: RM_HOST_VALUE
-  required: false
-  value: ''
-- description: The url of reggie web
-  displayName: Reggie web
-  name: WEB_URL_VALUE
   required: false
   value: ''
 - description: The url of itself
