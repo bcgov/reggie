@@ -12,11 +12,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cvarjao-o/hello-world.git"
+    "url": "git+https://github.com/bcgov/reggie.git"
   },
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "pipeline-cli": "git+https://github.com/cvarjao-o/pipeline-cli.git#70956d3d71ffdadeeb82a4e37b394196739a9740"
+    "pipeline-cli": "git+https://github.com/bcdevops/pipeline-cli.git#70956d3d71ffdadeeb82a4e37b394196739a9740"
   }
 }
