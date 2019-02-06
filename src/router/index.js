@@ -25,9 +25,9 @@ import cors from 'cors';
 import ehlo from './routes/ehlo';
 import sso from './routes/ssoUsers';
 
+// TODO: specify the allowed origins instead of all
 const corsOptions = {
   origin: '*',
-  // origin: config.get('environment') === 'development' ? '*' : config.get('apiUrl'),
   credentials: true,
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
