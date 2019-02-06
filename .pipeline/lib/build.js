@@ -12,7 +12,7 @@ module.exports = (settings)=>{
     'param':{
       'NAME':appName,
       'SUFFIX':`-${oc.options.pr}`,
-      'VERSION':'1.0.0',
+      'VERSION':`build-v${oc.options.pr}`,
       'SOURCE_REPOSITORY_URL':`${oc.git.uri}`,
       'SOURCE_REPOSITORY_REF':`${oc.git.branch_ref}`
     }

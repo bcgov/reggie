@@ -9,7 +9,7 @@ module.exports = (settings)=>{
   var templateFile = path.resolve(__dirname, '../../openshift/dc.yaml')
   const appName = 'reggie-api'
   const buildNamespace = 'devhub-tools'
-  const buildVersion = '1.0.0'
+  const buildVersion = `build-v${oc.options.pr}`
   const deploymentVersion = `${oc.options.env}-1.0.0`
   // remove pr in prefix for test and prod environemnt:
   const projectPrefix = oc.options.env === "dev" ? `-${oc.options.env}-${oc.options.pr}` : `-${oc.options.env}`
