@@ -12,7 +12,7 @@ pipeline {
                     abortAllPreviousBuildInProgress(currentBuild)
                 }
                 echo "Building ..."
-                sh "export 'DEBUG=*' && .pipeline/cli.sh build -- --pr=${CHANGE_ID}"
+                sh ".pipeline/cli.sh build -- --pr=${CHANGE_ID}"
             }
         }
         stage('Deploy (DEV)') {
