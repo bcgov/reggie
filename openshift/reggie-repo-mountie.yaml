@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Template
+metadata:
+  creationTimestamp: null
+  name: "true"
+objects:
+- apiVersion: v1
+  stringData:
+    SSO_API_CLIENT_SECRET: ${SSO_API_CLIENT_SECRET}
+  kind: Secret
+  metadata:
+    creationTimestamp: null
+    name: reggie-repo-mountie
+  type: Opaque
+parameters:
+- description: A secret of sso client for repo mountie auth
+  displayName: SSO_API_CLIENT_SECRET
+  name: SSO_API_CLIENT_SECRET
+  required: true
+  value: ''

@@ -117,12 +117,19 @@ router.put(
     if (!userProfile.email || !userProfile.firstName || !userProfile.lastName) {
       throw errorWithCode('Missing Email, firstName or lastName to update the SSO user', 400);
     }
+
+    if (!userProfile.refUrl) {
+      throw errorWithCode('Missing web base url for email link', 400);
+    }
+
     const userInfo = {
       id: userId,
       email: userProfile.email,
       firstName: userProfile.firstName,
       lastName: userProfile.lastName,
     };
+
+    const { refUrl } = userProfile;
 
     logger.info(`Updating user of ${userId}`);
     const SACredentials = config.get(SSO_REQUEST.SA_CREDENTIAL_NAME);
@@ -149,7 +156,7 @@ router.put(
       await addUserToGroup(SSOCredentials, userId, SSO_GROUPS.PENDING);
       // Send out confirmation email to the updated email adderss:
       logger.info('- Email user');
-      await sendConfirmationEmail(emailServerConfig, userInfo);
+      await sendConfirmationEmail(emailServerConfig, userInfo, refUrl);
 
       return res.status(200).end();
     } catch (error) {
@@ -226,8 +233,8 @@ router.post(
       throw errorWithCode('Please provide a authorized user ID to invite new user.', 400);
     }
 
-    if (!newUser.email || !newUser.code) {
-      throw errorWithCode('Missing Email and invitation code', 400);
+    if (!newUser.email || !newUser.code || !newUser.refUrl) {
+      throw errorWithCode('Missing Email and invitation code, or web url', 400);
     }
 
     logger.info(`Inviting new user of ${newUser.email}`);
@@ -236,7 +243,7 @@ router.post(
     try {
       // Send out invitation email to the target email adderss:
       logger.info('- Email user');
-      await sendInvitationEmail(emailServerConfig, newUser.email, newUser.code);
+      await sendInvitationEmail(emailServerConfig, newUser.email, newUser.code, newUser.refUrl);
 
       return res.status(200).end();
     } catch (error) {

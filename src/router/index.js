@@ -21,12 +21,13 @@
 'use strict';
 
 import cors from 'cors';
-import config from '../config';
+// import config from '../config';
 import ehlo from './routes/ehlo';
 import sso from './routes/ssoUsers';
 
+// TODO: specify the allowed origins instead of all
 const corsOptions = {
-  origin: config.get('environment') === 'development' ? '*' : config.get('apiUrl'),
+  origin: '*',
   credentials: true,
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };

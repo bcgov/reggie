@@ -49,13 +49,11 @@ export const setMailer = async (host, port) => {
   }
 };
 
-export const generateLinkWithToken = async (data, secret, intention) => {
+export const generateLinkWithToken = async (data, secret, intention, refUrl) => {
   const token = jwt.sign({ data }, secret, {
     expiresIn: EMAIL_REQUEST.JWT_EXPIRY,
   });
-  return `${config.get('webUrl')}/${
-    EMAIL_CONTENT.WEB_ROUTE
-  }?emailIntention=${intention}&jwt=${token}`;
+  return `${refUrl}/${EMAIL_CONTENT.WEB_ROUTE}?emailIntention=${intention}&jwt=${token}`;
 };
 
 export const verifyToken = async (token, secret) => {
@@ -73,15 +71,17 @@ export const verifyToken = async (token, secret) => {
  *
  * @param {Object} emailServerConfig The configuration of email server, including host+port, and a sender email
  * @param {Object} userInfo The user information, including email, first and last name
+ * @param {String} refUrl The reference url as the base url for link
  * @returns The email message id if sent successfully
  */
-export const sendConfirmationEmail = async (emailServerConfig, userInfo) => {
+export const sendConfirmationEmail = async (emailServerConfig, userInfo, refUrl) => {
   try {
     // TODO: modify email contents and public host image/logo, and styling
     const confirmLink = await generateLinkWithToken(
       userInfo.email,
       process.env.EMAIL_CONFIRMATION_JWT_SECRET,
-      EMAIL_CONTENT.CONFIRMATION
+      EMAIL_CONTENT.CONFIRMATION,
+      refUrl
     );
     const logoLink = `${config.get('apiUrl')}/gov-logo.png`;
     const htmlPayload = await ejs.renderFile('public/emailConfirmation.ejs', {
@@ -118,15 +118,17 @@ export const sendConfirmationEmail = async (emailServerConfig, userInfo) => {
  * @param {Object} emailServerConfig The configuration of email server, including host+port, and a sender email
  * @param {String} email The email to send to
  * @param {String} code The security code
+ * @param {String} refUrl The reference url as the base url for link
  * @returns The email message id if sent successfully
  */
-export const sendInvitationEmail = async (emailServerConfig, email, code) => {
+export const sendInvitationEmail = async (emailServerConfig, email, code, refUrl) => {
   try {
     const encodeData = { email, code };
     const invitationLink = await generateLinkWithToken(
       encodeData,
       process.env.EMAIL_INVITATION_JWT_SECRET,
-      EMAIL_CONTENT.INVITATION
+      EMAIL_CONTENT.INVITATION,
+      refUrl
     );
 
     const logoLink = `${config.get('apiUrl')}/gov-logo.png`;
