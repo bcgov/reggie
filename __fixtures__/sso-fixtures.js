@@ -39,3 +39,29 @@ export const SSO_SA = {
   PASSWORD: 'password1',
   TOKEN: '123',
 };
+
+export const SSO_USERS = {
+  USER1: {
+    email: SSO_ACCOUNT.EMAIL,
+    firstName: SSO_ACCOUNT.FIRST,
+    lastName: SSO_ACCOUNT.LAST,
+  },
+  USER2: {
+    firstName: SSO_ACCOUNT.FIRST,
+    lastName: SSO_ACCOUNT.LAST,
+  },
+  USER3: {
+    email: SSO_ACCOUNT.EMAIL,
+    firstName: SSO_ACCOUNT.FIRST,
+    lastName: SSO_ACCOUNT.LAST,
+    idp: SSO_ACCOUNT.IDP,
+    group: SSO_ACCOUNT.GROUP,
+  },
+};
+
+export const SSO_IDPS = {
+  IDP1: [],
+  IDP2: [{ identityProvider: 'idir' }],
+  IDP3: [{ identityProvider: 'github' }],
+  IDP4: [{ identityProvider: 'idir' }, { identityProvider: 'github' }],
+};

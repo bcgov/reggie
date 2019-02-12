@@ -20,7 +20,7 @@
 
 // import { default as request } from 'supertest'; // eslint-disable-line
 import { checkCredentialValid, checkUserProfile, getSAToken } from '../src/libs/sso-utils';
-import { SSO_USER, SSO_SA, SSO_ACCOUNT } from '../__fixtures__/sso-fixtures';
+import { SSO_USER, SSO_SA, SSO_USERS } from '../__fixtures__/sso-fixtures';
 
 jest.mock('request-promise-native');
 
@@ -61,19 +61,12 @@ describe('Test checkCredentialValid', () => {
 
 describe('Test checkUserProfile', () => {
   test('User info must have email and first+last name', () => {
-    const user = {
-      email: SSO_ACCOUNT.EMAIL,
-      firstName: SSO_ACCOUNT.FIRST,
-      lastName: SSO_ACCOUNT.LAST,
-    };
+    const user = SSO_USERS.USER1;
     expect(checkUserProfile(user)).toBe(true);
   });
 
   test('return false if missing any', () => {
-    const user = {
-      firstName: SSO_ACCOUNT.FIRST,
-      lastName: SSO_ACCOUNT.LAST,
-    };
+    const user = SSO_USERS.USER2;
     expect(checkUserProfile(user)).toBe(false);
   });
 });

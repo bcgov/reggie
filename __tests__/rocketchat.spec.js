@@ -20,7 +20,7 @@
 
 // import { default as request } from 'supertest'; // eslint-disable-line
 import { checkRocketChatSchema } from '../src/libs/rocketchat';
-import { SSO_USER, SSO_SA, SSO_ACCOUNT } from '../__fixtures__/sso-fixtures';
+import { SSO_IDPS } from '../__fixtures__/sso-fixtures';
 
 jest.mock('request-promise-native');
 
