@@ -18,22 +18,32 @@
 // Created by Shelly Xue Han on 2019-02-12.
 //
 
-// import { default as request } from 'supertest'; // eslint-disable-line
-import { checkRocketChatSchema } from '../src/libs/rocketchat';
-import { SSO_IDPS } from '../__fixtures__/sso-fixtures';
+import checkRocketChatSchema from '../src/libs/rocketchat';
+import { isUserInOrgs } from '../src/libs/gh-utils';
+import { SSO_USERS_IDPS } from '../__fixtures__/sso-fixtures';
 
-jest.mock('request-promise-native');
+jest.mock('../src/libs/gh-utils');
 
-describe.skip('Test checkRocketChatSchema', () => {
-  test('when account does not have any idp', () => {
+isUserInOrgs.mockImplementation((username, targetGhOrgs) => username === 'goodUser');
+
+describe('Test checkRocketChatSchema', () => {
+  test('when account does not have any idp', async () => {
+    const profile = { idp: SSO_USERS_IDPS.IDP1 };
+    expect(await checkRocketChatSchema(profile)).toBe(false);
   });
 
-  test('when account has IDIR idp', () => {
+  test('when account has IDIR idp', async () => {
+    const profile = { idp: SSO_USERS_IDPS.IDP2 };
+    expect(await checkRocketChatSchema(profile)).toBe(true);
   });
 
-  test('when account has GitHub idp, with target org', () => {
+  test('when account has GitHub idp, with target org', async () => {
+    const profile = { idp: SSO_USERS_IDPS.IDP3 };
+    expect(await checkRocketChatSchema(profile)).toBe(true);
   });
 
-  test('when account has GitHub idp, witout target org', () => {
+  test('when account has GitHub idp, witout target org', async () => {
+    const profile = { idp: SSO_USERS_IDPS.IDP4 };
+    expect(await checkRocketChatSchema(profile)).toBe(false);
   });
 });

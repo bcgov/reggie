@@ -59,9 +59,9 @@ export const SSO_USERS = {
   },
 };
 
-export const SSO_IDPS = {
+export const SSO_USERS_IDPS = {
   IDP1: [],
   IDP2: [{ identityProvider: 'idir' }],
-  IDP3: [{ identityProvider: 'github' }],
-  IDP4: [{ identityProvider: 'idir' }, { identityProvider: 'github' }],
+  IDP3: [{ identityProvider: 'github', userName: 'goodUser' }],
+  IDP4: [{ identityProvider: 'github', userName: 'badUser' }],
 };
