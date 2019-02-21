@@ -22,15 +22,21 @@
 
 'use strict';
 
-import { SSO_SA, SSO_USER } from '../__fixtures__/sso-fixtures';
+import { SSO_SA } from '../__fixtures__/sso-fixtures';
+import { GH_USERS } from '../__fixtures__/gh-fixtures';
 
 let rpn = jest.genMockFromModule('request-promise-native');
 
 function request(options) {
   let resolveObject = '';
-  if (options.uri === SSO_SA.URL) resolveObject = { access_token: SSO_SA.TOKEN };
+  if (options.uri === SSO_SA.URL) resolveObject = JSON.stringify({ access_token: SSO_SA.TOKEN });
+  if (options.uri === process.env.RM_HOST) {
+    resolveObject = { statusCode: 404, body: [] };
+    if (options.qs.userId === GH_USERS.TARGET_USER.userId)
+      resolveObject = { statusCode: 200, body: GH_USERS.TARGET_USER.response };
+  }
   return new Promise((resolve, reject) => {
-    resolve(JSON.stringify(resolveObject));
+    resolve(resolveObject);
   });
 }
 
