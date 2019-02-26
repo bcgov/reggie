@@ -26,6 +26,34 @@ import url from 'url';
 import { SSO_SUB_URI, SSO_REQUEST } from '../constants';
 import checkRocketChatSchema from './rocketchat';
 import checkArray from './utils';
+import shared from './shared';
+
+/**
+ * Setup the options for SSO request
+ *
+ * @param {String} subUrl The sub url of the request
+ * @param {String} httpMethod The request method, default as GET
+ * @param {Object} params The query string for request, default as empty object
+ * @return {String} The authentication token for SSO SA
+ */
+export const setRequestHeader = async (subUrl = null, httpMethod = 'GET', params = {}) => {
+  try {
+    const baseUri = `${process.env.SSO_HOST_URL}/${SSO_SUB_URI.REALM_ADMIN}/${process.env.SSO_REALM}/`;
+    const finalUri = subUrl ? url.resolve(baseUri, subUrl) : baseUri;
+
+    return {
+      headers: {
+        'Content-Type': SSO_REQUEST.CONTENT_TYPE_FORM,
+        Authorization: `Bearer ${await shared.ssoSA.accessToken}`,
+      },
+      uri: finalUri,
+      method: httpMethod,
+      qs: params,
+    };
+  } catch (err) {
+    throw new Error(err);
+  }
+};
 
 export const checkCredentialValid = credentials => {
   if (!credentials.uri) {
@@ -38,33 +66,6 @@ export const checkCredentialValid = credentials => {
 
 export const checkUserProfile = userInfo =>
   !(!userInfo.email || !userInfo.firstName || !userInfo.lastName);
-
-export const getSAToken = async credentials => {
-  checkCredentialValid(credentials);
-  try {
-    const options = {
-      headers: {
-        'Content-Type': SSO_REQUEST.CONTENT_TYPE_FORM,
-      },
-      auth: {
-        user: credentials.username,
-        pass: credentials.password,
-      },
-      uri: credentials.uri,
-      method: 'POST',
-      form: {
-        grant_type: SSO_REQUEST.GRANT_TYPE,
-        client_id: SSO_REQUEST.CLIENT_ID,
-      },
-    };
-
-    const res = await request(options);
-    const jsonRes = JSON.parse(res);
-    return jsonRes.access_token;
-  } catch (err) {
-    throw new Error(`Cannot connect to KeyCloak: ${err}`);
-  }
-};
 
 export const getUserID = async (credentials, email) => {
   checkCredentialValid(credentials);
