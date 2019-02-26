@@ -24,6 +24,7 @@ import { JWTServiceManager } from '@bcgov/nodejs-common-utils';
 import config from '../config';
 
 const skey = Symbol.for('ca.bc.gov.pathfinder.reggie-api.sso');
+const skeySA = Symbol.for('ca.bc.gov.pathfinder.reggie-api.sa.sso');
 const gs = Object.getOwnPropertySymbols(global);
 
 if (!(gs.indexOf(skey) > -1)) {
@@ -35,10 +36,23 @@ if (!(gs.indexOf(skey) > -1)) {
   });
 }
 
+if (!(gs.indexOf(skeySA) > -1)) {
+  global[skeySA] = new JWTServiceManager({
+    uri: config.get('ssoSA:uri'),
+    grantType: config.get('ssoSA:grantType'),
+    clientId: config.get('ssoSA:username'),
+    clientSecret: config.get('ssoSA:password'),
+  });
+}
+
 const singleton = {};
 
 Object.defineProperty(singleton, 'sso', {
   get: () => global[skey],
+});
+
+Object.defineProperty(singleton, 'ssoSA', {
+  get: () => global[skeySA],
 });
 
 Object.freeze(singleton);
