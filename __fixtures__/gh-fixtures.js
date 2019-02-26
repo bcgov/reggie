@@ -15,11 +15,38 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// Created by Shelly Xue Han on 2019-01-22.
+// Created by Shelly Xue Han on 2019-02-12.
 //
 
 'use strict';
 
-const checkArray = array => Array.isArray(array) && array.length > 0;
+export const TARGET_GITHUB_ORGS = ['org1', 'org2', 'org3'];
 
-module.exports = checkArray;
+export const GH_USERS = {
+  TARGET_USER: {
+    userId: 'matchedUser',
+    response: [
+      {
+        org: TARGET_GITHUB_ORGS[0],
+        membership: true,
+      },
+      {
+        org: TARGET_GITHUB_ORGS[1],
+        membership: true,
+      },
+      {
+        org: TARGET_GITHUB_ORGS[2],
+        membership: false,
+      },
+    ],
+  },
+  OTHER_USER: {
+    userId: 'otherUser',
+    response: [
+      {
+        org: TARGET_GITHUB_ORGS[2],
+        membership: false,
+      },
+    ],
+  },
+};

@@ -15,11 +15,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// Created by Shelly Xue Han on 2019-01-22.
+// Created by Shelly Xue Han on 2019-02-12.
 //
 
-'use strict';
+// import { default as request } from 'supertest'; // eslint-disable-line
+import checkArray from '../src/libs/utils';
 
-const checkArray = array => Array.isArray(array) && array.length > 0;
+describe('Test checkArray', () => {
+  test('Type of array', () => {
+    expect(checkArray('')).toBe(false);
+  });
 
-module.exports = checkArray;
+  test('Non-empty array', () => {
+    expect(checkArray([])).toBe(false);
+  });
+
+  test('Array of object', () => {
+    const testObject = { foo: 'foo' };
+    expect(checkArray([testObject, testObject])).toBe(true);
+  });
+});
