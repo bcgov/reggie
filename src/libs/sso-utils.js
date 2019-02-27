@@ -38,7 +38,9 @@ import shared from './shared';
  */
 export const setRequestHeader = async (subUrl = null, httpMethod = 'GET', params = {}) => {
   try {
-    const baseUri = `${process.env.SSO_HOST_URL}/${SSO_SUB_URI.REALM_ADMIN}/${process.env.SSO_REALM}/`;
+    const baseUri = `${process.env.SSO_HOST_URL}/${SSO_SUB_URI.REALM_ADMIN}/${
+      process.env.SSO_REALM
+    }/`;
     const finalUri = subUrl ? url.resolve(baseUri, subUrl) : baseUri;
 
     return {
@@ -67,21 +69,9 @@ export const checkCredentialValid = credentials => {
 export const checkUserProfile = userInfo =>
   !(!userInfo.email || !userInfo.firstName || !userInfo.lastName);
 
-export const getUserID = async (credentials, email) => {
-  checkCredentialValid(credentials);
-
+export const getUserID = async email => {
   try {
-    const options = {
-      headers: {
-        'Content-Type': SSO_REQUEST.CONTENT_TYPE_FORM,
-        Authorization: `Bearer ${credentials.token}`,
-      },
-      uri: url.resolve(credentials.uri, SSO_SUB_URI.USER),
-      method: 'GET',
-      qs: {
-        email,
-      },
-    };
+    const options = await setRequestHeader(SSO_SUB_URI.USER, 'GET', { email });
 
     const res = await request(options);
     const jsonRes = JSON.parse(res);
@@ -91,17 +81,9 @@ export const getUserID = async (credentials, email) => {
   }
 };
 
-export const getUserGroups = async (credentials, userId) => {
-  checkCredentialValid(credentials);
+export const getUserGroups = async userId => {
   try {
-    const options = {
-      headers: {
-        'Content-Type': SSO_REQUEST.CONTENT_TYPE_FORM,
-        Authorization: `Bearer ${credentials.token}`,
-      },
-      uri: url.resolve(credentials.uri, `${SSO_SUB_URI.USER}/${userId}/${SSO_SUB_URI.GROUP}`),
-      method: 'GET',
-    };
+    const options = await setRequestHeader(`${SSO_SUB_URI.USER}/${userId}/${SSO_SUB_URI.GROUP}`);
 
     const res = await request(options);
     const jsonRes = JSON.parse(res);
@@ -111,17 +93,9 @@ export const getUserGroups = async (credentials, userId) => {
   }
 };
 
-export const getUserIdps = async (credentials, userId) => {
-  checkCredentialValid(credentials);
+export const getUserIdps = async userId => {
   try {
-    const options = {
-      headers: {
-        'Content-Type': SSO_REQUEST.CONTENT_TYPE_FORM,
-        Authorization: `Bearer ${credentials.token}`,
-      },
-      uri: url.resolve(credentials.uri, `${SSO_SUB_URI.USER}/${userId}/${SSO_SUB_URI.IDP}`),
-      method: 'GET',
-    };
+    const options = await setRequestHeader(`${SSO_SUB_URI.USER}/${userId}/${SSO_SUB_URI.IDP}`);
 
     const res = await request(options);
     const jsonRes = JSON.parse(res);
@@ -131,21 +105,9 @@ export const getUserIdps = async (credentials, userId) => {
   }
 };
 
-export const getUserInfoByEmail = async (credentials, email) => {
-  checkCredentialValid(credentials);
-
+export const getUserInfoByEmail = async email => {
   try {
-    const options = {
-      headers: {
-        'Content-Type': SSO_REQUEST.CONTENT_TYPE_FORM,
-        Authorization: `Bearer ${credentials.token}`,
-      },
-      uri: url.resolve(credentials.uri, SSO_SUB_URI.USER),
-      method: 'GET',
-      qs: {
-        email,
-      },
-    };
+    const options = await setRequestHeader(SSO_SUB_URI.USER, 'GET', { email });
 
     const res = await request(options);
     const userInfoJson = JSON.parse(res);
@@ -153,8 +115,8 @@ export const getUserInfoByEmail = async (credentials, email) => {
       throw new Error('No such SSO user');
     }
     const ssoUserInfo = userInfoJson[0];
-    const groups = await getUserGroups(credentials, ssoUserInfo.id);
-    const idps = await getUserIdps(credentials, ssoUserInfo.id);
+    const groups = await getUserGroups(ssoUserInfo.id);
+    const idps = await getUserIdps(ssoUserInfo.id);
     return {
       id: ssoUserInfo.id,
       email: ssoUserInfo.email ? ssoUserInfo.email : null,
@@ -168,23 +130,14 @@ export const getUserInfoByEmail = async (credentials, email) => {
   }
 };
 
-export const getUserInfoById = async (credentials, id) => {
-  checkCredentialValid(credentials);
-
+export const getUserInfoById = async id => {
   try {
-    const options = {
-      headers: {
-        'Content-Type': SSO_REQUEST.CONTENT_TYPE_FORM,
-        Authorization: `Bearer ${credentials.token}`,
-      },
-      uri: url.resolve(credentials.uri, `${SSO_SUB_URI.USER}/${id}`),
-      method: 'GET',
-    };
+    const options = await setRequestHeader(`${SSO_SUB_URI.USER}/${id}`);
 
     const res = await request(options);
     const userInfoJson = JSON.parse(res);
     const ssoUserId = userInfoJson.id;
-    const groups = await getUserGroups(credentials, ssoUserId);
+    const groups = await getUserGroups(ssoUserId);
     const idps = userInfoJson.federatedIdentities;
     return {
       id: userInfoJson.id,
@@ -200,9 +153,9 @@ export const getUserInfoById = async (credentials, id) => {
   }
 };
 
-export const checkSSOGroup = async (credentials, userId, targetGroups = []) => {
+export const checkSSOGroup = async (userId, targetGroups = []) => {
   try {
-    const groups = await getUserGroups(credentials, userId);
+    const groups = await getUserGroups(userId);
     if (checkArray(groups)) {
       const ssoGroupNames = groups.map(i => i.name);
       return ssoGroupNames.some(groupName => targetGroups.indexOf(groupName) >= 0);
@@ -258,21 +211,9 @@ export const checkUserAuthStatus = async userInfo => {
  * @param {Object} userInfo The sso user profile
  * @return {Boolean} If email exists with another accout, true. Else, return false
  */
-export const checkEmailExists = async (credentials, userInfo) => {
-  checkCredentialValid(credentials);
-
+export const checkEmailExists = async userInfo => {
   try {
-    const options = {
-      headers: {
-        'Content-Type': SSO_REQUEST.CONTENT_TYPE_FORM,
-        Authorization: `Bearer ${credentials.token}`,
-      },
-      uri: url.resolve(credentials.uri, SSO_SUB_URI.USER),
-      method: 'GET',
-      qs: {
-        email: userInfo.email,
-      },
-    };
+    const options = await setRequestHeader(SSO_SUB_URI.USER, 'GET', { email: userInfo.email });
 
     const res = await request(options);
     const jsonRes = JSON.parse(res);
@@ -286,16 +227,11 @@ export const checkEmailExists = async (credentials, userInfo) => {
   }
 };
 
-export const updateUser = async (credentials, userInfo) => {
-  checkCredentialValid(credentials);
+export const updateUser = async userInfo => {
   try {
-    const options = {
-      headers: {
-        'Content-Type': SSO_REQUEST.CONTENT_TYPE_JSON,
-        Authorization: `Bearer ${credentials.token}`,
-      },
-      uri: url.resolve(credentials.uri, `${SSO_SUB_URI.USER}/${userInfo.id}`),
-      method: 'PUT',
+    let options = await setRequestHeader(`${SSO_SUB_URI.USER}/${userInfo.id}`, 'PUT');
+    options = {
+      ...options,
       body: {
         id: userInfo.id,
         email: userInfo.email,
@@ -304,6 +240,7 @@ export const updateUser = async (credentials, userInfo) => {
       },
       json: true,
     };
+
     const res = await request(options);
     return res;
   } catch (err) {
@@ -311,22 +248,9 @@ export const updateUser = async (credentials, userInfo) => {
   }
 };
 
-export const getGroupID = async (credentials, groupName) => {
-  checkCredentialValid(credentials);
-
+export const getGroupID = async groupName => {
   try {
-    const options = {
-      headers: {
-        'Content-Type': SSO_REQUEST.CONTENT_TYPE_FORM,
-        Authorization: `Bearer ${credentials.token}`,
-      },
-      uri: url.resolve(credentials.uri, SSO_SUB_URI.GROUP),
-      method: 'GET',
-      qs: {
-        search: groupName,
-      },
-    };
-
+    const options = await setRequestHeader(SSO_SUB_URI.GROUP, 'GET', { search: groupName });
     const res = await request(options);
     const groupInfoJson = JSON.parse(res);
     if (groupInfoJson.length < 1) {
@@ -338,21 +262,12 @@ export const getGroupID = async (credentials, groupName) => {
   }
 };
 
-export const addUserToGroup = async (credentials, userId, groupName) => {
-  checkCredentialValid(credentials);
-
+export const addUserToGroup = async (userId, groupName) => {
   try {
     // TBD: use group name or ID?
-    const groupId = await getGroupID(credentials, groupName);
+    const groupId = await getGroupID(groupName);
     const subUrl = `${SSO_SUB_URI.USER}/${userId}/${SSO_SUB_URI.GROUP}/${groupId}`;
-    const options = {
-      headers: {
-        'Content-Type': SSO_REQUEST.CONTENT_TYPE_FORM,
-        Authorization: `Bearer ${credentials.token}`,
-      },
-      uri: url.resolve(credentials.uri, subUrl),
-      method: 'PUT',
-    };
+    const options = await setRequestHeader(subUrl, 'PUT');
 
     const res = await request(options);
     return res;
@@ -361,22 +276,12 @@ export const addUserToGroup = async (credentials, userId, groupName) => {
   }
 };
 
-export const removeUserFromGroup = async (credentials, userId, groupName) => {
-  checkCredentialValid(credentials);
-
+export const removeUserFromGroup = async (userId, groupName) => {
   try {
     // TBD: use group name or ID?
-    const groupId = await getGroupID(credentials, groupName);
+    const groupId = await getGroupID(groupName);
     const subUrl = `${SSO_SUB_URI.USER}/${userId}/${SSO_SUB_URI.GROUP}/${groupId}`;
-    const options = {
-      headers: {
-        'Content-Type': SSO_REQUEST.CONTENT_TYPE_FORM,
-        Authorization: `Bearer ${credentials.token}`,
-      },
-      uri: url.resolve(credentials.uri, subUrl),
-      method: 'DELETE',
-    };
-
+    const options = await setRequestHeader(subUrl, 'DELETE');
     const res = await request(options);
     return res;
   } catch (err) {
