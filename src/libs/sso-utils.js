@@ -207,7 +207,6 @@ export const checkUserAuthStatus = async userInfo => {
 /**
  * Check for email duplication in SSO user accouts
  *
- * @param {Object} credentials The sso admin account credentials
  * @param {Object} userInfo The sso user profile
  * @return {Boolean} If email exists with another accout, true. Else, return false
  */
@@ -282,6 +281,7 @@ export const removeUserFromGroup = async (userId, groupName) => {
     const groupId = await getGroupID(groupName);
     const subUrl = `${SSO_SUB_URI.USER}/${userId}/${SSO_SUB_URI.GROUP}/${groupId}`;
     const options = await setRequestHeader(subUrl, 'DELETE');
+
     const res = await request(options);
     return res;
   } catch (err) {

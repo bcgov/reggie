@@ -25,7 +25,7 @@
 import { asyncMiddleware, errorWithCode, logger } from '@bcgov/nodejs-common-utils';
 import { Router } from 'express';
 import config from '../../config';
-import { SSO_SUB_URI, SSO_REQUEST, SSO_GROUPS, EMAIL_REQUEST } from '../../constants';
+import { SSO_GROUPS, EMAIL_REQUEST } from '../../constants';
 import {
   getUserInfoByEmail,
   getUserInfoById,

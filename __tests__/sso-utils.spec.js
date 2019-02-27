@@ -19,8 +19,8 @@
 //
 
 // import { default as request } from 'supertest'; // eslint-disable-line
-import { checkCredentialValid, checkUserProfile, getSAToken } from '../src/libs/sso-utils';
-import { SSO_USER, SSO_SA, SSO_USERS } from '../__fixtures__/sso-fixtures';
+import { checkCredentialValid, checkUserProfile } from '../src/libs/sso-utils';
+import { SSO_USER, SSO_USERS } from '../__fixtures__/sso-fixtures';
 
 jest.mock('request-promise-native');
 
@@ -68,14 +68,5 @@ describe('Test checkUserProfile', () => {
   test('return false if missing any', () => {
     const user = SSO_USERS.USER2;
     expect(checkUserProfile(user)).toBe(false);
-  });
-});
-
-describe('Test getSAToken', () => {
-  const credentials = { uri: SSO_SA.URL, username: SSO_SA.USERNAME, password: SSO_SA.PASSWORD };
-
-  test('Receive token from sa auth request', async () => {
-    const token = await getSAToken(credentials);
-    expect(token).toBe(SSO_SA.TOKEN);
   });
 });
