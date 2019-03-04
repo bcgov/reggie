@@ -29,10 +29,14 @@ import { SSO_GROUPS, EMAIL_REQUEST } from '../../constants';
 import {
   getUserInfoByEmail,
   getUserInfoById,
+  checkSSOGroup,
+  checkEmailExists,
+  updateUser,
   checkUserAuthStatus,
   addUserToGroup,
+  removeUserFromGroup,
 } from '../../libs/sso-utils';
-import { sendInvitationEmail, verifyToken } from '../../libs/email-utils';
+import { sendConfirmationEmail, sendInvitationEmail, verifyToken } from '../../libs/email-utils';
 
 const router = new Router();
 
@@ -49,7 +53,7 @@ router.get(
     logger.info(`Looking of user of ${email}`);
     try {
       const userProfile = await getUserInfoByEmail(email);
-      const userStatus = await checkUserAuthStatus(userProfile);
+      const userStatus = await checkUserAuthStatus(userProfile, true);
 
       return res.status(200).json({ ...userProfile, ...userStatus });
     } catch (error) {
@@ -73,7 +77,7 @@ router.get(
     logger.info(`Looking of user of ${userId}`);
     try {
       const userProfile = await getUserInfoById(userId);
-      const userStatus = await checkUserAuthStatus(userProfile);
+      const userStatus = await checkUserAuthStatus(userProfile, true);
 
       return res.status(200).json({ ...userProfile, ...userStatus });
     } catch (error) {
@@ -81,6 +85,113 @@ router.get(
       const message = `Unable to get SSO user with ID ${userId}`;
       logger.error(`${message}, err = ${error.message}`);
       if (error.code === 404) throw errorWithCode(error.message, 404);
+      throw errorWithCode(`${message}, err = ${error.message}`, 500);
+    }
+  })
+);
+
+// Update SSO user profile and send confirmation email:
+router.put(
+  '/user/:userId',
+  asyncMiddleware(async (req, res) => {
+    const { userId } = req.params;
+    const userProfile = req.body;
+
+    if (!userId) {
+      throw errorWithCode('Please provide the ID of the SSO user you are updating.', 400);
+    }
+
+    if (!userProfile.email || !userProfile.firstName || !userProfile.lastName) {
+      throw errorWithCode('Missing Email, firstName or lastName to update the SSO user', 400);
+    }
+
+    if (!userProfile.refUrl) {
+      throw errorWithCode('Missing web base url for email link', 400);
+    }
+
+    const userInfo = {
+      id: userId,
+      email: userProfile.email,
+      firstName: userProfile.firstName,
+      lastName: userProfile.lastName,
+    };
+
+    const { refUrl } = userProfile;
+
+    logger.info(`Updating user of ${userId}`);
+    const emailServerConfig = config.get(EMAIL_REQUEST.EMAIL_CONFIG_NAME);
+    try {
+      // Check if email exists already:
+      logger.info('- Checking user email');
+      const emailExists = await checkEmailExists(userInfo);
+      if (emailExists)
+        throw errorWithCode(
+          `Your account with email ${userProfile.email} is registered already.`,
+          400
+        );
+      // Update SSO user profile:
+      logger.info('- Updating user profile');
+      await updateUser(userInfo);
+      // Assingn SSO user to group:
+      logger.info('- Updating user group');
+      await addUserToGroup(userId, SSO_GROUPS.PENDING);
+      // Send out confirmation email to the updated email adderss:
+      logger.info('- Email user');
+      await sendConfirmationEmail(emailServerConfig, userInfo, refUrl);
+
+      return res.status(200).end();
+    } catch (error) {
+      const message = `Unable to update SSO user with ID ${userId}`;
+      logger.error(`${message}, err = ${error.message}`);
+      throw errorWithCode(`${message}, err = ${error.message}`, 500);
+    }
+  })
+);
+
+// Confirm SSO user email and update authorization status:
+router.put(
+  '/user/confirmed/:userId',
+  asyncMiddleware(async (req, res) => {
+    const { userId } = req.params;
+    const { userEmail, token } = req.body;
+
+    if (!userId) {
+      throw errorWithCode('Please provide the ID of the SSO user you are updating.', 400);
+    }
+
+    if (!userEmail || !token) {
+      throw errorWithCode('Missing Email or Token', 400);
+    }
+
+    logger.info(`Check email confirm user of ${userId}`);
+    try {
+      // Verify if email of user matches:
+      logger.info('- Verify token');
+      const tokenEmail = await verifyToken(token, process.env.EMAIL_CONFIRMATION_JWT_SECRET);
+      logger.info(tokenEmail);
+      if (tokenEmail === userEmail) {
+        // check if user has been in the groups:
+        const isPending = await checkSSOGroup(userId, [SSO_GROUPS.PENDING]);
+        const isRegistered = await checkSSOGroup(userId, [SSO_GROUPS.REGISTERED]);
+        if (isPending) {
+          logger.info('- Authorizing user');
+          // Remove SSO user from pending group:
+          await removeUserFromGroup(userId, SSO_GROUPS.PENDING);
+          // Assingn SSO user to group:
+          await addUserToGroup(userId, SSO_GROUPS.REGISTERED);
+          return res.status(200).end();
+        }
+        if (!isPending && isRegistered) {
+          logger.info('- Authorized user already');
+          return res.status(200).end();
+        }
+        logger.info('- User not following the required authorization flow');
+        return res.status(400).json('You have not registered yet.');
+      }
+      return res.status(404).json('The Confirmation email is invalid for current SSO user accout.');
+    } catch (error) {
+      const message = `Unable to update SSO user with ID ${userId}`;
+      logger.error(`${message}, err = ${error.message}`);
       throw errorWithCode(`${message}, err = ${error.message}`, 500);
     }
   })
@@ -143,8 +254,6 @@ router.get(
       );
 
       if (tokenData.email === verifyBody.email && tokenData.code === verifyBody.code) {
-        // Assingn SSO user to group:
-        await addUserToGroup(userId, SSO_GROUPS.REGISTERED);
         return res.status(200).end();
       }
       logger.info('- User not providing the valid pair');
