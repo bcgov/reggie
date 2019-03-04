@@ -36,7 +36,7 @@ import shared from './shared';
  * @param {Object} params The query string for request, default as empty object
  * @return {String} The authentication token for SSO SA
  */
-export const setRequestHeader = async (subUrl = null, httpMethod = 'GET', params = {}) => {
+export const requestBuilder = async (subUrl = null, httpMethod = 'GET', params = {}) => {
   try {
     const baseUri = `${process.env.SSO_HOST_URL}/${SSO_SUB_URI.REALM_ADMIN}/${
       process.env.SSO_REALM
@@ -71,7 +71,7 @@ export const checkUserProfile = userInfo =>
 
 export const getUserID = async email => {
   try {
-    const options = await setRequestHeader(SSO_SUB_URI.USER, 'GET', { email });
+    const options = await requestBuilder(SSO_SUB_URI.USER, 'GET', { email });
 
     const res = await request(options);
     const jsonRes = JSON.parse(res);
@@ -83,7 +83,7 @@ export const getUserID = async email => {
 
 export const getUserGroups = async userId => {
   try {
-    const options = await setRequestHeader(`${SSO_SUB_URI.USER}/${userId}/${SSO_SUB_URI.GROUP}`);
+    const options = await requestBuilder(`${SSO_SUB_URI.USER}/${userId}/${SSO_SUB_URI.GROUP}`);
 
     const res = await request(options);
     const jsonRes = JSON.parse(res);
@@ -95,7 +95,7 @@ export const getUserGroups = async userId => {
 
 export const getUserIdps = async userId => {
   try {
-    const options = await setRequestHeader(`${SSO_SUB_URI.USER}/${userId}/${SSO_SUB_URI.IDP}`);
+    const options = await requestBuilder(`${SSO_SUB_URI.USER}/${userId}/${SSO_SUB_URI.IDP}`);
 
     const res = await request(options);
     const jsonRes = JSON.parse(res);
@@ -107,7 +107,7 @@ export const getUserIdps = async userId => {
 
 export const getUserInfoByEmail = async email => {
   try {
-    const options = await setRequestHeader(SSO_SUB_URI.USER, 'GET', { email });
+    const options = await requestBuilder(SSO_SUB_URI.USER, 'GET', { email });
 
     const res = await request(options);
     const userInfoJson = JSON.parse(res);
@@ -132,7 +132,7 @@ export const getUserInfoByEmail = async email => {
 
 export const getUserInfoById = async id => {
   try {
-    const options = await setRequestHeader(`${SSO_SUB_URI.USER}/${id}`);
+    const options = await requestBuilder(`${SSO_SUB_URI.USER}/${id}`);
 
     const res = await request(options);
     const userInfoJson = JSON.parse(res);
@@ -212,7 +212,7 @@ export const checkUserAuthStatus = async userInfo => {
  */
 export const checkEmailExists = async userInfo => {
   try {
-    const options = await setRequestHeader(SSO_SUB_URI.USER, 'GET', { email: userInfo.email });
+    const options = await requestBuilder(SSO_SUB_URI.USER, 'GET', { email: userInfo.email });
 
     const res = await request(options);
     const jsonRes = JSON.parse(res);
@@ -228,7 +228,7 @@ export const checkEmailExists = async userInfo => {
 
 export const updateUser = async userInfo => {
   try {
-    let options = await setRequestHeader(`${SSO_SUB_URI.USER}/${userInfo.id}`, 'PUT');
+    let options = await requestBuilder(`${SSO_SUB_URI.USER}/${userInfo.id}`, 'PUT');
     options = {
       ...options,
       body: {
@@ -249,7 +249,7 @@ export const updateUser = async userInfo => {
 
 export const getGroupID = async groupName => {
   try {
-    const options = await setRequestHeader(SSO_SUB_URI.GROUP, 'GET', { search: groupName });
+    const options = await requestBuilder(SSO_SUB_URI.GROUP, 'GET', { search: groupName });
     const res = await request(options);
     const groupInfoJson = JSON.parse(res);
     if (groupInfoJson.length < 1) {
@@ -266,7 +266,7 @@ export const addUserToGroup = async (userId, groupName) => {
     // TBD: use group name or ID?
     const groupId = await getGroupID(groupName);
     const subUrl = `${SSO_SUB_URI.USER}/${userId}/${SSO_SUB_URI.GROUP}/${groupId}`;
-    const options = await setRequestHeader(subUrl, 'PUT');
+    const options = await requestBuilder(subUrl, 'PUT');
 
     const res = await request(options);
     return res;
@@ -280,7 +280,7 @@ export const removeUserFromGroup = async (userId, groupName) => {
     // TBD: use group name or ID?
     const groupId = await getGroupID(groupName);
     const subUrl = `${SSO_SUB_URI.USER}/${userId}/${SSO_SUB_URI.GROUP}/${groupId}`;
-    const options = await setRequestHeader(subUrl, 'DELETE');
+    const options = await requestBuilder(subUrl, 'DELETE');
 
     const res = await request(options);
     return res;
