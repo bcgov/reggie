@@ -25,9 +25,8 @@
 import { asyncMiddleware, errorWithCode, logger } from '@bcgov/nodejs-common-utils';
 import { Router } from 'express';
 import config from '../../config';
-import { SSO_SUB_URI, SSO_REQUEST, SSO_GROUPS, EMAIL_REQUEST } from '../../constants';
+import { SSO_GROUPS, EMAIL_REQUEST } from '../../constants';
 import {
-  getSAToken,
   getUserInfoByEmail,
   getUserInfoById,
   checkSSOGroup,
@@ -52,14 +51,8 @@ router.get(
     }
 
     logger.info(`Looking of user of ${email}`);
-    const SACredentials = config.get(SSO_REQUEST.SA_CREDENTIAL_NAME);
     try {
-      const SAToken = await getSAToken(SACredentials);
-      const SSOCredentials = {
-        uri: `${process.env.SSO_HOST_URL}/${SSO_SUB_URI.REALM_ADMIN}/${process.env.SSO_REALM}/`,
-        token: SAToken,
-      };
-      const userProfile = await getUserInfoByEmail(SSOCredentials, email);
+      const userProfile = await getUserInfoByEmail(email);
       const userStatus = await checkUserAuthStatus(userProfile);
 
       return res.status(200).json({ ...userProfile, ...userStatus });
@@ -82,14 +75,8 @@ router.get(
     }
 
     logger.info(`Looking of user of ${userId}`);
-    const SACredentials = config.get(SSO_REQUEST.SA_CREDENTIAL_NAME);
     try {
-      const SAToken = await getSAToken(SACredentials);
-      const SSOCredentials = {
-        uri: `${process.env.SSO_HOST_URL}/${SSO_SUB_URI.REALM_ADMIN}/${process.env.SSO_REALM}/`,
-        token: SAToken,
-      };
-      const userProfile = await getUserInfoById(SSOCredentials, userId);
+      const userProfile = await getUserInfoById(userId);
       const userStatus = await checkUserAuthStatus(userProfile);
 
       return res.status(200).json({ ...userProfile, ...userStatus });
@@ -132,17 +119,11 @@ router.put(
     const { refUrl } = userProfile;
 
     logger.info(`Updating user of ${userId}`);
-    const SACredentials = config.get(SSO_REQUEST.SA_CREDENTIAL_NAME);
     const emailServerConfig = config.get(EMAIL_REQUEST.EMAIL_CONFIG_NAME);
     try {
-      const SAToken = await getSAToken(SACredentials);
-      const SSOCredentials = {
-        uri: `${process.env.SSO_HOST_URL}/${SSO_SUB_URI.REALM_ADMIN}/${process.env.SSO_REALM}/`,
-        token: SAToken,
-      };
       // Check if email exists already:
       logger.info('- Checking user email');
-      const emailExists = await checkEmailExists(SSOCredentials, userInfo);
+      const emailExists = await checkEmailExists(userInfo);
       if (emailExists)
         throw errorWithCode(
           `Your account with email ${userProfile.email} is registered already.`,
@@ -150,10 +131,10 @@ router.put(
         );
       // Update SSO user profile:
       logger.info('- Updating user profile');
-      await updateUser(SSOCredentials, userInfo);
+      await updateUser(userInfo);
       // Assingn SSO user to group:
       logger.info('- Updating user group');
-      await addUserToGroup(SSOCredentials, userId, SSO_GROUPS.PENDING);
+      await addUserToGroup(userId, SSO_GROUPS.PENDING);
       // Send out confirmation email to the updated email adderss:
       logger.info('- Email user');
       await sendConfirmationEmail(emailServerConfig, userInfo, refUrl);
@@ -183,27 +164,21 @@ router.put(
     }
 
     logger.info(`Check email confirm user of ${userId}`);
-    const SACredentials = config.get(SSO_REQUEST.SA_CREDENTIAL_NAME);
     try {
-      const SAToken = await getSAToken(SACredentials);
-      const SSOCredentials = {
-        uri: `${process.env.SSO_HOST_URL}/${SSO_SUB_URI.REALM_ADMIN}/${process.env.SSO_REALM}/`,
-        token: SAToken,
-      };
       // Verify if email of user matches:
       logger.info('- Verify token');
       const tokenEmail = await verifyToken(token, process.env.EMAIL_CONFIRMATION_JWT_SECRET);
       logger.info(tokenEmail);
       if (tokenEmail === userEmail) {
         // check if user has been in the groups:
-        const isPending = await checkSSOGroup(SSOCredentials, userId, [SSO_GROUPS.PENDING]);
-        const isRegistered = await checkSSOGroup(SSOCredentials, userId, [SSO_GROUPS.REGISTERED]);
+        const isPending = await checkSSOGroup(userId, [SSO_GROUPS.PENDING]);
+        const isRegistered = await checkSSOGroup(userId, [SSO_GROUPS.REGISTERED]);
         if (isPending) {
           logger.info('- Authorizing user');
           // Remove SSO user from pending group:
-          await removeUserFromGroup(SSOCredentials, userId, SSO_GROUPS.PENDING);
+          await removeUserFromGroup(userId, SSO_GROUPS.PENDING);
           // Assingn SSO user to group:
-          await addUserToGroup(SSOCredentials, userId, SSO_GROUPS.REGISTERED);
+          await addUserToGroup(userId, SSO_GROUPS.REGISTERED);
           return res.status(200).end();
         }
         if (!isPending && isRegistered) {
@@ -279,10 +254,12 @@ router.get(
       );
 
       if (tokenData.email === verifyBody.email && tokenData.code === verifyBody.code) {
+        // Assingn SSO user to group:
+        await addUserToGroup(userId, SSO_GROUPS.REGISTERED);
         return res.status(200).end();
       }
       logger.info('- User not providing the valid pair');
-      return res.status(400).json('Unsuccessful verification of invitation user');
+      return res.status(400).json('Unsuccessful verification of invited user');
     } catch (error) {
       const message = `Unable to verify the invitation for ${userId}`;
       logger.error(`${message}, err = ${error.message}`);
