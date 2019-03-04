@@ -23,7 +23,7 @@
 import { errorWithCode } from '@bcgov/nodejs-common-utils';
 import request from 'request-promise-native';
 import url from 'url';
-import { SSO_SUB_URI, SSO_REQUEST } from '../constants';
+import { SSO_SUB_URI, SSO_REQUEST, SSO_GROUPS } from '../constants';
 import checkRocketChatSchema from './rocketchat';
 import checkArray from './utils';
 import shared from './shared';
@@ -170,15 +170,16 @@ export const checkSSOGroup = async (userId, targetGroups = []) => {
  * Check user account status based on the SSO profile
  *
  * @param {Object} userInfo The sso user profile
+ * @param {Boolean} checkSchema If to check aganst the profile schema, default to false
  * @return {Object} As { isPending, isAuthorized, isRejected }
  */
-export const checkUserAuthStatus = async userInfo => {
+export const checkUserAuthStatus = async (userInfo, checkSchema = false) => {
   const accountStatus = { isPending: false, isAuthorized: false, isRejected: false };
 
   try {
     const ssoGroupNames = userInfo.group.map(i => i.name);
-    const isPending = ssoGroupNames.includes('pending');
-    const isAuthorized = ssoGroupNames.includes('registered');
+    const isPending = ssoGroupNames.includes(SSO_GROUPS.PENDING);
+    const isAuthorized = ssoGroupNames.includes(SSO_GROUPS.REGISTERED);
 
     // if user has complete profile and matches requirement, return the current sso group status:
     if (isPending || isAuthorized) {
@@ -195,9 +196,11 @@ export const checkUserAuthStatus = async userInfo => {
       };
     }
 
-    // else, it's a new user, check if account is not matching the requirments, then reject:
-    const matchSchema = await checkRocketChatSchema(userInfo);
-    if (!matchSchema) return { ...accountStatus, ...{ isRejected: true } };
+    // check if account is not matching the requirments, then reject:
+    if (checkSchema) {
+      const matchSchema = await checkRocketChatSchema(userInfo);
+      if (!matchSchema) return { ...accountStatus, ...{ isRejected: true } };
+    }
     return accountStatus;
   } catch (err) {
     throw new Error(`Fail to check SSO user authorization info: ${err}`);
