@@ -57,8 +57,8 @@ export const SSO_GROUPS = {
 // TODO: use meaningful text
 export const EMAIL_REQUEST = {
   EMAIL_CONFIG_NAME: 'emailServer',
-  CONFIRM_TITLE: 'BC Gov Reggie Confimation Email',
-  INVITE_TITLE: 'BC Gov Reggie Invitation Email',
+  CONFIRM_TITLE: 'BC Gov Rocketchat Confimation Email',
+  INVITE_TITLE: 'BC Gov Rocketchat Invitation Email',
   JWT_EXPIRY: '1d',
   TIMEOUT: 40000,
 };
