@@ -118,12 +118,12 @@ router.post(
   })
 );
 
-// Verify invitation email and code pair:
-router.get(
+// Verify invitation email and code pair, join group if matching:
+router.put(
   '/user/verify/:userId',
   asyncMiddleware(async (req, res) => {
     const { userId } = req.params;
-    const verifyBody = req.query;
+    const verifyBody = req.body;
 
     if (!userId) {
       throw errorWithCode('Please provide SSO user ID.', 400);

@@ -54,7 +54,6 @@ export const SSO_GROUPS = {
   REGISTERED: 'registered',
 };
 
-// TODO: use meaningful text
 export const EMAIL_REQUEST = {
   EMAIL_CONFIG_NAME: 'emailServer',
   CONFIRM_TITLE: 'BC Gov Rocketchat Confimation Email',
