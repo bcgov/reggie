@@ -254,10 +254,12 @@ router.get(
       );
 
       if (tokenData.email === verifyBody.email && tokenData.code === verifyBody.code) {
+        // Assingn SSO user to group:
+        await addUserToGroup(userId, SSO_GROUPS.REGISTERED);
         return res.status(200).end();
       }
       logger.info('- User not providing the valid pair');
-      return res.status(400).json('Unsuccessful verification of invitation user');
+      return res.status(400).json('Unsuccessful verification of invited user');
     } catch (error) {
       const message = `Unable to verify the invitation for ${userId}`;
       logger.error(`${message}, err = ${error.message}`);
