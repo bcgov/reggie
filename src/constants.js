@@ -31,6 +31,9 @@ export const SSO_SUB_URI = {
   USER: 'users',
   GROUP: 'groups',
   IDP: 'federated-identity',
+  ROLE: 'role-mappings',
+  COMPOSITE_ROLE: 'composite',
+  CLIENT: 'clients',
 };
 
 export const SSO_REQUEST = {
@@ -49,9 +52,17 @@ export const SSO_IDPS = {
   GITHUB: 'github',
 };
 
+export const SSO_CLIENTS = {
+  RC: 'rocketchat',
+  REGGIE: 'reggie-api',
+};
+
 export const SSO_GROUPS = {
-  PENDING: 'pending',
-  REGISTERED: 'registered',
+  INVITED: 'rocketchat-invited-users',
+};
+
+export const SSO_ROLES = {
+  REGISTERED: 'rocketchat-users',
 };
 
 export const EMAIL_REQUEST = {

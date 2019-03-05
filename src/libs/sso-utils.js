@@ -23,7 +23,7 @@
 import { errorWithCode } from '@bcgov/nodejs-common-utils';
 import request from 'request-promise-native';
 import url from 'url';
-import { SSO_SUB_URI, SSO_REQUEST, SSO_GROUPS } from '../constants';
+import { SSO_SUB_URI, SSO_REQUEST, SSO_CLIENTS, SSO_ROLES } from '../constants';
 import checkRocketChatSchema from './rocketchat';
 import checkArray from './utils';
 import shared from './shared';
@@ -81,15 +81,78 @@ export const getUserID = async email => {
   }
 };
 
+/**
+ * Fetch list of group the user belongs to
+ *
+ * @param {String} userId The user ID
+ * @return {Array} The array of groups
+ */
 export const getUserGroups = async userId => {
   try {
     const options = await requestBuilder(`${SSO_SUB_URI.USER}/${userId}/${SSO_SUB_URI.GROUP}`);
 
     const res = await request(options);
     const jsonRes = JSON.parse(res);
-    return jsonRes;
+    // Parse the groups of user:
+    try {
+      return jsonRes.map(i => i.name);
+    } catch (e) {
+      return [];
+    }
   } catch (err) {
     throw new Error(`Cannot find SSO user groups: ${err}`);
+  }
+};
+
+/**
+ * Fetch the ID of client by name
+ *
+ * @param {String} clientName The client name
+ * @return {String} The ID of the client
+ */
+export const getClientId = async clientName => {
+  try {
+    const options = await requestBuilder(SSO_SUB_URI.CLIENT);
+
+    const res = await request(options);
+    const jsonRes = JSON.parse(res);
+
+    const client = jsonRes.find(i => i.clientId === clientName);
+
+    return client.id;
+  } catch (err) {
+    throw new Error(`Cannot find client ${clientName}`);
+  }
+};
+
+/**
+ * Fetch the list of Effective roles of user in a client
+ * (Get effective realm-level role mappings. This will recurse all composite roles to get the result.)
+ *
+ * @param {String} userId The user ID
+ * @param {String} client The client name
+ * @return {Array} The list of role names
+ */
+export const getUserRoles = async (userId, client) => {
+  try {
+    const clientId = await getClientId(client);
+
+    const options = await requestBuilder(
+      `${SSO_SUB_URI.USER}/${userId}/${SSO_SUB_URI.ROLE}/${SSO_SUB_URI.CLIENT}/${clientId}/${
+        SSO_SUB_URI.COMPOSITE_ROLE
+      }`
+    );
+    const res = await request(options);
+    const jsonRes = JSON.parse(res);
+
+    // Parse name of roles:
+    try {
+      return jsonRes.map(i => i.name);
+    } catch (e) {
+      return [];
+    }
+  } catch (err) {
+    throw new Error(`Cannot find SSO user roles: ${err}`);
   }
 };
 
@@ -116,6 +179,8 @@ export const getUserInfoByEmail = async email => {
     }
     const ssoUserInfo = userInfoJson[0];
     const groups = await getUserGroups(ssoUserInfo.id);
+    // Get roles in specific client:
+    const roles = await getUserRoles(ssoUserInfo.id, SSO_CLIENTS.RC);
     const idps = await getUserIdps(ssoUserInfo.id);
     return {
       id: ssoUserInfo.id,
@@ -123,6 +188,7 @@ export const getUserInfoByEmail = async email => {
       firstName: ssoUserInfo.firstName ? ssoUserInfo.firstName : null,
       lastName: ssoUserInfo.lastName ? ssoUserInfo.lastName : null,
       group: groups,
+      role: roles,
       idp: idps,
     };
   } catch (err) {
@@ -138,6 +204,8 @@ export const getUserInfoById = async id => {
     const userInfoJson = JSON.parse(res);
     const ssoUserId = userInfoJson.id;
     const groups = await getUserGroups(ssoUserId);
+    // Get roles in specific client:
+    const roles = await getUserRoles(ssoUserId, SSO_CLIENTS.RC);
     const idps = userInfoJson.federatedIdentities;
     return {
       id: userInfoJson.id,
@@ -145,6 +213,7 @@ export const getUserInfoById = async id => {
       firstName: userInfoJson.firstName ? userInfoJson.firstName : null,
       lastName: userInfoJson.lastName ? userInfoJson.lastName : null,
       group: groups,
+      role: roles,
       idp: idps,
     };
   } catch (err) {
@@ -177,12 +246,11 @@ export const checkUserAuthStatus = async (userInfo, checkSchema = false) => {
   const accountStatus = { isPending: false, isAuthorized: false, isRejected: false };
 
   try {
-    const ssoGroupNames = userInfo.group.map(i => i.name);
-    const isPending = ssoGroupNames.includes(SSO_GROUPS.PENDING);
-    const isAuthorized = ssoGroupNames.includes(SSO_GROUPS.REGISTERED);
+    // Existing users:
+    const isAuthorized = userInfo.role.includes(SSO_ROLES.REGISTERED);
 
     // if user has complete profile and matches requirement, return the current sso group status:
-    if (isPending || isAuthorized) {
+    if (isAuthorized) {
       // User need to have a valid profile before they become authorized.
       // If not, return status as not initiated:
       if (!checkUserProfile(userInfo)) return accountStatus;
@@ -190,7 +258,6 @@ export const checkUserAuthStatus = async (userInfo, checkSchema = false) => {
       return {
         ...accountStatus,
         ...{
-          isPending,
           isAuthorized,
         },
       };

@@ -144,7 +144,7 @@ router.put(
 
       if (tokenData.email === verifyBody.email && tokenData.code === verifyBody.code) {
         // Assingn SSO user to group:
-        await addUserToGroup(userId, SSO_GROUPS.REGISTERED);
+        await addUserToGroup(userId, SSO_GROUPS.INVITED);
         return res.status(200).end();
       }
       logger.info('- User not providing the valid pair');
