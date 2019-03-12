@@ -252,8 +252,14 @@ export const checkUserAuthStatus = async (userInfo, checkSchema = false) => {
     // if user has complete profile and matches requirement, return the current sso group status:
     if (isAuthorized) {
       // User need to have a valid profile before they become authorized.
-      // If not, return status as not initiated:
-      if (!checkUserProfile(userInfo)) return accountStatus;
+      // If not, return status as pending:
+      if (!checkUserProfile(userInfo))
+        return {
+          ...accountStatus,
+          ...{
+            isPending: true,
+          },
+        };
       // If user has a valid profile, return the current status:
       return {
         ...accountStatus,
