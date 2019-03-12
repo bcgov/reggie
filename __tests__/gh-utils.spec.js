@@ -23,24 +23,25 @@ import { GH_USERS, TARGET_GITHUB_ORGS } from '../__fixtures__/gh-fixtures';
 
 jest.mock('request-promise-native');
 
+// Skipping github functions as not using:
 describe('Test getGithubOrgs', () => {
-  test('when github user belong to target group', async () => {
+  test.skip('when github user belong to target group', async () => {
     const result = [TARGET_GITHUB_ORGS[0], TARGET_GITHUB_ORGS[1]];
     expect(await getGithubOrgs(GH_USERS.TARGET_USER.userId)).toEqual(result);
   });
 
-  test('when github user does not belong to target group', async () => {
+  test.skip('when github user does not belong to target group', async () => {
     const result = [];
     expect(await getGithubOrgs(GH_USERS.OTHER_USER.userId)).toEqual(result);
   });
 });
 
 describe('Test isUserInOrgs', () => {
-  test('when github user belong to target group', async () => {
+  test.skip('when github user belong to target group', async () => {
     expect(await isUserInOrgs(GH_USERS.TARGET_USER.userId, TARGET_GITHUB_ORGS)).toBe(true);
   });
 
-  test('when github user does not belong to target group', async () => {
+  test.skip('when github user does not belong to target group', async () => {
     expect(await isUserInOrgs(GH_USERS.OTHER_USER.userId, TARGET_GITHUB_ORGS)).toBe(false);
   });
 });

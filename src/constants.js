@@ -31,6 +31,9 @@ export const SSO_SUB_URI = {
   USER: 'users',
   GROUP: 'groups',
   IDP: 'federated-identity',
+  ROLE: 'role-mappings',
+  COMPOSITE_ROLE: 'composite',
+  CLIENT: 'clients',
 };
 
 export const SSO_REQUEST = {
@@ -49,16 +52,23 @@ export const SSO_IDPS = {
   GITHUB: 'github',
 };
 
-export const SSO_GROUPS = {
-  PENDING: 'pending',
-  REGISTERED: 'registered',
+export const SSO_CLIENTS = {
+  RC: 'rocketchat',
+  REGGIE: 'reggie-api',
 };
 
-// TODO: use meaningful text
+export const SSO_GROUPS = {
+  INVITED: 'rocketchat-invited-users',
+};
+
+export const SSO_ROLES = {
+  REGISTERED: 'rocketchat-users',
+};
+
 export const EMAIL_REQUEST = {
   EMAIL_CONFIG_NAME: 'emailServer',
-  CONFIRM_TITLE: 'BC Gov Reggie Confimation Email',
-  INVITE_TITLE: 'BC Gov Reggie Invitation Email',
+  CONFIRM_TITLE: 'BC Gov Pathfinder Rocket.Chat Confimation Email',
+  INVITE_TITLE: 'BC Gov Pathfinder Rocket.Chat Invitation Email',
   JWT_EXPIRY: '1d',
   TIMEOUT: 40000,
 };
