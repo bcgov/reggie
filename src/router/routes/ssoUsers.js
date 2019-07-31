@@ -103,6 +103,7 @@ router.post(
 
     // NOTE: keeping track of invitation sent as stdout for now
     console.log(`User ${userId} is inviting new user with ${newUser.email}`);
+    logger.error(`----INFO: User ${userId} is inviting new user with ${newUser.email}`);
     // logger.info(`Inviting new user of ${newUser.email}`);
     // TODO: check user's authorization status
     const emailServerConfig = config.get(EMAIL_REQUEST.EMAIL_CONFIG_NAME);
