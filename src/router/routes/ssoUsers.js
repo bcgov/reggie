@@ -145,8 +145,8 @@ router.put(
         process.env.EMAIL_INVITATION_JWT_SECRET
       );
 
-      if (tokenData.email === verifyBody.email && tokenData.code === verifyBody.code) {
-        // Assingn SSO user to group:
+      if (tokenData.email.toLowerCase() === verifyBody.email.toLowerCase() && tokenData.code === verifyBody.code) {
+        // Assign SSO user to group:
         await addUserToGroup(userId, SSO_GROUPS.INVITED);
         return res.status(200).end();
       }
