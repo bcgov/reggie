@@ -1,4 +1,5 @@
 'use strict';
+const settings = require('./lib/config.js');
+const task = require('./lib/deploy.js');
 
-const deploy = require('./lib/deploy.js');
-deploy();
+task(Object.assign(settings, { phase: settings.options.env }));

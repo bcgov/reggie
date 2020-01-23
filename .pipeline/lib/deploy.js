@@ -1,42 +1,47 @@
 'use strict';
 
-const { OpenShiftClientX } = require('pipeline-cli');
+const { OpenShiftClientX } = require('@bcgov/pipeline-cli');
 const path = require('path');
 
-module.exports = () => {
-  const oc = new OpenShiftClientX();
-  oc.globalArgs.namespace = `devhub-${oc.options.env}`;
-  const templateFile = path.resolve(__dirname, '../../openshift/dc.yaml');
-  const appName = 'reggie-api';
-  const buildNamespace = 'devhub-tools';
-  const buildVersion = `build-v${oc.options.pr}`;
-  const deploymentVersion = `${oc.options.env}-1.0.0`;
-  // remove pr in prefix for test and prod environemnt:
-  const projectPrefix =
-    oc.options.env === 'dev' ? `-${oc.options.env}-${oc.options.pr}` : `-${oc.options.env}`;
+module.exports = (settings)=>{
+  const phases = settings.phases;
+  const options = settings.options;
+  const phase = options.env;
+  const changeId = phases[phase].changeId;
+  const oc = new OpenShiftClientX(Object.assign({ namespace: phases[phase].namespace }, options));
+  const templatesLocalBaseUrl = oc.toFileUrl(path.resolve(__dirname, '../../openshift'));
+  let objects = [];
 
   // set the rest of the env vars:
   const extraParams = {
     RM_HOST_VALUE: 'https://repo-mountie-devhub-prod.pathfinder.gov.bc.ca/bot/github/membership',
-    API_URL_VALUE: `https://${appName}${projectPrefix}-devhub-${
+    API_URL_VALUE: `https://${phases[phase].name}${phases[phase].suffix}-devhub-${
       oc.options.env
     }.pathfinder.gov.bc.ca`,
   };
 
-  const objects = oc.process(oc.toFileUrl(templateFile), {
+  // The deployment of your cool app goes here ▼▼▼
+  objects = oc.processDeploymentTemplate(`${templatesLocalBaseUrl}/dc.yaml`, {
     param: {
       ...{
-        NAME: appName,
-        SUFFIX: projectPrefix,
-        VERSION: `${deploymentVersion}`,
+        NAME: phases[phase].name,
+        SUFFIX: phases[phase].suffix,
+        VERSION: phases[phase].tag,
       },
       ...extraParams,
     },
   });
+  // if you want to add more objects from other templates than contact them to objects
+  // objects should be a flat array
+  oc.applyRecommendedLabels(
+    objects,
+    phases[phase].name,
+    phase,
+    `${changeId}`,
+    phases[phase].instance,
+  );
+  oc.importImageStreams(objects, phases[phase].tag, phases.build.namespace, phases.build.tag);
 
-  oc.applyBestPractices(objects);
-  oc.applyRecommendedLabels(objects, appName, oc.options.env, oc.options.pr);
-  oc.fetchSecretsAndConfigMaps(objects);
-  oc.importImageStreams(objects, deploymentVersion, buildNamespace, buildVersion);
-  oc.applyAndDeploy(objects, `${appName}${projectPrefix}`);
+  // oc.fetchSecretsAndConfigMaps(objects);
+  oc.applyAndDeploy(objects, phases[phase].instance);
 };

@@ -1,7 +1,7 @@
 {
   "name": "pipeline",
   "version": "1.0.0",
-  "description": "This a pipeliene script",
+  "description": "This a pipeline script",
   "scripts": {
     "fail": "echo \"Error: no test specified\" && exit 1",
     "build": "node build.js",
@@ -16,7 +16,13 @@
   },
   "author": "",
   "license": "Apache-2.0",
+  "devDependencies": {
+    "@bcgov/pipeline-cli": "^1.0.1-0"
+  },
   "dependencies": {
-    "pipeline-cli": "git+https://github.com/bcdevops/pipeline-cli.git#f939cb2abff3d3ee6b07a0f11c5abb28de07d49d"
+    "@bcgov/gh-deploy": "^1.1.1",
+    "@bcgov/pipeline-cli": "^1.0.1-0",
+    "dotenv": "^8.2.0",
+    "node-fetch": "^2.6.0"
   }
 }
