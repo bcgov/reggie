@@ -19,7 +19,11 @@ pipeline {
             agent { label 'deploy' }
             steps {
                 echo "Deploying ..."
-                sh ".pipeline/cli.sh deploy -- --pr=${CHANGE_ID} --env=dev"
+                script {
+                    timeout(time: 5, unit: 'MINUTES')  {
+                        sh "cd .pipeline && ./npmw ci && ./npmw run deploy -- --pr=${CHANGE_ID} --env=dev --description='deploying reggie to dev'"
+                    }
+                }
             }
         }
         // stage('Deploy (TEST)') {
