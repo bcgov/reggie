@@ -131,7 +131,8 @@ objects:
     creationTimestamp: null
     name: ${NAME}${SUFFIX}
   spec:
-    host:
+    host: ${API_URL_VALUE}
+    path: /api
     port:
       targetPort: api
     tls:
