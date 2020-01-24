@@ -20,7 +20,6 @@ pipeline {
             steps {
                 echo "Deploying ..."
                 sh "cd .pipeline && ./npmw ci && ./npmw run deploy -- --pr=${CHANGE_ID} --env=dev --description='deploying reggie to dev'"
-                }
             }
         }
         stage('Deploy (TEST)') {
@@ -32,7 +31,6 @@ pipeline {
             steps {
                 echo "Deploying ..."
                 sh "cd .pipeline && ./npmw ci && ./npmw run deploy -- --pr=${CHANGE_ID} --env=test --description='deploying reggie to test'"
-                }
             }
         }
         stage('Deploy (PROD)') {
@@ -44,7 +42,17 @@ pipeline {
             steps {
                 echo "Deploying ..."
                 sh "cd .pipeline && ./npmw ci && ./npmw run deploy -- --pr=${CHANGE_ID} --env=prod --description='deploying reggie to prod'"
-                }
+            }
+        }
+        stage('Cleanup') {
+            agent { label 'deploy' }
+            input {
+                message "Should we cleanup and merge this pr?"
+                ok "Yes!"
+            }
+            steps {
+                echo "Cleaning ..."
+                sh "cd .pipeline && ./npmw ci && ./npmw run clean -- --pr=${CHANGE_ID} --env=dev"
             }
         }
     }
