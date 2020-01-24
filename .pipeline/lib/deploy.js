@@ -15,9 +15,7 @@ module.exports = (settings)=>{
   // set the rest of the env vars:
   const extraParams = {
     RM_HOST_VALUE: 'https://repo-mountie-devhub-prod.pathfinder.gov.bc.ca/bot/github/membership',
-    API_URL_VALUE: `https://${phases[phase].name}${phases[phase].suffix}-devhub-${
-      oc.options.env
-    }.pathfinder.gov.bc.ca`,
+    API_URL_VALUE: `https://${phases[phase].name}${phases[phase].suffix}.pathfinder.gov.bc.ca`,
   };
 
   // The deployment of your cool app goes here ▼▼▼
