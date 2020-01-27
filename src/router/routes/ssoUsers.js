@@ -145,13 +145,17 @@ router.put(
         process.env.EMAIL_INVITATION_JWT_SECRET
       );
 
-      if (tokenData.email === verifyBody.email && tokenData.code === verifyBody.code) {
-        // Assingn SSO user to group:
+      if (tokenData.code !== verifyBody.code) {
+        logger.info('- Invitation code not matching');
+        return res.status(400).send('Invalid invitation link');
+      } else if (tokenData.email.toLowerCase() !== verifyBody.email.toLowerCase()) {
+        logger.info('- User account email does not match the invitation');
+        return res.status(400).send('Account email does not match the invitation');
+      } else {
+        // Assign SSO user to group:
         await addUserToGroup(userId, SSO_GROUPS.INVITED);
         return res.status(200).end();
       }
-      logger.info('- User not providing the valid pair');
-      return res.status(400).json('Unsuccessful verification of invited user');
     } catch (error) {
       const message = `Unable to verify the invitation for ${userId}`;
       logger.error(`${message}, err = ${error.message}`);

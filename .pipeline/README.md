@@ -1,37 +1,23 @@
-# How does it work?
+## Pipeline Wrapper Scripts
 
-The `.pipeline` folder is a node/npm module/project folder which has a dependency to `pipeline-cli`.
+Our pipeline utilities are a set of __Node JS__ scripts which are abstracted away from specific CI/CD tools so that they can be more easily ported. The main utility behind these scripts are around a package called `@bcgov/pipeline-cli` which
+has methods that wrap Openshift `oc cli` functions and apply __bcgov best practices__. 
 
-`pipeline-cli` (CLI) is a library with a thin wrapper around the `oc` CLI.
+## How it works
 
-Stages (e.: build, deploy) of the pipeline are represented as npm `scripts` defined in `package.json`
+It is fairly straight forward to get started. Running any of the npm scripts firstly goes through a routine
+that parses command line arguments and returns them as an `Object` which can than be leveraged in any of the
+script files. 
 
-The `lib` folder contains the pipelinestage script represented as node module so that it can be called as a `npm run-script` or mixing as depdenencies of a script (e.g.: `pipeline.js`)
+The script files are __frameworkless__. You leverage `@bcgov/pipeline-cli` and other utilities to form your
+logic and run your continuous deployments/delivery.
 
+## Prerequisites
 
-# Running stages of pipeline
-```
-#From within he pipeline folder
-npm run-script build
-```
+- login to oc cli
+- npm install
+- fill environment variables
 
-# Running the pipeline
-```
-#From within the pipeline folder
-npm run pipeline
+## Building and Deploying
 
-#Delete state
-rm -rf *.state.json
-```
-
-# Developing/Troubleshooting with the pipeline-cli
-- clone the pipeline-cli repository
-- in the pipeline-cli run:
-```
-npm link
-```
-
-- From within this .pipeline folder, run:
-```
-rm -rf node_modules; npm install; npm link pipeline-cli
-```
+refer to Jenkinsfile for the commands.

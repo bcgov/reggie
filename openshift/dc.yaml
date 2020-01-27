@@ -98,7 +98,10 @@ objects:
                 name: reggie-repo-mountie
                 key: SSO_API_CLIENT_SECRET
           - name: RM_HOST
-            value: ${RM_HOST_VALUE}
+            valueFrom:
+              secretKeyRef:
+                name: reggie-repo-mountie
+                key: RM_HOST_VALUE
           - name: API_URL
             value: ${API_URL_VALUE}
     test: false
@@ -131,7 +134,8 @@ objects:
     creationTimestamp: null
     name: ${NAME}${SUFFIX}
   spec:
-    host:
+    host: ${API_URL_VALUE}
+    path: /api
     port:
       targetPort: api
     tls:
@@ -161,11 +165,6 @@ parameters:
 - description: A name used for routes/services and deployment configs
   displayName: Host
   name: HOST
-  required: false
-  value: ''
-- description: Repo mountie host url
-  displayName: Repo mountie
-  name: RM_HOST_VALUE
   required: false
   value: ''
 - description: The url of itself

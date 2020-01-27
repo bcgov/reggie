@@ -7,6 +7,7 @@ objects:
 - apiVersion: v1
   stringData:
     SSO_API_CLIENT_SECRET: ${SSO_API_CLIENT_SECRET}
+    RM_HOST_VALUE: ${RM_HOST_VALUE}
   kind: Secret
   metadata:
     creationTimestamp: null
@@ -16,5 +17,10 @@ parameters:
 - description: A secret of sso client for repo mountie auth
   displayName: SSO_API_CLIENT_SECRET
   name: SSO_API_CLIENT_SECRET
+  required: true
+  value: ''
+- description: The endpoint of repo mountie to fetch a user's github organization membership
+  displayName: RM_HOST_VALUE
+  name: RM_HOST_VALUE
   required: true
   value: ''

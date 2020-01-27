@@ -11,37 +11,48 @@ pipeline {
                 script {
                     abortAllPreviousBuildInProgress(currentBuild)
                 }
-                echo "Building ..."
-                sh ".pipeline/cli.sh build -- --pr=${CHANGE_ID}"
+                echo "Building reggie api..."
+                sh "cd .pipeline && ./npmw ci && ./npmw run build -- --pr=${CHANGE_ID}"
             }
         }
         stage('Deploy (DEV)') {
             agent { label 'deploy' }
             steps {
                 echo "Deploying ..."
-                sh ".pipeline/cli.sh deploy -- --pr=${CHANGE_ID} --env=dev"
+                sh "cd .pipeline && ./npmw ci && ./npmw run deploy -- --pr=${CHANGE_ID} --env=dev --description='deploying reggie to dev'"
             }
         }
         stage('Deploy (TEST)') {
             agent { label 'deploy' }
             input {
-              message "Deploy to test?"
-              ok "Yes."
+                message "Should we continue with deployment to TEST?"
+                ok "Yes!"
             }
             steps {
-                echo "Deploying to test ..."
-                sh ".pipeline/cli.sh deploy -- --pr=${CHANGE_ID} --env=test"
+                echo "Deploying ..."
+                sh "cd .pipeline && ./npmw ci && ./npmw run deploy -- --pr=${CHANGE_ID} --env=test --description='deploying reggie to test'"
             }
         }
         stage('Deploy (PROD)') {
             agent { label 'deploy' }
             input {
-              message "Deploy to prod?"
-              ok "Yes."
+                message "Should we continue with deployment to PROD?"
+                ok "Yes!"
             }
             steps {
-                echo "Deploying to prod ..."
-                sh ".pipeline/cli.sh deploy -- --pr=${CHANGE_ID} --env=prod"
+                echo "Deploying ..."
+                sh "cd .pipeline && ./npmw ci && ./npmw run deploy -- --pr=${CHANGE_ID} --env=prod --description='deploying reggie to prod'"
+            }
+        }
+        stage('Cleanup') {
+            agent { label 'deploy' }
+            input {
+                message "Should we cleanup and merge this pr?"
+                ok "Yes!"
+            }
+            steps {
+                echo "Cleaning ..."
+                sh "cd .pipeline && ./npmw ci && ./npmw run clean -- --pr=${CHANGE_ID} --env=dev"
             }
         }
     }
