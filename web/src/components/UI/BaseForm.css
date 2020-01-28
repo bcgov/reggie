@@ -1,0 +1,36 @@
+.jsform {
+  display: none;
+}
+
+.toggled {
+  display: block;
+}
+
+.center-form {
+  display: flex;
+  justify-content: center;
+}
+
+.center-form div {
+  text-align: left;
+}
+
+.jsform-content {
+  width: 400px;
+}
+
+.center-form #root__title {
+  text-align: center;
+  border-bottom: 1px solid #ced4da;
+  margin-bottom: 30px;
+}
+
+@media screen and (max-width: 500px) {
+  .center-form #root__title {
+    font-size: 16px;
+  }
+
+  .center-form .control-label {
+    font-size: 12px;
+  }
+}

@@ -1,0 +1,22 @@
+.side-message {
+  font-size: 13px;
+  border-left: none;
+  min-width: 150px;
+  padding-top: 10px;
+  margin-top: 40px;
+  border-top: 1px solid #e5e5e5;
+}
+
+.side-message p {
+  margin: 0 !important;
+  color: #7c8084;
+}
+
+@media screen and (min-width: 1000px) {
+  .side-message {
+    margin-top: 0;
+    padding-top: 0;
+    border-left: 1px solid #e5e5e5;
+    border-top: none;
+  }
+}
