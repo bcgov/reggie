@@ -36,6 +36,7 @@ module.exports = (settings)=>{
         },
         ...extraParams,
       },
+      'ignore-unknown-parameters': 'true',
     })
   );
 
@@ -49,6 +50,7 @@ module.exports = (settings)=>{
         },
         ...extraParams,
       },
+      'ignore-unknown-parameters': 'true',
     })
   );
 
