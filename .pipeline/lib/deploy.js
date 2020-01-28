@@ -15,19 +15,43 @@ module.exports = (settings)=>{
   // set the rest of the env vars:
   const extraParams = {
     API_URL_VALUE: `${phases[phase].name}${phases[phase].suffix}.pathfinder.gov.bc.ca`,
+    REACT_APP_ROCKETCHAT_URL_VALUE:
+      oc.options.env === 'prod'
+        ? 'https://chat.pathfinder.gov.bc.ca/'
+        : `https://chat-${oc.options.env}.pathfinder.gov.bc.ca/`,
+    HOST:
+      oc.options.env === 'prod'
+        ? 'reggie.pathfinder.gov.bc.ca'
+        : '',
   };
 
   // The deployment of your cool app goes here ▼▼▼
-  objects = oc.processDeploymentTemplate(`${templatesLocalBaseUrl}/dc.yaml`, {
-    param: {
-      ...{
-        NAME: phases[phase].name,
-        SUFFIX: phases[phase].suffix,
-        VERSION: phases[phase].tag,
+  objects = objects.concat(
+    oc.processDeploymentTemplate(`${templatesLocalBaseUrl}/dc.yaml`, {
+      param: {
+        ...{
+          NAME: `${phases[phase].name}-api`,
+          SUFFIX: phases[phase].suffix,
+          VERSION: phases[phase].tag,
+        },
+        ...extraParams,
       },
-      ...extraParams,
-    },
-  });
+    })
+  );
+
+  objects = objects.concat(
+    oc.processDeploymentTemplate(`${templatesLocalBaseUrl}/web-dc.yaml`, {
+      param: {
+        ...{
+          NAME: `${phases[phase].name}-web`,
+          SUFFIX: phases[phase].suffix,
+          VERSION: phases[phase].tag,
+        },
+        ...extraParams,
+      },
+    })
+  );
+
   // if you want to add more objects from other templates than contact them to objects
   // objects should be a flat array
   oc.applyRecommendedLabels(
