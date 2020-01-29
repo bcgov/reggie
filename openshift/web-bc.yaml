@@ -138,4 +138,4 @@ parameters:
   displayName: SOURCE_CONTEXT_DIR
   name: SOURCE_CONTEXT_DIR
   required: true
-  value: api
+  value: web
