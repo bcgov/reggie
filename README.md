@@ -1,18 +1,39 @@
+---
+description: Reggie introduction
+topics:
+   - reggie
+   - rocketchat
+ignore: true
+---
+
 ## About
 
-This is a tool to register for and invite user to bcgov self-serve applications through keyCloak SSO
+Reggie is an application to register for and invite user to BCGov Pathfinder Rocket.Chat. Please refer to [user instructions](UserInstructions.md) to join the chat community.
 
 ## Usage
 
 ### Local Development
 
-1. make sure you have the `.env` file, required contents can be found in `.env.sample`
-2. run docker
+1. make sure you have the `.env` file in both web and api folder, required contents can be found in `.env.sample`
+2. in ./api:
+```shell
+npm i # install dependency
+npm run dev # to host the reggie API server
+```
+3. in ./web:
+```shell
+npm i # install dependency
+npm run start # to host the frontend
+```
+4. publish the host for KeyCloak to redirect
+```shell
+npx ngrok http 3000
+```
 
 ## Deployment (OpenShift)
 
-Project is using a Nodejs based pipeline, see (.pipeline/README.md)
-OpenShift configuration see (openshift/Readme.md)
+Project is using a Nodejs based pipeline [here](.pipeline/README.md)
+OpenShift configuration/templates [here](openshift)
 
 ## Getting Help or Reporting an Issue
 

@@ -1,0 +1,1149 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AuthButton Component matches snapshot when Logged in 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <AuthModal
+    isAuthenticated={true}
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "checkPropTypes": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateError": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "class",
+    "props": Object {
+      "autoFocus": true,
+      "backdrop": true,
+      "backdropTransition": Object {
+        "mountOnEnter": true,
+        "timeout": 150,
+      },
+      "centered": false,
+      "children": Array [
+        <ModalHeader
+          charCode={215}
+          closeAriaLabel="Close"
+          tag="h5"
+          wrapTag="div"
+        >
+          <Banner
+            titleText="Pathfinder Rocket.Chat Invitation App"
+          />
+        </ModalHeader>,
+        <ModalBody
+          tag="div"
+        >
+          Please login before starting Rocket.Chat Invitation with Reggie
+        </ModalBody>,
+        <ModalFooter
+          tag="div"
+        >
+          <p>
+            Login with:
+          </p>
+          <div
+            className="auth-buttons"
+          >
+            <Link
+              className="auth-button"
+              replace={false}
+              to={
+                Object {
+                  "pathname": "/login",
+                  "state": Object {
+                    "idp": "github",
+                  },
+                }
+              }
+            >
+              GitHub
+            </Link>
+            <Link
+              className="auth-button"
+              replace={false}
+              to={
+                Object {
+                  "pathname": "/login",
+                  "state": Object {
+                    "idp": "idir",
+                  },
+                }
+              }
+            >
+              IDIR
+            </Link>
+          </div>
+        </ModalFooter>,
+      ],
+      "fade": false,
+      "isOpen": false,
+      "keyboard": true,
+      "modalClassName": "auth-modal",
+      "modalTransition": Object {
+        "timeout": 300,
+      },
+      "onClosed": [Function],
+      "onOpened": [Function],
+      "role": "dialog",
+      "zIndex": 1050,
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "function",
+        "props": Object {
+          "charCode": 215,
+          "children": <Banner
+            titleText="Pathfinder Rocket.Chat Invitation App"
+          />,
+          "closeAriaLabel": "Close",
+          "tag": "h5",
+          "wrapTag": "div",
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "function",
+          "props": Object {
+            "titleText": "Pathfinder Rocket.Chat Invitation App",
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "function",
+        "props": Object {
+          "children": "Please login before starting Rocket.Chat Invitation with Reggie",
+          "tag": "div",
+        },
+        "ref": null,
+        "rendered": "Please login before starting Rocket.Chat Invitation with Reggie",
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "function",
+        "props": Object {
+          "children": Array [
+            <p>
+              Login with:
+            </p>,
+            <div
+              className="auth-buttons"
+            >
+              <Link
+                className="auth-button"
+                replace={false}
+                to={
+                  Object {
+                    "pathname": "/login",
+                    "state": Object {
+                      "idp": "github",
+                    },
+                  }
+                }
+              >
+                GitHub
+              </Link>
+              <Link
+                className="auth-button"
+                replace={false}
+                to={
+                  Object {
+                    "pathname": "/login",
+                    "state": Object {
+                      "idp": "idir",
+                    },
+                  }
+                }
+              >
+                IDIR
+              </Link>
+            </div>,
+          ],
+          "tag": "div",
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": "Login with:",
+            },
+            "ref": null,
+            "rendered": "Login with:",
+            "type": "p",
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                <Link
+                  className="auth-button"
+                  replace={false}
+                  to={
+                    Object {
+                      "pathname": "/login",
+                      "state": Object {
+                        "idp": "github",
+                      },
+                    }
+                  }
+                >
+                  GitHub
+                </Link>,
+                <Link
+                  className="auth-button"
+                  replace={false}
+                  to={
+                    Object {
+                      "pathname": "/login",
+                      "state": Object {
+                        "idp": "idir",
+                      },
+                    }
+                  }
+                >
+                  IDIR
+                </Link>,
+              ],
+              "className": "auth-buttons",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": "GitHub",
+                  "className": "auth-button",
+                  "replace": false,
+                  "to": Object {
+                    "pathname": "/login",
+                    "state": Object {
+                      "idp": "github",
+                    },
+                  },
+                },
+                "ref": null,
+                "rendered": "GitHub",
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": "IDIR",
+                  "className": "auth-button",
+                  "replace": false,
+                  "to": Object {
+                    "pathname": "/login",
+                    "state": Object {
+                      "idp": "idir",
+                    },
+                  },
+                },
+                "ref": null,
+                "rendered": "IDIR",
+                "type": [Function],
+              },
+            ],
+            "type": "div",
+          },
+        ],
+        "type": [Function],
+      },
+    ],
+    "type": [Function],
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "class",
+      "props": Object {
+        "autoFocus": true,
+        "backdrop": true,
+        "backdropTransition": Object {
+          "mountOnEnter": true,
+          "timeout": 150,
+        },
+        "centered": false,
+        "children": Array [
+          <ModalHeader
+            charCode={215}
+            closeAriaLabel="Close"
+            tag="h5"
+            wrapTag="div"
+          >
+            <Banner
+              titleText="Pathfinder Rocket.Chat Invitation App"
+            />
+          </ModalHeader>,
+          <ModalBody
+            tag="div"
+          >
+            Please login before starting Rocket.Chat Invitation with Reggie
+          </ModalBody>,
+          <ModalFooter
+            tag="div"
+          >
+            <p>
+              Login with:
+            </p>
+            <div
+              className="auth-buttons"
+            >
+              <Link
+                className="auth-button"
+                replace={false}
+                to={
+                  Object {
+                    "pathname": "/login",
+                    "state": Object {
+                      "idp": "github",
+                    },
+                  }
+                }
+              >
+                GitHub
+              </Link>
+              <Link
+                className="auth-button"
+                replace={false}
+                to={
+                  Object {
+                    "pathname": "/login",
+                    "state": Object {
+                      "idp": "idir",
+                    },
+                  }
+                }
+              >
+                IDIR
+              </Link>
+            </div>
+          </ModalFooter>,
+        ],
+        "fade": false,
+        "isOpen": false,
+        "keyboard": true,
+        "modalClassName": "auth-modal",
+        "modalTransition": Object {
+          "timeout": 300,
+        },
+        "onClosed": [Function],
+        "onOpened": [Function],
+        "role": "dialog",
+        "zIndex": 1050,
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "function",
+          "props": Object {
+            "charCode": 215,
+            "children": <Banner
+              titleText="Pathfinder Rocket.Chat Invitation App"
+            />,
+            "closeAriaLabel": "Close",
+            "tag": "h5",
+            "wrapTag": "div",
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "function",
+            "props": Object {
+              "titleText": "Pathfinder Rocket.Chat Invitation App",
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "function",
+          "props": Object {
+            "children": "Please login before starting Rocket.Chat Invitation with Reggie",
+            "tag": "div",
+          },
+          "ref": null,
+          "rendered": "Please login before starting Rocket.Chat Invitation with Reggie",
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "function",
+          "props": Object {
+            "children": Array [
+              <p>
+                Login with:
+              </p>,
+              <div
+                className="auth-buttons"
+              >
+                <Link
+                  className="auth-button"
+                  replace={false}
+                  to={
+                    Object {
+                      "pathname": "/login",
+                      "state": Object {
+                        "idp": "github",
+                      },
+                    }
+                  }
+                >
+                  GitHub
+                </Link>
+                <Link
+                  className="auth-button"
+                  replace={false}
+                  to={
+                    Object {
+                      "pathname": "/login",
+                      "state": Object {
+                        "idp": "idir",
+                      },
+                    }
+                  }
+                >
+                  IDIR
+                </Link>
+              </div>,
+            ],
+            "tag": "div",
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": "Login with:",
+              },
+              "ref": null,
+              "rendered": "Login with:",
+              "type": "p",
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": Array [
+                  <Link
+                    className="auth-button"
+                    replace={false}
+                    to={
+                      Object {
+                        "pathname": "/login",
+                        "state": Object {
+                          "idp": "github",
+                        },
+                      }
+                    }
+                  >
+                    GitHub
+                  </Link>,
+                  <Link
+                    className="auth-button"
+                    replace={false}
+                    to={
+                      Object {
+                        "pathname": "/login",
+                        "state": Object {
+                          "idp": "idir",
+                        },
+                      }
+                    }
+                  >
+                    IDIR
+                  </Link>,
+                ],
+                "className": "auth-buttons",
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "GitHub",
+                    "className": "auth-button",
+                    "replace": false,
+                    "to": Object {
+                      "pathname": "/login",
+                      "state": Object {
+                        "idp": "github",
+                      },
+                    },
+                  },
+                  "ref": null,
+                  "rendered": "GitHub",
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "IDIR",
+                    "className": "auth-button",
+                    "replace": false,
+                    "to": Object {
+                      "pathname": "/login",
+                      "state": Object {
+                        "idp": "idir",
+                      },
+                    },
+                  },
+                  "ref": null,
+                  "rendered": "IDIR",
+                  "type": [Function],
+                },
+              ],
+              "type": "div",
+            },
+          ],
+          "type": [Function],
+        },
+      ],
+      "type": [Function],
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "legacyContextMode": "parent",
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getChildContext": Object {
+            "calledByRenderer": false,
+          },
+          "getDerivedStateFromError": true,
+          "getDerivedStateFromProps": Object {
+            "hasShouldComponentUpdateBug": false,
+          },
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+    Symbol(enzyme.__providerValues__): undefined,
+  },
+  Symbol(enzyme.__providerValues__): Map {},
+}
+`;
+
+exports[`AuthButton Component matches snapshot when Logged out 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <AuthModal
+    isAuthenticated={false}
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "checkPropTypes": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateError": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "class",
+    "props": Object {
+      "autoFocus": true,
+      "backdrop": true,
+      "backdropTransition": Object {
+        "mountOnEnter": true,
+        "timeout": 150,
+      },
+      "centered": false,
+      "children": Array [
+        <ModalHeader
+          charCode={215}
+          closeAriaLabel="Close"
+          tag="h5"
+          wrapTag="div"
+        >
+          <Banner
+            titleText="Pathfinder Rocket.Chat Invitation App"
+          />
+        </ModalHeader>,
+        <ModalBody
+          tag="div"
+        >
+          Please login before starting Rocket.Chat Invitation with Reggie
+        </ModalBody>,
+        <ModalFooter
+          tag="div"
+        >
+          <p>
+            Login with:
+          </p>
+          <div
+            className="auth-buttons"
+          >
+            <Link
+              className="auth-button"
+              replace={false}
+              to={
+                Object {
+                  "pathname": "/login",
+                  "state": Object {
+                    "idp": "github",
+                  },
+                }
+              }
+            >
+              GitHub
+            </Link>
+            <Link
+              className="auth-button"
+              replace={false}
+              to={
+                Object {
+                  "pathname": "/login",
+                  "state": Object {
+                    "idp": "idir",
+                  },
+                }
+              }
+            >
+              IDIR
+            </Link>
+          </div>
+        </ModalFooter>,
+      ],
+      "fade": false,
+      "isOpen": true,
+      "keyboard": true,
+      "modalClassName": "auth-modal",
+      "modalTransition": Object {
+        "timeout": 300,
+      },
+      "onClosed": [Function],
+      "onOpened": [Function],
+      "role": "dialog",
+      "zIndex": 1050,
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "function",
+        "props": Object {
+          "charCode": 215,
+          "children": <Banner
+            titleText="Pathfinder Rocket.Chat Invitation App"
+          />,
+          "closeAriaLabel": "Close",
+          "tag": "h5",
+          "wrapTag": "div",
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "function",
+          "props": Object {
+            "titleText": "Pathfinder Rocket.Chat Invitation App",
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "function",
+        "props": Object {
+          "children": "Please login before starting Rocket.Chat Invitation with Reggie",
+          "tag": "div",
+        },
+        "ref": null,
+        "rendered": "Please login before starting Rocket.Chat Invitation with Reggie",
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "function",
+        "props": Object {
+          "children": Array [
+            <p>
+              Login with:
+            </p>,
+            <div
+              className="auth-buttons"
+            >
+              <Link
+                className="auth-button"
+                replace={false}
+                to={
+                  Object {
+                    "pathname": "/login",
+                    "state": Object {
+                      "idp": "github",
+                    },
+                  }
+                }
+              >
+                GitHub
+              </Link>
+              <Link
+                className="auth-button"
+                replace={false}
+                to={
+                  Object {
+                    "pathname": "/login",
+                    "state": Object {
+                      "idp": "idir",
+                    },
+                  }
+                }
+              >
+                IDIR
+              </Link>
+            </div>,
+          ],
+          "tag": "div",
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": "Login with:",
+            },
+            "ref": null,
+            "rendered": "Login with:",
+            "type": "p",
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                <Link
+                  className="auth-button"
+                  replace={false}
+                  to={
+                    Object {
+                      "pathname": "/login",
+                      "state": Object {
+                        "idp": "github",
+                      },
+                    }
+                  }
+                >
+                  GitHub
+                </Link>,
+                <Link
+                  className="auth-button"
+                  replace={false}
+                  to={
+                    Object {
+                      "pathname": "/login",
+                      "state": Object {
+                        "idp": "idir",
+                      },
+                    }
+                  }
+                >
+                  IDIR
+                </Link>,
+              ],
+              "className": "auth-buttons",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": "GitHub",
+                  "className": "auth-button",
+                  "replace": false,
+                  "to": Object {
+                    "pathname": "/login",
+                    "state": Object {
+                      "idp": "github",
+                    },
+                  },
+                },
+                "ref": null,
+                "rendered": "GitHub",
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": "IDIR",
+                  "className": "auth-button",
+                  "replace": false,
+                  "to": Object {
+                    "pathname": "/login",
+                    "state": Object {
+                      "idp": "idir",
+                    },
+                  },
+                },
+                "ref": null,
+                "rendered": "IDIR",
+                "type": [Function],
+              },
+            ],
+            "type": "div",
+          },
+        ],
+        "type": [Function],
+      },
+    ],
+    "type": [Function],
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "class",
+      "props": Object {
+        "autoFocus": true,
+        "backdrop": true,
+        "backdropTransition": Object {
+          "mountOnEnter": true,
+          "timeout": 150,
+        },
+        "centered": false,
+        "children": Array [
+          <ModalHeader
+            charCode={215}
+            closeAriaLabel="Close"
+            tag="h5"
+            wrapTag="div"
+          >
+            <Banner
+              titleText="Pathfinder Rocket.Chat Invitation App"
+            />
+          </ModalHeader>,
+          <ModalBody
+            tag="div"
+          >
+            Please login before starting Rocket.Chat Invitation with Reggie
+          </ModalBody>,
+          <ModalFooter
+            tag="div"
+          >
+            <p>
+              Login with:
+            </p>
+            <div
+              className="auth-buttons"
+            >
+              <Link
+                className="auth-button"
+                replace={false}
+                to={
+                  Object {
+                    "pathname": "/login",
+                    "state": Object {
+                      "idp": "github",
+                    },
+                  }
+                }
+              >
+                GitHub
+              </Link>
+              <Link
+                className="auth-button"
+                replace={false}
+                to={
+                  Object {
+                    "pathname": "/login",
+                    "state": Object {
+                      "idp": "idir",
+                    },
+                  }
+                }
+              >
+                IDIR
+              </Link>
+            </div>
+          </ModalFooter>,
+        ],
+        "fade": false,
+        "isOpen": true,
+        "keyboard": true,
+        "modalClassName": "auth-modal",
+        "modalTransition": Object {
+          "timeout": 300,
+        },
+        "onClosed": [Function],
+        "onOpened": [Function],
+        "role": "dialog",
+        "zIndex": 1050,
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "function",
+          "props": Object {
+            "charCode": 215,
+            "children": <Banner
+              titleText="Pathfinder Rocket.Chat Invitation App"
+            />,
+            "closeAriaLabel": "Close",
+            "tag": "h5",
+            "wrapTag": "div",
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "function",
+            "props": Object {
+              "titleText": "Pathfinder Rocket.Chat Invitation App",
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "function",
+          "props": Object {
+            "children": "Please login before starting Rocket.Chat Invitation with Reggie",
+            "tag": "div",
+          },
+          "ref": null,
+          "rendered": "Please login before starting Rocket.Chat Invitation with Reggie",
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "function",
+          "props": Object {
+            "children": Array [
+              <p>
+                Login with:
+              </p>,
+              <div
+                className="auth-buttons"
+              >
+                <Link
+                  className="auth-button"
+                  replace={false}
+                  to={
+                    Object {
+                      "pathname": "/login",
+                      "state": Object {
+                        "idp": "github",
+                      },
+                    }
+                  }
+                >
+                  GitHub
+                </Link>
+                <Link
+                  className="auth-button"
+                  replace={false}
+                  to={
+                    Object {
+                      "pathname": "/login",
+                      "state": Object {
+                        "idp": "idir",
+                      },
+                    }
+                  }
+                >
+                  IDIR
+                </Link>
+              </div>,
+            ],
+            "tag": "div",
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": "Login with:",
+              },
+              "ref": null,
+              "rendered": "Login with:",
+              "type": "p",
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": Array [
+                  <Link
+                    className="auth-button"
+                    replace={false}
+                    to={
+                      Object {
+                        "pathname": "/login",
+                        "state": Object {
+                          "idp": "github",
+                        },
+                      }
+                    }
+                  >
+                    GitHub
+                  </Link>,
+                  <Link
+                    className="auth-button"
+                    replace={false}
+                    to={
+                      Object {
+                        "pathname": "/login",
+                        "state": Object {
+                          "idp": "idir",
+                        },
+                      }
+                    }
+                  >
+                    IDIR
+                  </Link>,
+                ],
+                "className": "auth-buttons",
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "GitHub",
+                    "className": "auth-button",
+                    "replace": false,
+                    "to": Object {
+                      "pathname": "/login",
+                      "state": Object {
+                        "idp": "github",
+                      },
+                    },
+                  },
+                  "ref": null,
+                  "rendered": "GitHub",
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "IDIR",
+                    "className": "auth-button",
+                    "replace": false,
+                    "to": Object {
+                      "pathname": "/login",
+                      "state": Object {
+                        "idp": "idir",
+                      },
+                    },
+                  },
+                  "ref": null,
+                  "rendered": "IDIR",
+                  "type": [Function],
+                },
+              ],
+              "type": "div",
+            },
+          ],
+          "type": [Function],
+        },
+      ],
+      "type": [Function],
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "legacyContextMode": "parent",
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getChildContext": Object {
+            "calledByRenderer": false,
+          },
+          "getDerivedStateFromError": true,
+          "getDerivedStateFromProps": Object {
+            "hasShouldComponentUpdateBug": false,
+          },
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+    Symbol(enzyme.__providerValues__): undefined,
+  },
+  Symbol(enzyme.__providerValues__): Map {},
+}
+`;

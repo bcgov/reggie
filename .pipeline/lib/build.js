@@ -15,7 +15,19 @@ module.exports = settings => {
   objects = objects.concat(
     oc.processDeploymentTemplate(`${templatesLocalBaseUrl}/bc.yaml`, {
       param: {
-        NAME: phases[phase].name,
+        NAME: `${phases[phase].name}-api`,
+        SUFFIX: phases[phase].suffix,
+        VERSION: phases[phase].tag,
+        SOURCE_REPOSITORY_URL: oc.git.uri,
+        SOURCE_REPOSITORY_REF: oc.git.ref,
+      },
+    }),
+  );
+
+  objects = objects.concat(
+    oc.processDeploymentTemplate(`${templatesLocalBaseUrl}/web-bc.yaml`, {
+      param: {
+        NAME: `${phases[phase].name}-web`,
         SUFFIX: phases[phase].suffix,
         VERSION: phases[phase].tag,
         SOURCE_REPOSITORY_URL: oc.git.uri,

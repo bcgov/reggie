@@ -1,0 +1,16 @@
+#!/bin/bash
+
+echo "Skipping ReactJS preflight check."
+echo "SKIP_PREFLIGHT_CHECK=true" >.env
+
+/usr/libexec/s2i/assemble
+rc=$?
+
+# if [ $rc -eq 0 ]; then
+#     echo "SKIP_PREFLIGHT_CHECK=true" >.env
+#     npm run build
+# else
+#     echo "After failed assembling"
+# fi
+
+exit $rc

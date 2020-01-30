@@ -1,0 +1,621 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App Component matches snapshot 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <App
+    authentication={
+      Object {
+        "isAuthenticated": true,
+      }
+    }
+    authorization={
+      Object {
+        "authCode": "new",
+        "isAuthorizing": true,
+      }
+    }
+    verifyEmail={
+      Object {
+        "verfied": false,
+      }
+    }
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "checkPropTypes": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateError": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "function",
+    "props": Object {
+      "children": Array [
+        <AuthModal
+          isAuthenticated={true}
+        />,
+        <Switch>
+          <PrivateRoute
+            authorization={
+              Object {
+                "authCode": "new",
+                "isAuthorizing": true,
+              }
+            }
+            component={[Function]}
+            path="/rocketChat"
+            redirectTo="/"
+            shouldRender={false}
+          />
+          <Route
+            component={[Function]}
+            path="/rejection"
+          />
+          <Route
+            component={[Function]}
+            path="/email"
+          />
+          <Route
+            authentication={
+              Object {
+                "isAuthenticated": true,
+              }
+            }
+            authorization={
+              Object {
+                "authCode": "new",
+                "isAuthorizing": true,
+              }
+            }
+            component={[Function]}
+            path="/verify"
+            verifyEmail={
+              Object {
+                "verfied": false,
+              }
+            }
+          />
+          <Route
+            component={[Function]}
+            path="/ssoLogin/:loginIdp"
+          />
+          <Route
+            component={[Function]}
+            path="/login"
+          />
+          <Route
+            component={[Function]}
+            path="/logout"
+          />
+          <Route
+            authentication={
+              Object {
+                "isAuthenticated": true,
+              }
+            }
+            component={[Function]}
+            path="/"
+          />
+        </Switch>,
+      ],
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "function",
+        "props": Object {
+          "isAuthenticated": true,
+        },
+        "ref": null,
+        "rendered": null,
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "children": Array [
+            <PrivateRoute
+              authorization={
+                Object {
+                  "authCode": "new",
+                  "isAuthorizing": true,
+                }
+              }
+              component={[Function]}
+              path="/rocketChat"
+              redirectTo="/"
+              shouldRender={false}
+            />,
+            <Route
+              component={[Function]}
+              path="/rejection"
+            />,
+            <Route
+              component={[Function]}
+              path="/email"
+            />,
+            <Route
+              authentication={
+                Object {
+                  "isAuthenticated": true,
+                }
+              }
+              authorization={
+                Object {
+                  "authCode": "new",
+                  "isAuthorizing": true,
+                }
+              }
+              component={[Function]}
+              path="/verify"
+              verifyEmail={
+                Object {
+                  "verfied": false,
+                }
+              }
+            />,
+            <Route
+              component={[Function]}
+              path="/ssoLogin/:loginIdp"
+            />,
+            <Route
+              component={[Function]}
+              path="/login"
+            />,
+            <Route
+              component={[Function]}
+              path="/logout"
+            />,
+            <Route
+              authentication={
+                Object {
+                  "isAuthenticated": true,
+                }
+              }
+              component={[Function]}
+              path="/"
+            />,
+          ],
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "function",
+            "props": Object {
+              "authorization": Object {
+                "authCode": "new",
+                "isAuthorizing": true,
+              },
+              "component": [Function],
+              "path": "/rocketChat",
+              "redirectTo": "/",
+              "shouldRender": false,
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "component": [Function],
+              "path": "/rejection",
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "component": [Function],
+              "path": "/email",
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "authentication": Object {
+                "isAuthenticated": true,
+              },
+              "authorization": Object {
+                "authCode": "new",
+                "isAuthorizing": true,
+              },
+              "component": [Function],
+              "path": "/verify",
+              "verifyEmail": Object {
+                "verfied": false,
+              },
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "component": [Function],
+              "path": "/ssoLogin/:loginIdp",
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "component": [Function],
+              "path": "/login",
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "component": [Function],
+              "path": "/logout",
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "authentication": Object {
+                "isAuthenticated": true,
+              },
+              "component": [Function],
+              "path": "/",
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+        ],
+        "type": [Function],
+      },
+    ],
+    "type": [Function],
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "function",
+      "props": Object {
+        "children": Array [
+          <AuthModal
+            isAuthenticated={true}
+          />,
+          <Switch>
+            <PrivateRoute
+              authorization={
+                Object {
+                  "authCode": "new",
+                  "isAuthorizing": true,
+                }
+              }
+              component={[Function]}
+              path="/rocketChat"
+              redirectTo="/"
+              shouldRender={false}
+            />
+            <Route
+              component={[Function]}
+              path="/rejection"
+            />
+            <Route
+              component={[Function]}
+              path="/email"
+            />
+            <Route
+              authentication={
+                Object {
+                  "isAuthenticated": true,
+                }
+              }
+              authorization={
+                Object {
+                  "authCode": "new",
+                  "isAuthorizing": true,
+                }
+              }
+              component={[Function]}
+              path="/verify"
+              verifyEmail={
+                Object {
+                  "verfied": false,
+                }
+              }
+            />
+            <Route
+              component={[Function]}
+              path="/ssoLogin/:loginIdp"
+            />
+            <Route
+              component={[Function]}
+              path="/login"
+            />
+            <Route
+              component={[Function]}
+              path="/logout"
+            />
+            <Route
+              authentication={
+                Object {
+                  "isAuthenticated": true,
+                }
+              }
+              component={[Function]}
+              path="/"
+            />
+          </Switch>,
+        ],
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "function",
+          "props": Object {
+            "isAuthenticated": true,
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": Array [
+              <PrivateRoute
+                authorization={
+                  Object {
+                    "authCode": "new",
+                    "isAuthorizing": true,
+                  }
+                }
+                component={[Function]}
+                path="/rocketChat"
+                redirectTo="/"
+                shouldRender={false}
+              />,
+              <Route
+                component={[Function]}
+                path="/rejection"
+              />,
+              <Route
+                component={[Function]}
+                path="/email"
+              />,
+              <Route
+                authentication={
+                  Object {
+                    "isAuthenticated": true,
+                  }
+                }
+                authorization={
+                  Object {
+                    "authCode": "new",
+                    "isAuthorizing": true,
+                  }
+                }
+                component={[Function]}
+                path="/verify"
+                verifyEmail={
+                  Object {
+                    "verfied": false,
+                  }
+                }
+              />,
+              <Route
+                component={[Function]}
+                path="/ssoLogin/:loginIdp"
+              />,
+              <Route
+                component={[Function]}
+                path="/login"
+              />,
+              <Route
+                component={[Function]}
+                path="/logout"
+              />,
+              <Route
+                authentication={
+                  Object {
+                    "isAuthenticated": true,
+                  }
+                }
+                component={[Function]}
+                path="/"
+              />,
+            ],
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "function",
+              "props": Object {
+                "authorization": Object {
+                  "authCode": "new",
+                  "isAuthorizing": true,
+                },
+                "component": [Function],
+                "path": "/rocketChat",
+                "redirectTo": "/",
+                "shouldRender": false,
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "component": [Function],
+                "path": "/rejection",
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "component": [Function],
+                "path": "/email",
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "authentication": Object {
+                  "isAuthenticated": true,
+                },
+                "authorization": Object {
+                  "authCode": "new",
+                  "isAuthorizing": true,
+                },
+                "component": [Function],
+                "path": "/verify",
+                "verifyEmail": Object {
+                  "verfied": false,
+                },
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "component": [Function],
+                "path": "/ssoLogin/:loginIdp",
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "component": [Function],
+                "path": "/login",
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "component": [Function],
+                "path": "/logout",
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "authentication": Object {
+                  "isAuthenticated": true,
+                },
+                "component": [Function],
+                "path": "/",
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+          ],
+          "type": [Function],
+        },
+      ],
+      "type": [Function],
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "legacyContextMode": "parent",
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getChildContext": Object {
+            "calledByRenderer": false,
+          },
+          "getDerivedStateFromError": true,
+          "getDerivedStateFromProps": Object {
+            "hasShouldComponentUpdateBug": false,
+          },
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+    Symbol(enzyme.__providerValues__): undefined,
+  },
+  Symbol(enzyme.__providerValues__): Map {},
+  Symbol(enzyme.__childContext__): null,
+}
+`;

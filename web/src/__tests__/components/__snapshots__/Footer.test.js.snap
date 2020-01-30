@@ -1,0 +1,573 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Footer Component matches snapshot 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <Footer />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "checkPropTypes": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateError": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "host",
+    "props": Object {
+      "children": <ul>
+        <li>
+          <a
+            href="."
+          >
+            Home
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://www2.gov.bc.ca/gov/content/home/disclaimer"
+          >
+            Disclaimer
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://www2.gov.bc.ca/gov/content/home/privacy"
+          >
+            Privacy
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://www2.gov.bc.ca/gov/content/home/accessibility"
+          >
+            Accessibility
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://www2.gov.bc.ca/gov/content/home/copyright"
+          >
+            Copyright
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://github.com/bcgov/reggie"
+          >
+            Contact Us
+          </a>
+        </li>
+      </ul>,
+    },
+    "ref": null,
+    "rendered": Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": Array [
+          <li>
+            <a
+              href="."
+            >
+              Home
+            </a>
+          </li>,
+          <li>
+            <a
+              href="https://www2.gov.bc.ca/gov/content/home/disclaimer"
+            >
+              Disclaimer
+            </a>
+          </li>,
+          <li>
+            <a
+              href="https://www2.gov.bc.ca/gov/content/home/privacy"
+            >
+              Privacy
+            </a>
+          </li>,
+          <li>
+            <a
+              href="https://www2.gov.bc.ca/gov/content/home/accessibility"
+            >
+              Accessibility
+            </a>
+          </li>,
+          <li>
+            <a
+              href="https://www2.gov.bc.ca/gov/content/home/copyright"
+            >
+              Copyright
+            </a>
+          </li>,
+          <li>
+            <a
+              href="https://github.com/bcgov/reggie"
+            >
+              Contact Us
+            </a>
+          </li>,
+        ],
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <a
+              href="."
+            >
+              Home
+            </a>,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": "Home",
+              "href": ".",
+            },
+            "ref": null,
+            "rendered": "Home",
+            "type": "a",
+          },
+          "type": "li",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <a
+              href="https://www2.gov.bc.ca/gov/content/home/disclaimer"
+            >
+              Disclaimer
+            </a>,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": "Disclaimer",
+              "href": "https://www2.gov.bc.ca/gov/content/home/disclaimer",
+            },
+            "ref": null,
+            "rendered": "Disclaimer",
+            "type": "a",
+          },
+          "type": "li",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <a
+              href="https://www2.gov.bc.ca/gov/content/home/privacy"
+            >
+              Privacy
+            </a>,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": "Privacy",
+              "href": "https://www2.gov.bc.ca/gov/content/home/privacy",
+            },
+            "ref": null,
+            "rendered": "Privacy",
+            "type": "a",
+          },
+          "type": "li",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <a
+              href="https://www2.gov.bc.ca/gov/content/home/accessibility"
+            >
+              Accessibility
+            </a>,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": "Accessibility",
+              "href": "https://www2.gov.bc.ca/gov/content/home/accessibility",
+            },
+            "ref": null,
+            "rendered": "Accessibility",
+            "type": "a",
+          },
+          "type": "li",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <a
+              href="https://www2.gov.bc.ca/gov/content/home/copyright"
+            >
+              Copyright
+            </a>,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": "Copyright",
+              "href": "https://www2.gov.bc.ca/gov/content/home/copyright",
+            },
+            "ref": null,
+            "rendered": "Copyright",
+            "type": "a",
+          },
+          "type": "li",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <a
+              href="https://github.com/bcgov/reggie"
+            >
+              Contact Us
+            </a>,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": "Contact Us",
+              "href": "https://github.com/bcgov/reggie",
+            },
+            "ref": null,
+            "rendered": "Contact Us",
+            "type": "a",
+          },
+          "type": "li",
+        },
+      ],
+      "type": "ul",
+    },
+    "type": "footer",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": <ul>
+          <li>
+            <a
+              href="."
+            >
+              Home
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www2.gov.bc.ca/gov/content/home/disclaimer"
+            >
+              Disclaimer
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www2.gov.bc.ca/gov/content/home/privacy"
+            >
+              Privacy
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www2.gov.bc.ca/gov/content/home/accessibility"
+            >
+              Accessibility
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www2.gov.bc.ca/gov/content/home/copyright"
+            >
+              Copyright
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://github.com/bcgov/reggie"
+            >
+              Contact Us
+            </a>
+          </li>
+        </ul>,
+      },
+      "ref": null,
+      "rendered": Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": Array [
+            <li>
+              <a
+                href="."
+              >
+                Home
+              </a>
+            </li>,
+            <li>
+              <a
+                href="https://www2.gov.bc.ca/gov/content/home/disclaimer"
+              >
+                Disclaimer
+              </a>
+            </li>,
+            <li>
+              <a
+                href="https://www2.gov.bc.ca/gov/content/home/privacy"
+              >
+                Privacy
+              </a>
+            </li>,
+            <li>
+              <a
+                href="https://www2.gov.bc.ca/gov/content/home/accessibility"
+              >
+                Accessibility
+              </a>
+            </li>,
+            <li>
+              <a
+                href="https://www2.gov.bc.ca/gov/content/home/copyright"
+              >
+                Copyright
+              </a>
+            </li>,
+            <li>
+              <a
+                href="https://github.com/bcgov/reggie"
+              >
+                Contact Us
+              </a>
+            </li>,
+          ],
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": <a
+                href="."
+              >
+                Home
+              </a>,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": "Home",
+                "href": ".",
+              },
+              "ref": null,
+              "rendered": "Home",
+              "type": "a",
+            },
+            "type": "li",
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": <a
+                href="https://www2.gov.bc.ca/gov/content/home/disclaimer"
+              >
+                Disclaimer
+              </a>,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": "Disclaimer",
+                "href": "https://www2.gov.bc.ca/gov/content/home/disclaimer",
+              },
+              "ref": null,
+              "rendered": "Disclaimer",
+              "type": "a",
+            },
+            "type": "li",
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": <a
+                href="https://www2.gov.bc.ca/gov/content/home/privacy"
+              >
+                Privacy
+              </a>,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": "Privacy",
+                "href": "https://www2.gov.bc.ca/gov/content/home/privacy",
+              },
+              "ref": null,
+              "rendered": "Privacy",
+              "type": "a",
+            },
+            "type": "li",
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": <a
+                href="https://www2.gov.bc.ca/gov/content/home/accessibility"
+              >
+                Accessibility
+              </a>,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": "Accessibility",
+                "href": "https://www2.gov.bc.ca/gov/content/home/accessibility",
+              },
+              "ref": null,
+              "rendered": "Accessibility",
+              "type": "a",
+            },
+            "type": "li",
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": <a
+                href="https://www2.gov.bc.ca/gov/content/home/copyright"
+              >
+                Copyright
+              </a>,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": "Copyright",
+                "href": "https://www2.gov.bc.ca/gov/content/home/copyright",
+              },
+              "ref": null,
+              "rendered": "Copyright",
+              "type": "a",
+            },
+            "type": "li",
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": <a
+                href="https://github.com/bcgov/reggie"
+              >
+                Contact Us
+              </a>,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": "Contact Us",
+                "href": "https://github.com/bcgov/reggie",
+              },
+              "ref": null,
+              "rendered": "Contact Us",
+              "type": "a",
+            },
+            "type": "li",
+          },
+        ],
+        "type": "ul",
+      },
+      "type": "footer",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "legacyContextMode": "parent",
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getChildContext": Object {
+            "calledByRenderer": false,
+          },
+          "getDerivedStateFromError": true,
+          "getDerivedStateFromProps": Object {
+            "hasShouldComponentUpdateBug": false,
+          },
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+    Symbol(enzyme.__providerValues__): undefined,
+  },
+  Symbol(enzyme.__providerValues__): Map {},
+}
+`;
