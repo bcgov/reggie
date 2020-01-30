@@ -1,7 +1,7 @@
 ## Pipeline Wrapper Scripts
 
 Our pipeline utilities are a set of __Node JS__ scripts which are abstracted away from specific CI/CD tools so that they can be more easily ported. The main utility behind these scripts are around a package called `@bcgov/pipeline-cli` which
-has methods that wrap Openshift `oc cli` functions and apply __bcgov best practices__. 
+has methods that wrap OpenShift `oc cli` functions and apply __bcgov best practices__. 
 
 ## How it works
 
@@ -20,4 +20,4 @@ logic and run your continuous deployments/delivery.
 
 ## Building and Deploying
 
-refer to Jenkinsfile for the commands.
+Refer to [Jenkinsfile](../Jenkinsfile) for the commands in different stages.
