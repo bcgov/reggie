@@ -41,7 +41,7 @@ const Footer = () => {
           <a href="https://www2.gov.bc.ca/gov/content/home/copyright">Copyright</a>
         </li>
         <li>
-          <a href="https://github.com/bcgov/reggie-web">Contact Us</a>
+          <a href="https://github.com/bcgov/reggie">Contact Us</a>
         </li>
       </ul>
     </footer>

@@ -56,7 +56,7 @@ ShallowWrapper {
         </li>
         <li>
           <a
-            href="https://github.com/bcgov/reggie-web"
+            href="https://github.com/bcgov/reggie"
           >
             Contact Us
           </a>
@@ -107,7 +107,7 @@ ShallowWrapper {
           </li>,
           <li>
             <a
-              href="https://github.com/bcgov/reggie-web"
+              href="https://github.com/bcgov/reggie"
             >
               Contact Us
             </a>
@@ -252,7 +252,7 @@ ShallowWrapper {
           "nodeType": "host",
           "props": Object {
             "children": <a
-              href="https://github.com/bcgov/reggie-web"
+              href="https://github.com/bcgov/reggie"
             >
               Contact Us
             </a>,
@@ -264,7 +264,7 @@ ShallowWrapper {
             "nodeType": "host",
             "props": Object {
               "children": "Contact Us",
-              "href": "https://github.com/bcgov/reggie-web",
+              "href": "https://github.com/bcgov/reggie",
             },
             "ref": null,
             "rendered": "Contact Us",
@@ -321,7 +321,7 @@ ShallowWrapper {
           </li>
           <li>
             <a
-              href="https://github.com/bcgov/reggie-web"
+              href="https://github.com/bcgov/reggie"
             >
               Contact Us
             </a>
@@ -372,7 +372,7 @@ ShallowWrapper {
             </li>,
             <li>
               <a
-                href="https://github.com/bcgov/reggie-web"
+                href="https://github.com/bcgov/reggie"
               >
                 Contact Us
               </a>
@@ -517,7 +517,7 @@ ShallowWrapper {
             "nodeType": "host",
             "props": Object {
               "children": <a
-                href="https://github.com/bcgov/reggie-web"
+                href="https://github.com/bcgov/reggie"
               >
                 Contact Us
               </a>,
@@ -529,7 +529,7 @@ ShallowWrapper {
               "nodeType": "host",
               "props": Object {
                 "children": "Contact Us",
-                "href": "https://github.com/bcgov/reggie-web",
+                "href": "https://github.com/bcgov/reggie",
               },
               "ref": null,
               "rendered": "Contact Us",

@@ -15,9 +15,20 @@ Reggie is an application to register for and invite user to BCGov Pathfinder Roc
 ### Local Development
 
 1. make sure you have the `.env` file in both web and api folder, required contents can be found in `.env.sample`
-2. in ./api run `npm run dev` to host the reggie API server
-3. in ./web run `npm run start` to host the frontend
-4. use `npx ngrok http 3000` to publish the host for KeyCloak to redirect
+2. in ./api:
+```shell
+npm i # install dependency
+npm run dev # to host the reggie API server
+```
+3. in ./web:
+```shell
+npm i # install dependency
+npm run start # to host the frontend
+```
+4. publish the host for KeyCloak to redirect
+```shell
+npx ngrok http 3000
+```
 
 ## Deployment (OpenShift)
 
