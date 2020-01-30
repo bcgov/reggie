@@ -27,8 +27,8 @@ export const APP_INFO = {
 
 export const API = {
   BASE_URL: process.env.REACT_APP_API_BASE_URL
-    ? `${process.env.REACT_APP_API_BASE_URL}/api/v1/`
-    : `${config.apiBaseUrl}/api/v1/`,
+    ? `https://${process.env.REACT_APP_API_BASE_URL}/api/v1/`
+    : `https://${config.apiBaseUrl}/api/v1/`,
   GET_SSO_USER: userId => `sso/user/${userId}`,
   INVITE_USER: userId => `sso/user/invite/${userId}`,
   VERIFY_SSO_USER: userId => `sso/user/verify/${userId}`,
