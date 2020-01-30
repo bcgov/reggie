@@ -33,17 +33,19 @@ module.exports = settings => {
         });
       }
 
-      // Clean up everything in the temporary deployed env:
-      if (k == deploy_phase) {
-        console.log(`In namespace ${phase.namespace}`);
+      // Note: as to match the RC dev instance, there's only one dev Reggie as well. No need for the following step:
 
-        oc.raw('delete', ['all,pvc,Secret,configmap,endpoints,RoleBinding,role,ServiceAccount,Endpoints'], {
-          selector: `app=${phase.instance},env-id=${phase.changeId},!shared`,
-          'ignore-not-found': 'true',
-          wait: 'true',
-          namespace: phase.namespace,
-        });
-      }
+      // Clean up everything in the temporary deployed env:
+      // if (k == deploy_phase) {
+      //   console.log(`In namespace ${phase.namespace}`);
+
+      //   oc.raw('delete', ['all,pvc,Secret,configmap,endpoints,RoleBinding,role,ServiceAccount,Endpoints'], {
+      //     selector: `app=${phase.instance},env-id=${phase.changeId},!shared`,
+      //     'ignore-not-found': 'true',
+      //     wait: 'true',
+      //     namespace: phase.namespace,
+      //   });
+      // }
     }
   }
 };
