@@ -13,6 +13,12 @@ Pathfinder Rocket.Chat Users must:
 2. Have a GitHub account, which belongs to one of the BC Gov organizations: `bcgov`, `bcgov-c`, or `BCDevOps` *or*
 3. receive an invite from an existing Pathfinder Rocket.Chat user. (see below for details on sending and accepting invitations)
 
+**NOTE**: if you are using your IDIR account, your account MUST have an associated email address.
+If it does not, there is no guarantee that your account will work, and we cannot guarantee that it will continue to work, even if you can log in the first time.
+
+If you have problems logging into RocketChat, please check that you have an associated email address *first*, before contacting the Platform Services team for help.
+We cannot fix issues that arise from your IDIR account having no associated email address. Contact 7-7000 for help with that issue.
+
 ---
 ### 1. How to register for Rocket.Chat:
 
