@@ -8,7 +8,7 @@ ignore: true
 
 ## About
 
-Reggie is an application to register for and invite user to BCGov Pathfinder Rocket.Chat. Please refer to [user instructions](UserInstructions.md) to join the chat community.
+Reggie is an application to register for and invite user to BCGov Rocket.Chat. Please refer to [user instructions](UserInstructions.md) to join the chat community.
 
 ## Usage
 
