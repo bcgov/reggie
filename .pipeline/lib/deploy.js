@@ -14,7 +14,7 @@ module.exports = (settings)=>{
 
   // set the rest of the env vars:
   const extraParams = {
-    API_URL_VALUE: `${phases[phase].suffix}.${phases[phase].name}-api.developer.gov.bc.ca`,
+    API_URL_VALUE: `${phases[phase].phase}.${phases[phase].name}-api.developer.gov.bc.ca`,
     REACT_APP_ROCKETCHAT_URL_VALUE:
       oc.options.env === 'prod'
         ? 'https://chat.pathfinder.gov.bc.ca/'
