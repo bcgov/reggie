@@ -29,7 +29,7 @@ export class Rejection extends Component {
   render() {
     return (
       <div>
-        <h1>Failed to join to Pathfinder Rocket.Chat</h1>
+        <h1>Failed to join to Rocket.Chat</h1>
         <p className="rejection-hints">
           Thank you for completing the account registration process.
         </p>

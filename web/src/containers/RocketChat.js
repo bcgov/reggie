@@ -77,7 +77,7 @@ class RocketChat extends Component {
               <p>
                 Hello {this.props.userInfo.firstName}
                 <br />
-                You are a member of Rocket.Chat. Please go ahead to the Pathfinder Rocket.Chat App!
+                You are a member of Rocket.Chat. Please go ahead to the Rocket.Chat App!
               </p>
               {/* External link */}
               <a href={SELF_SERVER_APP.ROCKETCHAT.URL}>
