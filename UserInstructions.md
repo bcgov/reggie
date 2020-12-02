@@ -38,7 +38,7 @@ If you have an account that satisfies prerequisite 1. or 2. above, you can follo
 
 Users who *do not* have an account that satisfies prerequisite 1. or 2., above, will need to be invited by user who has completed the registration process.  The steps below are for users who have complete the registration process themselves and want to invite other users who cannot because their existing accounts don't meet the prerequisites.  
 
-1. Visit [Reggie](https://reggie.developer.gov.bc.ca/) (a.k. Rocket.Chat Invitation App). If not already logged in, log in to Reggie. *Note:* you must login to Reggie with the same account as you used to register with Rocket.Chat.
+1. Visit [Reggie](https://reggie.developer.gov.bc.ca/) (a.k.a Rocket.Chat Invitation App). If not already logged in, log in to Reggie. *Note:* you must login to Reggie with the same account as you used to register with Rocket.Chat.
 1. Once logged into Reggie, click on the `Invite New User` button and enter the email address of the person you wish to invite to Rocket.Chat.  **Please double check that you have provided the correct email address, as Reggie verifies new user based on this email.**
 1. If the invitation is successfully sent, a green message will be displayed pop up. If not, please contact BC Gov DevHub team for help - something unexpected has happened!
 
