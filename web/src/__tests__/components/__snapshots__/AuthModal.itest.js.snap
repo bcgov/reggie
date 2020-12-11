@@ -35,7 +35,7 @@ ShallowWrapper {
           wrapTag="div"
         >
           <Banner
-            titleText="Pathfinder Rocket.Chat Invitation App"
+            titleText="Rocket.Chat Invitation App"
           />
         </ModalHeader>,
         <ModalBody
@@ -104,7 +104,7 @@ ShallowWrapper {
         "props": Object {
           "charCode": 215,
           "children": <Banner
-            titleText="Pathfinder Rocket.Chat Invitation App"
+            titleText="Rocket.Chat Invitation App"
           />,
           "closeAriaLabel": "Close",
           "tag": "h5",
@@ -116,7 +116,7 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "function",
           "props": Object {
-            "titleText": "Pathfinder Rocket.Chat Invitation App",
+            "titleText": "Rocket.Chat Invitation App",
           },
           "ref": null,
           "rendered": null,
@@ -300,7 +300,7 @@ ShallowWrapper {
             wrapTag="div"
           >
             <Banner
-              titleText="Pathfinder Rocket.Chat Invitation App"
+              titleText="Rocket.Chat Invitation App"
             />
           </ModalHeader>,
           <ModalBody
@@ -369,7 +369,7 @@ ShallowWrapper {
           "props": Object {
             "charCode": 215,
             "children": <Banner
-              titleText="Pathfinder Rocket.Chat Invitation App"
+              titleText="Rocket.Chat Invitation App"
             />,
             "closeAriaLabel": "Close",
             "tag": "h5",
@@ -381,7 +381,7 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "function",
             "props": Object {
-              "titleText": "Pathfinder Rocket.Chat Invitation App",
+              "titleText": "Rocket.Chat Invitation App",
             },
             "ref": null,
             "rendered": null,
@@ -609,7 +609,7 @@ ShallowWrapper {
           wrapTag="div"
         >
           <Banner
-            titleText="Pathfinder Rocket.Chat Invitation App"
+            titleText="Rocket.Chat Invitation App"
           />
         </ModalHeader>,
         <ModalBody
@@ -678,7 +678,7 @@ ShallowWrapper {
         "props": Object {
           "charCode": 215,
           "children": <Banner
-            titleText="Pathfinder Rocket.Chat Invitation App"
+            titleText="Rocket.Chat Invitation App"
           />,
           "closeAriaLabel": "Close",
           "tag": "h5",
@@ -690,7 +690,7 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "function",
           "props": Object {
-            "titleText": "Pathfinder Rocket.Chat Invitation App",
+            "titleText": "Rocket.Chat Invitation App",
           },
           "ref": null,
           "rendered": null,
@@ -874,7 +874,7 @@ ShallowWrapper {
             wrapTag="div"
           >
             <Banner
-              titleText="Pathfinder Rocket.Chat Invitation App"
+              titleText="Rocket.Chat Invitation App"
             />
           </ModalHeader>,
           <ModalBody
@@ -943,7 +943,7 @@ ShallowWrapper {
           "props": Object {
             "charCode": 215,
             "children": <Banner
-              titleText="Pathfinder Rocket.Chat Invitation App"
+              titleText="Rocket.Chat Invitation App"
             />,
             "closeAriaLabel": "Close",
             "tag": "h5",
@@ -955,7 +955,7 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "function",
             "props": Object {
-              "titleText": "Pathfinder Rocket.Chat Invitation App",
+              "titleText": "Rocket.Chat Invitation App",
             },
             "ref": null,
             "rendered": null,

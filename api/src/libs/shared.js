@@ -23,8 +23,8 @@
 import { JWTServiceManager } from '@bcgov/nodejs-common-utils';
 import config from '../config';
 
-const skey = Symbol.for('ca.bc.gov.pathfinder.reggie-api.sso');
-const skeySA = Symbol.for('ca.bc.gov.pathfinder.reggie-api.sa.sso');
+const skey = Symbol.for('reggie-api.sso');
+const skeySA = Symbol.for('reggie-api.sa.sso');
 const gs = Object.getOwnPropertySymbols(global);
 
 if (!(gs.indexOf(skey) > -1)) {

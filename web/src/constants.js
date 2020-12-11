@@ -21,8 +21,8 @@
 import config from './config.json';
 
 export const APP_INFO = {
-  NAME: 'Pathfinder Rocket.Chat Invitation App',
-  DISPLAY_NAME: 'Pathfinder Rocket.Chat Invitation App',
+  NAME: 'Rocket.Chat Invitation App',
+  DISPLAY_NAME: 'Rocket.Chat Invitation App',
 };
 
 export const API = {
