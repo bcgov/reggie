@@ -24,7 +24,7 @@ We cannot fix issues that arise from your IDIR account having no associated emai
 
 If you have an account that satisfies prerequisite 1. or 2. above, you can follow the steps below to register and access Rocket.Chat.  
 
-- Go to [Rocket.Chat login page](https://chat.pathfinder.gov.bc.ca/), click on `Login` button
+- Go to [Rocket.Chat login page](https://chat.developer.gov.bc.ca/), click on `Login` button
 - You will be redirected to the KeyCloak login page with 2 different options to login: `GitHub` or `IDIR`
 - Pick one of the login options based on the prerequisites above and complete the login process 
 - When prompted, please verify and update the contact attributes shown below. **Note: even if these values are pre-populated,  please check and update them if they are not accurate.**
